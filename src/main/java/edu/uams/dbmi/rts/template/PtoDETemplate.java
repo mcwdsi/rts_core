@@ -6,6 +6,7 @@ import edu.uams.dbmi.rts.iui.Iui;
 import edu.uams.dbmi.rts.template.component.DataComponent;
 import edu.uams.dbmi.rts.template.component.RelationshipComponent;
 import edu.uams.dbmi.rts.template.component.UniversalComponent;
+import edu.uams.dbmi.rts.time.TemporalReference;
 import edu.uams.dbmi.rts.uui.Uui;
 
 /**
@@ -26,12 +27,30 @@ public class PtoDETemplate extends RtsTemplate {
 		this.datatypeComponent = new UniversalComponent();
 	}
 	
-	public Iui getAuthoringTimeIui(){
+	/**
+	 * deprecated.  Use getAuthoringTimeReference() instead.
+	 * @return
+	 */
+	@Deprecated
+	public Iui getAuthoringTimeIui() {
 		return this.authoringComponent.getAuthoringTimeIui();
 	}
 	
-	public void setAuthoringTimeIui(Iui temporalEntityIui){
+	public TemporalReference getAuthoringTimeReference() {
+		return this.authoringComponent.getAuthoringTimeReference();
+	}
+	
+	/**
+	 * deprecated.  Use setAuthoringTimeReference() instead.
+	 * @param temporalEntityIui
+	 */
+	@Deprecated
+	public void setAuthoringTimeIui(Iui temporalEntityIui) {
 		this.authoringComponent.setAuthoringTimeIui(temporalEntityIui);
+	}
+	
+	public void setAuthoringTimeReference(TemporalReference tr) {
+		this.authoringComponent.setAuthoringTimeReference(tr);
 	}
 	
 	public byte[] getData(){

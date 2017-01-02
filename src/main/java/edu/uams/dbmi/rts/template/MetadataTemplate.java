@@ -26,6 +26,17 @@ import edu.uams.dbmi.rts.iui.Iui;
  */
 public class MetadataTemplate extends RtsTemplate {
 
+	/*
+	 * in addition to IuiComponent, AuthoringComponent,
+	 *  and ParticularComponent.
+	 *  
+	 *  In the case of MetadataTemplate, the authorIui is 
+	 *  	the IUI_d parameter, the timestamp is the t_d
+	 *  	parameter and should exactly equal the timestampe
+	 *  	of the associated template, and the particular
+	 *  	component should be a template IUI of the a
+	 *  	associated template.
+	 */
 	MetadataComponent metadataComponent;
 
 	public MetadataTemplate() {

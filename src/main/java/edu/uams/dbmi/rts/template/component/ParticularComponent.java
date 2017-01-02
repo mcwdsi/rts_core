@@ -7,7 +7,10 @@ import java.util.List;
 import edu.uams.dbmi.rts.iui.Iui;
 
 /**
- * represents the particular(s) that the templates reference
+ * represents the particular(s) that the templates reference.  
+ * 
+ * Should only be one particular in all cases except PtoP templates, 
+ * 	where there should be at least two particulars.
  * 
  * @author Josh Hanna
  *
@@ -117,6 +120,11 @@ public class ParticularComponent {
 	 * @param particulars
 	 */
 	public void addAllParticulars(Collection<Iui> particulars){
+		/* A bit concerned about this: if the container has 
+		 *  no ordering (like a bag) then the order could be
+		 *  random, whereas the tuple of particulars is 
+		 *  ordered.  Could result in asserting nonsense.
+		 */
 		this.particulars.addAll(particulars);
 	}
 

@@ -6,15 +6,35 @@ import edu.uams.dbmi.rts.template.component.IuiComponent;
 import edu.uams.dbmi.rts.template.component.ParticularComponent;
 
 /**
- * Class which is a superclass of all templates.
+ * Class which is a superclass of all templates.  All templates 
+ * 	have an IUI component (the IUI of the template itself), 
+ * 	an authoring component (IUI_a, t_a, and t_d), and 
+ *  particular component (IUI_p).
  * 
  * @author Josh Hanna
  *
  */
 public abstract class RtsTemplate {
-
+	
+	/*
+	 * IuiComponent contains IUI of template itself
+	 */
 	IuiComponent iuiComponent;
+	
+	/*
+	 * Author of template (Iui), ta parameter (TemporalReference),
+	 * 	td parameter of associated metadata template (td)
+	 *	 
+	 **/
 	AuthoringComponent authoringComponent;
+	
+	/*
+	 * All templates are primarily about one particular, where we define
+	 * 	the primary particular in the case of PtoP templates as the 
+	 * 	first particular in the tuple of particulars that are related.
+	 * 
+	 * This component captures that primary particular.
+	 */
 	ParticularComponent particularComponent;
 	
 	public RtsTemplate(){

@@ -4,6 +4,7 @@ import edu.uams.dbmi.rts.cui.Cui;
 import edu.uams.dbmi.rts.iui.Iui;
 import edu.uams.dbmi.rts.template.component.ConceptComponent;
 import edu.uams.dbmi.rts.template.component.TemporalComponent;
+import edu.uams.dbmi.rts.time.TemporalReference;
 
 public class PtoCTemplate extends RtsTemplate {
 	
@@ -15,12 +16,30 @@ public class PtoCTemplate extends RtsTemplate {
 		this.temporalComponent = new TemporalComponent();
 	}
 	
+	/**
+	 * deprecated.  Use getAuthoringTimeReference() instead.
+	 * @return
+	 */
+	@Deprecated
 	public Iui getAuthoringTimeIui() {
 		return this.authoringComponent.getAuthoringTimeIui();
 	}
 	
+	public TemporalReference getAuthoringTimeReference() {
+		return this.authoringComponent.getAuthoringTimeReference();
+	}
+	
+	/**
+	 * deprecated.  Use setAuthoringTimeReference() instead.
+	 * @param temporalEntityIui
+	 */
+	@Deprecated
 	public void setAuthoringTimeIui(Iui temporalEntityIui) {
 		this.authoringComponent.setAuthoringTimeIui(temporalEntityIui);
+	}
+	
+	public void setAuthoringTimeReference(TemporalReference tr) {
+		this.authoringComponent.setAuthoringTimeReference(tr);
 	}
 	
 	public Cui getConceptCui() {
@@ -39,12 +58,30 @@ public class PtoCTemplate extends RtsTemplate {
 		this.conceptComponent.setConceptSystemIui(conceptSystemIui);
 	}
 	
+	/**
+	 * deprecated.  Use getTemporalReference() instead.
+	 * @return
+	 */
+	@Deprecated
 	public Iui getTemporalEntityIui() {
 		return this.temporalComponent.getTemporalEntityIui();
 	}
 	
+	public TemporalReference getTemporalReference() {
+		return this.temporalComponent.getTemporalReference();
+	}
+	
+	/**
+	 * deprecated.  Use setTemporalReference() instead.
+	 * @param temporalEntityIui
+	 */
+	@Deprecated
 	public void setTemporalEntityIui(Iui temporalEntityIui) {
 		this.temporalComponent.setTemporalEntityIui(temporalEntityIui);
+	}
+	
+	public void setTemporalReference(TemporalReference tr) {
+		this.temporalComponent.setTemporalReference(tr);
 	}
 	
 	@Override

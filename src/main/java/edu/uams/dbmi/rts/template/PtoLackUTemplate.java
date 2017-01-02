@@ -6,6 +6,7 @@ import edu.uams.dbmi.rts.iui.Iui;
 import edu.uams.dbmi.rts.template.component.RelationshipComponent;
 import edu.uams.dbmi.rts.template.component.TemporalComponent;
 import edu.uams.dbmi.rts.template.component.UniversalComponent;
+import edu.uams.dbmi.rts.time.TemporalReference;
 import edu.uams.dbmi.rts.uui.Uui;
 
 /**
@@ -26,12 +27,30 @@ public class PtoLackUTemplate extends RtsTemplate {
 		this.temporalComponent = new TemporalComponent();
 	}
 
-	public Iui getAuthoringTimeIui(){
+	/**
+	 * deprecated.  Use getAuthoringTimeReference() instead.
+	 * @return
+	 */
+	@Deprecated
+	public Iui getAuthoringTimeIui() {
 		return this.authoringComponent.getAuthoringTimeIui();
 	}
 	
-	public void setAuthoringTimeIui(Iui temporalEntityIui){
+	public TemporalReference getAuthoringTimeReference() {
+		return this.authoringComponent.getAuthoringTimeReference();
+	}
+	
+	/**
+	 * deprecated.  Use setAuthoringTimeReference() instead.
+	 * @param temporalEntityIui
+	 */
+	@Deprecated
+	public void setAuthoringTimeIui(Iui temporalEntityIui) {
 		this.authoringComponent.setAuthoringTimeIui(temporalEntityIui);
+	}
+	
+	public void setAuthoringTimeReference(TemporalReference tr) {
+		this.authoringComponent.setAuthoringTimeReference(tr);
 	}
 	
 	public URI getRelationshipURI(){
@@ -66,12 +85,30 @@ public class PtoLackUTemplate extends RtsTemplate {
 		this.universalComponent.setOntologyIui(newIui);
 	}
 	
-	public Iui getTemporalEntityIui(){
+	/**
+	 * deprecated.  Use getTemporalReference() instead.
+	 * @return
+	 */
+	@Deprecated
+	public Iui getTemporalEntityIui() {
 		return this.temporalComponent.getTemporalEntityIui();
 	}
 	
-	public void setTemporalEntityIui(Iui newIui){
-		this.temporalComponent.setTemporalEntityIui(newIui);
+	public TemporalReference getTemporalReference() {
+		return this.temporalComponent.getTemporalReference();
+	}
+	
+	/**
+	 * deprecated.  Use setTemporalReference() instead.
+	 * @param temporalEntityIui
+	 */
+	@Deprecated
+	public void setTemporalEntityIui(Iui temporalEntityIui) {
+		this.temporalComponent.setTemporalEntityIui(temporalEntityIui);
+	}
+	
+	public void setTemporalReference(TemporalReference tr) {
+		this.temporalComponent.setTemporalReference(tr);
 	}
 	
 	@Override
