@@ -59,7 +59,7 @@ public class TemplateFactory {
 		// setting the ontology where the relationship is defined
 		template.setRelationshipOntologyIui(relationshipOntologyIui);
 
-		// setting the univeral identifier
+		// setting the universal identifier
 		template.setUniversalUui(new Uui(universalUri.toString()));
 
 		// setting the ontology the universal is defined in
@@ -174,7 +174,7 @@ public class TemplateFactory {
 		// getting an available Iui for the referent
 		template.setReferentIui(referentIui);
 
-		// setting the univeral identifier
+		// setting the universal identifier
 		template.setUniversalUui(new Uui(universalUri));
 
 		// setting the ontology the universal is defined in
@@ -196,7 +196,7 @@ public class TemplateFactory {
 		// getting an available Iui for the referent
 		template.setReferentIui(referentIui);
 
-		// setting the univeral identifier
+		// setting the universal identifier
 		template.setUniversalUui(new Uui(universalUri));
 
 		// setting the ontology the universal is defined in
@@ -230,7 +230,7 @@ public class TemplateFactory {
 		// setting the ontology where the relationship is defined
 		template.setRelationshipOntologyIui(relationshipOntologyIui);
 
-		// setting the univeral identifier
+		// setting the universal identifier
 		template.setDatatypeUui(new Uui(universalURI));
 
 		// setting the ontology the universal is defined in
