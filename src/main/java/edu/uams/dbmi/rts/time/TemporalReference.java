@@ -6,6 +6,7 @@ import java.util.TimeZone;
 import java.util.UUID;
 
 import edu.uams.dbmi.rts.iui.Iui;
+import edu.uams.dbmi.rts.uui.Uui;
 import edu.uams.dbmi.util.iso8601.Iso8601Date;
 import edu.uams.dbmi.util.iso8601.Iso8601DateFormatter;
 import edu.uams.dbmi.util.iso8601.Iso8601DateTime;
@@ -49,6 +50,10 @@ public class TemporalReference {
 	String identifier;
 	boolean isIso;
 	Iui calendarSystemIui;
+	Uui type;
+	
+	public static Uui ZERO_D_REGION_TYPE = new Uui("http://purl.obolibrary.org/obo/BFO_0000148");
+	public static Uui ONE_D_REGION_TYPE = new Uui("http://purl.obolibrary.org/obo/BFO_0000038");
 	
 	/**
 	 * Get a temporal reference to the 24 hour period denoted by today's date, 
@@ -84,6 +89,7 @@ public class TemporalReference {
 		}
 		isIso = true;
 		calendarSystemIui = Iui.createFromString("D4AF5C9A-47BA-4BF4-9BAE-F13A8ED6455E");
+		type = ONE_D_REGION_TYPE;  //unless stated otherwise, we assume interval
 	}
 	
 	public TemporalReference(Iso8601DateTime dateTime) {
@@ -141,7 +147,7 @@ public class TemporalReference {
 		calendarSystemIui = Iui.createFromString("D4AF5C9A-47BA-4BF4-9BAE-F13A8ED6455E");
 	}
 	
-	public TemporalReference() {
+	public TemporalReference(Uui type) {
 		//what to do for identifier if it's not ISO?
 		// options: (1) IUI, (2) generic UUID (although Iui pretty much just wraps a UUID),
 		//   (3) something else. 
@@ -158,6 +164,7 @@ public class TemporalReference {
 		identifier = UUID.randomUUID().toString();
 		//DB2282A4-631F-4D2C-940F-A220C496F6BE refers to general RTS temporal reference
 		calendarSystemIui = Iui.createFromString("DB2282A4-631F-4D2C-940F-A220C496F6BE");
+		this.type = type;
 	}
 	
 	public String getIdentifier() {
@@ -170,5 +177,9 @@ public class TemporalReference {
 	
 	public Iui getCalendarSystemIui() {
 		return calendarSystemIui;
+	}
+	
+	public Uui getTemporalType() {
+		return type;
 	}
 }

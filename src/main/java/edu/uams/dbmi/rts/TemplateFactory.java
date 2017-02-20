@@ -14,8 +14,8 @@ import edu.uams.dbmi.rts.template.PtoDETemplate;
 import edu.uams.dbmi.rts.template.PtoLackUTemplate;
 import edu.uams.dbmi.rts.template.PtoPTemplate;
 import edu.uams.dbmi.rts.template.PtoUTemplate;
-import edu.uams.dbmi.rts.template.TeTemplate;
 import edu.uams.dbmi.rts.template.TenTemplate;
+import edu.uams.dbmi.rts.time.TemporalReference;
 import edu.uams.dbmi.rts.uui.Uui;
 import edu.uams.dbmi.util.iso8601.Iso8601DateTime;
 
@@ -39,13 +39,16 @@ public class TemplateFactory {
 	}
 
 	public PtoLackUTemplate createPtoLackUTemplate(Iui authorIui,
-			Iui referentIui, Iui assertedTimeIui, URI relationshipURI,
+			Iui referentIui, TemporalReference assertedTimeReference, 
+			URI relationshipURI,
 			Iui relationshipOntologyIui, URI universalUri,
-			Iui universalOntologyIui, Iui relevantTimeIui) {
+			Iui universalOntologyIui, 
+			TemporalReference relevantTimeReference) {
 		PtoLackUTemplate template = this.createPtoLackUTemplate();
 
 		// setting the authoring time
-		template.setAuthoringTimeIui(assertedTimeIui);
+		//template.setAuthoringTimeIui(assertedTimeIui);
+		template.setAuthoringTimeReference(assertedTimeReference);
 
 		// setting the author Iui
 		template.setAuthorIui(authorIui);
@@ -66,7 +69,8 @@ public class TemplateFactory {
 		template.setUniversalOntologyIui(universalOntologyIui);
 
 		// setting the temporal entity during which the relationship holds
-		template.setTemporalEntityIui(relevantTimeIui);
+		//template.setTemporalEntityIui(relevantTimeIui);
+		template.setTemporalReference(relevantTimeReference);
 
 		return template;
 	}
@@ -75,13 +79,15 @@ public class TemplateFactory {
 		return new PtoPTemplate();
 	}
 
-	public PtoPTemplate createPtoPTemplate(Iui authorIui, Iui authoringTimeIui,
+	public PtoPTemplate createPtoPTemplate(Iui authorIui, 
+			TemporalReference authoringTimeReference,
 			List<Iui> particulars, URI relationshipURI, Iui ontologyIui,
-			Iui relevantTimeIui) {
+			TemporalReference relevantTimeReference) {
 		PtoPTemplate template = this.createPtoPTemplate();
 
 		// setting the authoring time
-		template.setAuthoringTimeIui(authoringTimeIui);
+		//template.setAuthoringTimeIui(authoringTimeIui);
+		template.setAuthoringTimeReference(authoringTimeReference);
 
 		// setting the author Iui
 		template.setAuthorIui(authorIui);
@@ -96,7 +102,8 @@ public class TemplateFactory {
 		template.setRelationshipOntologyIui(ontologyIui);
 
 		// setting the temporal entity during which the relationship holds
-		template.setTemporalEntityIui(relevantTimeIui);
+		//template.setTemporalEntityIui(relevantTimeIui);
+		template.setAuthoringTimeReference(relevantTimeReference);
 
 		return template;
 	}
@@ -106,13 +113,15 @@ public class TemplateFactory {
 	}
 
 	public PtoUTemplate createPtoUTemplate(Iui authorIui, Iui referentIui,
-			Iui assertedTimeIui, URI relationshipURI,
+			TemporalReference assertedTimeReference, URI relationshipURI,
 			Iui relationshipOntologyIui, URI universalUri,
-			Iui universalOntologyIui, Iui relevantTimeIui) {
+			Iui universalOntologyIui,
+			TemporalReference relevantTimeReference) {
 		PtoUTemplate template = this.createPtoUTemplate();
 
 		// setting the authoring time
-		template.setAuthoringTimeIui(assertedTimeIui);
+		//template.setAuthoringTimeIui(assertedTimeIui);
+		template.setAuthoringTimeReference(assertedTimeReference);
 
 		// setting the author Iui
 		template.setAuthorIui(authorIui);
@@ -133,7 +142,8 @@ public class TemplateFactory {
 		template.setUniversalOntologyIui(universalOntologyIui);
 
 		// setting the temporal entity during which the relationship holds
-		template.setTemporalEntityIui(relevantTimeIui);
+		//template.setTemporalEntityIui(relevantTimeIui);
+		template.setAuthoringTimeReference(relevantTimeReference);
 
 		return template;
 	}
@@ -142,65 +152,20 @@ public class TemplateFactory {
 		return new TenTemplate();
 	}
 
-	public TenTemplate createTenTemplate(Iui authorIui, Iui authoringTimeIui,
+	public TenTemplate createTenTemplate(Iui authorIui, 
+			TemporalReference authoringTimeReference,
 			Iui referentIui, String name, Iui namingSystemIui,
-			Iui relevantTimeIui) {
+			TemporalReference relevantTimeReference) {
 		TenTemplate template = this.createTenTemplate();
 
 		template.setAuthorIui(authorIui);
-		template.setAuthoringTimeIui(authoringTimeIui);
+		//template.setAuthoringTimeIui(authoringTimeIui);
+		template.setAuthoringTimeReference(authoringTimeReference);
 		template.setName(name);
 		template.setNamingSystemIui(namingSystemIui);
 		template.setReferentIui(referentIui);
-		template.setTemporalEntityIui(relevantTimeIui);
-
-		return template;
-	}
-
-	public TeTemplate createTeTemplate() {
-		return new TeTemplate();
-	}
-
-	public TeTemplate createTeTemplate(Iui authorIui, Iui referentIui,
-			URI universalUri, Iui ontologyIui) {
-		TeTemplate template = this.createTeTemplate();
-
-		// setting the authoring timestamp for now
-		template.setAuthoringTimestamp(new Iso8601DateTime());
-
-		// setting the author Iui
-		template.setAuthorIui(authorIui);
-
-		// getting an available Iui for the referent
-		template.setReferentIui(referentIui);
-
-		// setting the universal identifier
-		template.setUniversalUui(new Uui(universalUri));
-
-		// setting the ontology the universal is defined in
-		template.setUniversalOntologyIui(ontologyIui);
-
-		return template;
-	}
-
-	public TeTemplate createTeTemplate(Iui authorIui,
-			Iso8601DateTime timestamp, Iui referentIui, URI universalUri,
-			Iui ontologyIui) {
-		TeTemplate template = this.createTeTemplate();
-
-		template.setAuthoringTimestamp(timestamp);
-
-		// setting the author Iui
-		template.setAuthorIui(authorIui);
-
-		// getting an available Iui for the referent
-		template.setReferentIui(referentIui);
-
-		// setting the universal identifier
-		template.setUniversalUui(new Uui(universalUri));
-
-		// setting the ontology the universal is defined in
-		template.setUniversalOntologyIui(ontologyIui);
+		//template.setTemporalEntityIui(relevantTimeIui);
+		template.setTemporalEntityReference(relevantTimeReference);
 
 		return template;
 	}
@@ -210,13 +175,15 @@ public class TemplateFactory {
 	}
 
 	public PtoDETemplate createPtoDETemplate(Iui authorIui, Iui referentIui,
-			Iui authoringTimeIui, byte[] data, URI relationshipURI,
+			TemporalReference authoringTimeReference, byte[] data, URI relationshipURI,
 			Iui relationshipOntologyIui, URI universalURI,
 			Iui universalOntologyIui) {
 		PtoDETemplate template = this.createPtoDETemplate();
 
 		// setting the authoring timestamp for now
-		template.setAuthoringTimeIui(authoringTimeIui);
+		//template.setAuthoringTimeIui(authoringTimeIui);
+		
+		template.setAuthoringTimeReference(authoringTimeReference);
 
 		// setting the author Iui
 		template.setAuthorIui(authorIui);
