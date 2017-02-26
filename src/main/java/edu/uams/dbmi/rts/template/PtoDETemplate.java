@@ -2,10 +2,12 @@ package edu.uams.dbmi.rts.template;
 
 import java.net.URI;
 
+import edu.uams.dbmi.rts.ParticularReference;
 import edu.uams.dbmi.rts.iui.Iui;
 import edu.uams.dbmi.rts.template.component.DataComponent;
 import edu.uams.dbmi.rts.template.component.RelationshipComponent;
 import edu.uams.dbmi.rts.template.component.UniversalComponent;
+import edu.uams.dbmi.rts.template.component.ParticularComponent;
 import edu.uams.dbmi.rts.time.TemporalReference;
 import edu.uams.dbmi.rts.uui.Uui;
 
@@ -20,12 +22,38 @@ public class PtoDETemplate extends RtsTemplate {
 	private DataComponent dataComponent;
 	private RelationshipComponent relationshipComponent;
 	private UniversalComponent datatypeComponent;
+	private ParticularComponent<ParticularReference> particularComponent;
+	private ParticularComponent<Iui> namingSystemComponent;
 	
 	public PtoDETemplate(){
 		this.dataComponent = new DataComponent();
 		this.relationshipComponent = new RelationshipComponent();
 		this.datatypeComponent = new UniversalComponent();
+		this.particularComponent = new ParticularComponent<ParticularReference>();
+		this.namingSystemComponent = new ParticularComponent<Iui>();
 	}
+	
+	public void setReferent(ParticularReference pr) {
+		if (particularComponent.isEmpty()) {
+			particularComponent.addParticular(pr);
+		} else
+			throw new IllegalStateException("the referent of this PtoDE template has been set already.");
+	}
+	
+	public ParticularReference getReferent() {
+		return particularComponent.getParticular();
+	}
+	
+	public void setNamingSystem(Iui iui) {
+		if (namingSystemComponent.isEmpty()) {
+			namingSystemComponent.addParticular(iui);
+		} else
+			throw new IllegalStateException("the referent of this PtoDE template has been set already.");
+	}
+	
+	public Iui getNamingSystem() {
+		return namingSystemComponent.getParticular();
+	} 
 	
 	/**
 	 * deprecated.  Use getAuthoringTimeReference() instead.
@@ -109,10 +137,13 @@ public class PtoDETemplate extends RtsTemplate {
 		builder.append(this.getAuthorIui());
 		builder.append(", ");
 		
-		builder.append(this.getAuthoringTimeIui());
+		//builder.append(this.getAuthoringTimeIui());
+		//builder.append(", ");
+		
+		builder.append(this.getAuthoringTimeReference());
 		builder.append(", ");
 		
-		builder.append(this.getReferentIui());
+		builder.append(this.getReferent());
 		builder.append(", ");
 
 		builder.append(this.getData());

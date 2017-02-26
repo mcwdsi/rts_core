@@ -1,5 +1,7 @@
 package edu.uams.dbmi.rts;
 
+
+
 import java.net.URI;
 import java.util.List;
 import java.util.Set;
@@ -14,7 +16,6 @@ import edu.uams.dbmi.rts.template.PtoDETemplate;
 import edu.uams.dbmi.rts.template.PtoLackUTemplate;
 import edu.uams.dbmi.rts.template.PtoPTemplate;
 import edu.uams.dbmi.rts.template.PtoUTemplate;
-import edu.uams.dbmi.rts.template.TenTemplate;
 import edu.uams.dbmi.rts.time.TemporalReference;
 import edu.uams.dbmi.rts.uui.Uui;
 import edu.uams.dbmi.util.iso8601.Iso8601DateTime;
@@ -30,7 +31,7 @@ public class TemplateFactory {
 		ATemplate template = this.createATemplate();
 		template.setAuthoringTimestamp(timestamp);
 		template.setAuthorIui(authorIui);
-		template.setReferentIui(referentIui);
+		template.setReferent(referentIui);
 		return template;
 	}
 
@@ -54,7 +55,7 @@ public class TemplateFactory {
 		template.setAuthorIui(authorIui);
 
 		// setting the referent iui
-		template.setReferentIui(referentIui);
+		template.setReferent(referentIui);
 
 		// setting the relationship URI
 		template.setRelationshipURI(relationshipURI);
@@ -81,7 +82,7 @@ public class TemplateFactory {
 
 	public PtoPTemplate createPtoPTemplate(Iui authorIui, 
 			TemporalReference authoringTimeReference,
-			List<Iui> particulars, URI relationshipURI, Iui ontologyIui,
+			List<ParticularReference> particulars, URI relationshipURI, Iui ontologyIui,
 			TemporalReference relevantTimeReference) {
 		PtoPTemplate template = this.createPtoPTemplate();
 
@@ -127,7 +128,7 @@ public class TemplateFactory {
 		template.setAuthorIui(authorIui);
 
 		// setting the referent iui
-		template.setReferentIui(referentIui);
+		template.setReferent(referentIui);
 
 		// setting the relationship URI
 		template.setRelationshipURI(relationshipURI);
@@ -144,28 +145,6 @@ public class TemplateFactory {
 		// setting the temporal entity during which the relationship holds
 		//template.setTemporalEntityIui(relevantTimeIui);
 		template.setAuthoringTimeReference(relevantTimeReference);
-
-		return template;
-	}
-
-	public TenTemplate createTenTemplate() {
-		return new TenTemplate();
-	}
-
-	public TenTemplate createTenTemplate(Iui authorIui, 
-			TemporalReference authoringTimeReference,
-			Iui referentIui, String name, Iui namingSystemIui,
-			TemporalReference relevantTimeReference) {
-		TenTemplate template = this.createTenTemplate();
-
-		template.setAuthorIui(authorIui);
-		//template.setAuthoringTimeIui(authoringTimeIui);
-		template.setAuthoringTimeReference(authoringTimeReference);
-		template.setName(name);
-		template.setNamingSystemIui(namingSystemIui);
-		template.setReferentIui(referentIui);
-		//template.setTemporalEntityIui(relevantTimeIui);
-		template.setTemporalEntityReference(relevantTimeReference);
 
 		return template;
 	}
@@ -189,7 +168,7 @@ public class TemplateFactory {
 		template.setAuthorIui(authorIui);
 
 		// getting an available Iui for the referent
-		template.setReferentIui(referentIui);
+		template.setReferent(referentIui);
 
 		// setting the relationship URI
 		template.setRelationshipURI(relationshipURI);
@@ -225,7 +204,7 @@ public class TemplateFactory {
 		template.setChangeType(type);
 		template.setChangeReason(reason);
 		template.setErrorCode(errorCode);
-		template.setReferentIui(referentIui);
+		template.setReferent(referentIui);
 		template.setReplacementTemplateIuis(replacementTemplateIuis);
 
 		return template;

@@ -11,6 +11,7 @@ import edu.uams.dbmi.rts.time.TemporalReference;
  * @author Josh Hanna
  *
  */
+@Deprecated
 public class TenTemplate extends RtsTemplate {
 
 	IuiComponent namingSystemIui;
@@ -20,12 +21,12 @@ public class TenTemplate extends RtsTemplate {
 	@Deprecated
 	IuiComponent temporalEntityIui;
 
-	public TenTemplate(){
+	public TenTemplate() {
 		this.namingSystemIui = new IuiComponent();
 		this.name = new DataComponent();
 		this.temporalEntityReference = new TemporalComponent();
 		
-		this.temporalEntityIui = new IuiComponent();
+		//this.temporalEntityIui = new IuiComponent();
 	}
 
 	/**
@@ -113,10 +114,13 @@ public class TenTemplate extends RtsTemplate {
 		builder.append(this.getAuthorIui());
 		builder.append(", ");
 
-		builder.append(this.getAuthoringTimeIui());
+		//builder.append(this.getAuthoringTimeIui());
+		//builder.append(", ");
+				
+		builder.append(this.getAuthoringTimeReference());
 		builder.append(", ");
 
-		builder.append(this.getReferentIui());
+		builder.append(this.getTemporalEntityReference());
 		builder.append(", ");
 
 		builder.append(this.getName());

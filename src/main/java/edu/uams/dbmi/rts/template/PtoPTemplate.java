@@ -1,11 +1,12 @@
 package edu.uams.dbmi.rts.template;
 
 import java.net.URI;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import edu.uams.dbmi.rts.ParticularReference;
 import edu.uams.dbmi.rts.iui.Iui;
+import edu.uams.dbmi.rts.template.component.ParticularComponent;
 import edu.uams.dbmi.rts.template.component.RelationshipComponent;
 import edu.uams.dbmi.rts.template.component.TemporalComponent;
 import edu.uams.dbmi.rts.time.TemporalReference;
@@ -19,10 +20,24 @@ public class PtoPTemplate extends RtsTemplate {
 	
 	private RelationshipComponent relationshipComponent;
 	private TemporalComponent temporalComponent;
+	private ParticularComponent<ParticularReference> particularComponent; 
 	
 	public PtoPTemplate(){
 		this.relationshipComponent = new RelationshipComponent();
 		this.temporalComponent = new TemporalComponent();
+		this.particularComponent = new ParticularComponent<ParticularReference>();
+	}
+	
+	public void setReferent(ParticularReference pr) {
+		particularComponent.addParticular(pr);
+	}
+	
+	public ParticularReference getReferent() {
+		return particularComponent.getParticular();
+	}
+	
+	public List<ParticularReference> getAllParticulars() {
+		return particularComponent.getParticulars();
 	}
 
 	/**
@@ -93,28 +108,20 @@ public class PtoPTemplate extends RtsTemplate {
 		this.temporalComponent.setTemporalReference(tr);
 	}
 	
-	public void addParticular(Iui particular){
+	public void addParticular(ParticularReference particular){
 		this.particularComponent.addParticular(particular);
 	}
 	
-	public void setParticular(int index, Iui particular){
+	public void setParticular(int index, ParticularReference particular){
 		this.particularComponent.setParticular(index, particular);
 	}
 	
-	public List<Iui> getParticulars(){
-		return this.particularComponent.getParticulars();
-	}
-	
-	public void setParticulars(List<Iui> particulars){
-		this.particularComponent.setParticulars(particulars);
+	public void setParticulars(List<ParticularReference> particulars){
+		this.particularComponent.addAllParticulars(particulars);
 	}
 	
 	public void clearParticulars(){
 		this.particularComponent.clearParticulars();
-	}
-	
-	public void addAllParticulars(Collection<Iui> particulars){
-		this.particularComponent.addAllParticulars(particulars);
 	}
 	
 	@Override
@@ -134,10 +141,13 @@ public class PtoPTemplate extends RtsTemplate {
 		builder.append(this.getAuthorIui());
 		builder.append(", ");
 		
-		builder.append(this.getAuthoringTimeIui());
+		//builder.append(this.getAuthoringTimeIui());
+		//builder.append(", ");
+		
+		builder.append(this.getAuthoringTimeReference());
 		builder.append(", ");
 		
-		builder.append(this.getReferentIui());
+		builder.append(this.getReferent());
 		builder.append(", ");
 
 		builder.append(this.getRelationshipURI());
@@ -147,9 +157,9 @@ public class PtoPTemplate extends RtsTemplate {
 		builder.append(", ");
 		
 		builder.append("(");
-		Iterator<Iui> p = this.getParticulars().iterator();
+		Iterator<ParticularReference> p = this.getAllParticulars().iterator();
 		while(p.hasNext()) {
-			builder.append(p.next());
+			builder.append(p.next().toString());
 			builder.append(", ");
 		}
 		builder.setLength(builder.length()-2);

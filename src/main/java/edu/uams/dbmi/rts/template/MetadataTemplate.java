@@ -7,6 +7,7 @@ import edu.uams.dbmi.rts.metadata.RtsChangeType;
 import edu.uams.dbmi.rts.metadata.RtsChangeReason;
 import edu.uams.dbmi.rts.metadata.RtsErrorCode;
 import edu.uams.dbmi.rts.template.component.MetadataComponent;
+import edu.uams.dbmi.rts.template.component.ParticularComponent;
 import edu.uams.dbmi.util.iso8601.Iso8601DateTime;
 import edu.uams.dbmi.util.iso8601.Iso8601DateTimeFormatter;
 import edu.uams.dbmi.rts.iui.Iui;
@@ -38,9 +39,23 @@ public class MetadataTemplate extends RtsTemplate {
 	 *  	associated template.
 	 */
 	MetadataComponent metadataComponent;
+	
+	ParticularComponent<Iui> particularComponent;
 
 	public MetadataTemplate() {
 		this.metadataComponent = new MetadataComponent();
+		this.particularComponent = new ParticularComponent<Iui>();
+	}
+	
+	public void setReferent(Iui iui) {
+		if (particularComponent.isEmpty()) {
+			particularComponent.addParticular(iui);
+		} else
+			throw new IllegalStateException("the iui of the template to which this metadata template refers is already set.");
+	}
+	
+	public Iui getReferent() {
+		return particularComponent.getParticular();
 	}
 
 	/**
@@ -122,7 +137,7 @@ public class MetadataTemplate extends RtsTemplate {
 		builder.append(formatter.format(this.getAuthoringTimestamp()));  // td
 		builder.append(", ");
 
-		builder.append(this.getReferentIui());  // iuit
+		builder.append(this.getReferent());  // iuit
 		builder.append(", ");
 
 		builder.append(this.getChangeType());  // CT

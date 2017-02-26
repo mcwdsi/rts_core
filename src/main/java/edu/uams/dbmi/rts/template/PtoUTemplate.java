@@ -3,6 +3,7 @@ package edu.uams.dbmi.rts.template;
 import java.net.URI;
 
 import edu.uams.dbmi.rts.iui.Iui;
+import edu.uams.dbmi.rts.template.component.ParticularComponent;
 import edu.uams.dbmi.rts.template.component.RelationshipComponent;
 import edu.uams.dbmi.rts.template.component.TemporalComponent;
 import edu.uams.dbmi.rts.template.component.UniversalComponent;
@@ -19,11 +20,24 @@ public class PtoUTemplate extends RtsTemplate {
 	private RelationshipComponent relationshipComponent;
 	private UniversalComponent universalComponent;
 	private TemporalComponent temporalComponent;
+	private ParticularComponent<Iui> particularComponent;
 	
 	public PtoUTemplate(){
 		this.relationshipComponent = new RelationshipComponent();
 		this.universalComponent = new UniversalComponent();
 		this.temporalComponent = new TemporalComponent();
+		this.particularComponent = new ParticularComponent<Iui>();
+	}
+	
+	public void setReferent(Iui iui) {
+		if (particularComponent.isEmpty()) {
+			particularComponent.addParticular(iui);
+		} else 
+			throw new IllegalStateException("the referent of this PtoU template has been set already.");
+	}
+	
+	public Iui getReferent() {
+		return particularComponent.getParticular();
 	}
 
 	/**
@@ -126,10 +140,13 @@ public class PtoUTemplate extends RtsTemplate {
 		builder.append(this.getAuthorIui());
 		builder.append(", ");
 		
-		builder.append(this.getAuthoringTimeIui());
+		//builder.append(this.getAuthoringTimeIui());
+		//builder.append(", ");
+		
+		builder.append(this.getAuthoringTimeReference());
 		builder.append(", ");
 		
-		builder.append(this.getReferentIui());
+		builder.append(this.getReferent());
 		builder.append(", ");
 		
 		builder.append(this.getRelationshipURI());

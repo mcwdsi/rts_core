@@ -5,13 +5,17 @@ import java.util.GregorianCalendar;
 import java.util.TimeZone;
 import java.util.UUID;
 
+import edu.uams.dbmi.rts.ParticularReference;
 import edu.uams.dbmi.rts.iui.Iui;
 import edu.uams.dbmi.rts.uui.Uui;
 import edu.uams.dbmi.util.iso8601.Iso8601Date;
 import edu.uams.dbmi.util.iso8601.Iso8601DateFormatter;
 import edu.uams.dbmi.util.iso8601.Iso8601DateTime;
 import edu.uams.dbmi.util.iso8601.Iso8601DateTimeFormatter;
+import edu.uams.dbmi.util.iso8601.Iso8601Time;
 import edu.uams.dbmi.util.iso8601.Iso8601TimeZoneFormatter;
+import edu.uams.dbmi.util.iso8601.Iso8601UnitTime;
+import edu.uams.dbmi.util.iso8601.TimeUnit;
 import edu.uams.dbmi.util.iso8601.Iso8601Date.DateConfiguration;
 
 /**
@@ -46,7 +50,7 @@ import edu.uams.dbmi.util.iso8601.Iso8601Date.DateConfiguration;
  * 
  * 
  */
-public class TemporalReference {
+public class TemporalReference extends ParticularReference {
 	String identifier;
 	boolean isIso;
 	Iui calendarSystemIui;
@@ -54,6 +58,11 @@ public class TemporalReference {
 	
 	public static Uui ZERO_D_REGION_TYPE = new Uui("http://purl.obolibrary.org/obo/BFO_0000148");
 	public static Uui ONE_D_REGION_TYPE = new Uui("http://purl.obolibrary.org/obo/BFO_0000038");
+	
+	public static TemporalReference MAX_TEMPORAL_REGION = new TemporalReference(
+					UUID.fromString("26F1052B-311D-43B1-9ABC-B4E2EDD1B283"), 
+						TemporalReference.ONE_D_REGION_TYPE);
+	
 	
 	/**
 	 * Get a temporal reference to the 24 hour period denoted by today's date, 
@@ -95,7 +104,7 @@ public class TemporalReference {
 	public TemporalReference(Iso8601DateTime dateTime) {
 		//regardless of whether time zone is specified, when we ask
 		//  the date/time object for a Calendar object, it comes 
-		//  with one (if not specified, it's the local one.
+		//  with one (if not specified, it's the local one).
 		Calendar c = dateTime.getCalendar();
 		GregorianCalendar cZ = (GregorianCalendar)Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 		cZ.setTimeInMillis(c.getTimeInMillis());
@@ -106,6 +115,15 @@ public class TemporalReference {
 		
 		isIso = true;
 		calendarSystemIui = Iui.createFromString("D4AF5C9A-47BA-4BF4-9BAE-F13A8ED6455E");
+		Iso8601Time t = dateTime.getTime();
+		type = ONE_D_REGION_TYPE;
+		if (t instanceof Iso8601UnitTime) {
+			Iso8601UnitTime ut = (Iso8601UnitTime)t;
+			if (ut.getUnit().equals(TimeUnit.MILLISECOND) || 
+					ut.getUnit().equals(TimeUnit.NANOSECOND) ||
+					ut.getUnit().equals(TimeUnit.MICROSECOND))
+				type = ZERO_D_REGION_TYPE;
+		}
 	}
 	
 	public TemporalReference(Iso8601DateTime dateTime, TimeZone tz) {
@@ -145,6 +163,15 @@ public class TemporalReference {
 				
 		isIso = true;
 		calendarSystemIui = Iui.createFromString("D4AF5C9A-47BA-4BF4-9BAE-F13A8ED6455E");
+		type = ONE_D_REGION_TYPE;
+		Iso8601Time t = dateTime.getTime();
+		if (t instanceof Iso8601UnitTime) {
+			Iso8601UnitTime ut = (Iso8601UnitTime)t;
+			if (ut.getUnit().equals(TimeUnit.MILLISECOND) || 
+					ut.getUnit().equals(TimeUnit.NANOSECOND) ||
+					ut.getUnit().equals(TimeUnit.MICROSECOND))
+				type = ZERO_D_REGION_TYPE;
+		}
 	}
 	
 	public TemporalReference(Uui type) {
@@ -165,6 +192,12 @@ public class TemporalReference {
 		//DB2282A4-631F-4D2C-940F-A220C496F6BE refers to general RTS temporal reference
 		calendarSystemIui = Iui.createFromString("DB2282A4-631F-4D2C-940F-A220C496F6BE");
 		this.type = type;
+	}
+	
+	public TemporalReference(UUID id, Uui type) {
+		this.identifier = id.toString();
+		this.type = type;
+		calendarSystemIui = Iui.createFromString("DB2282A4-631F-4D2C-940F-A220C496F6BE");
 	}
 	
 	public String getIdentifier() {

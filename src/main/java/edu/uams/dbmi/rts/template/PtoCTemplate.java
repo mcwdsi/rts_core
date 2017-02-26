@@ -3,6 +3,7 @@ package edu.uams.dbmi.rts.template;
 import edu.uams.dbmi.rts.cui.Cui;
 import edu.uams.dbmi.rts.iui.Iui;
 import edu.uams.dbmi.rts.template.component.ConceptComponent;
+import edu.uams.dbmi.rts.template.component.ParticularComponent;
 import edu.uams.dbmi.rts.template.component.TemporalComponent;
 import edu.uams.dbmi.rts.time.TemporalReference;
 
@@ -10,10 +11,23 @@ public class PtoCTemplate extends RtsTemplate {
 	
 	private ConceptComponent conceptComponent;
 	private TemporalComponent temporalComponent;
+	private ParticularComponent<Iui> particularComponent;
 	
 	public PtoCTemplate() {
 		this.conceptComponent = new ConceptComponent();
 		this.temporalComponent = new TemporalComponent();
+		this.particularComponent = new ParticularComponent<Iui>();
+	}
+	
+	public void setReferent(Iui iui) {
+		if (particularComponent.isEmpty()) {
+			particularComponent.addParticular(iui);
+		} else
+			throw new IllegalStateException("the referent iui of this template has been set already.");
+	}
+	
+	public Iui getReferent() {
+		return particularComponent.getParticular();
 	}
 	
 	/**
@@ -100,10 +114,13 @@ public class PtoCTemplate extends RtsTemplate {
 		builder.append(this.getAuthorIui());
 		builder.append(", ");
 		
-		builder.append(this.getAuthoringTimeIui());
+		//builder.append(this.getAuthoringTimeIui());
+		//builder.append(", ");
+		
+		builder.append(this.getAuthoringTimeReference());
 		builder.append(", ");
 		
-		builder.append(this.getReferentIui());
+		builder.append(this.getReferent());
 		builder.append(", ");
 		
 		builder.append(this.getConceptCui());

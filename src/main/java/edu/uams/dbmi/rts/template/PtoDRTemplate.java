@@ -96,7 +96,7 @@ public class PtoDRTemplate extends RtsTemplate {
 		builder.append(this.getAuthoringTimeIui());
 		builder.append(", ");
 		
-		builder.append(this.getReferentIui());
+		//builder.append(this.getReferent());
 		builder.append(", ");
 
 		builder.append(this.getData());
