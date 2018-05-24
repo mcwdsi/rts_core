@@ -56,7 +56,12 @@ public abstract class RtsTemplate {
 		return false;
 	}
 	
+	@Deprecated
 	public boolean isPtoDRTemplate() {
+		return false;
+	}
+	
+	public boolean isPtoDETemplate() {
 		return false;
 	}
 	
@@ -72,10 +77,12 @@ public abstract class RtsTemplate {
 		return false;
 	}
 	
+	@Deprecated
 	public boolean isTenTemplate() {
 		return false;
 	}
 	
+	@Deprecated
 	public boolean isTeTemplate() {
 		return false;
 	}

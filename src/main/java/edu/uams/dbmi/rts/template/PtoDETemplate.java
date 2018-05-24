@@ -122,7 +122,7 @@ public class PtoDETemplate extends RtsTemplate {
 	}
 	
 	@Override
-	public boolean isPtoDRTemplate(){
+	public boolean isPtoDETemplate() {
 		return true;
 	}
 	

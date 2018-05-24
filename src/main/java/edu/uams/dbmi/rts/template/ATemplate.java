@@ -21,7 +21,7 @@ public class ATemplate extends RtsTemplate {
 		particularComponent = new ParticularComponent<Iui>();
 	}
 	
-	public Iso8601DateTime getAuthoringTimestamp(){
+	public Iso8601DateTime getAuthoringTimestamp() {
 		return authoringComponent.getAuthoringTimestamp();
 	}
 	
