@@ -31,7 +31,7 @@ public class TemplateFactory {
 		ATemplate template = this.createATemplate();
 		template.setAuthoringTimestamp(timestamp);
 		template.setAuthorIui(authorIui);
-		template.setReferent(referentIui);
+		template.setReferentIui(referentIui);
 		return template;
 	}
 
@@ -55,7 +55,7 @@ public class TemplateFactory {
 		template.setAuthorIui(authorIui);
 
 		// setting the referent iui
-		template.setReferent(referentIui);
+		template.setReferentIui(referentIui);
 
 		// setting the relationship URI
 		template.setRelationshipURI(relationshipURI);
@@ -128,7 +128,7 @@ public class TemplateFactory {
 		template.setAuthorIui(authorIui);
 
 		// setting the referent iui
-		template.setReferent(referentIui);
+		template.setReferentIui(referentIui);
 
 		// setting the relationship URI
 		template.setRelationshipURI(relationshipURI);

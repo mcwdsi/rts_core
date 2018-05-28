@@ -19,14 +19,14 @@ public class PtoCTemplate extends RtsTemplate {
 		this.particularComponent = new ParticularComponent<Iui>();
 	}
 	
-	public void setReferent(Iui iui) {
+	public void setReferentIui(Iui iui) {
 		if (particularComponent.isEmpty()) {
 			particularComponent.addParticular(iui);
 		} else
 			throw new IllegalStateException("the referent iui of this template has been set already.");
 	}
 	
-	public Iui getReferent() {
+	public Iui getReferentIui() {
 		return particularComponent.getParticular();
 	}
 	
@@ -120,7 +120,7 @@ public class PtoCTemplate extends RtsTemplate {
 		builder.append(this.getAuthoringTimeReference());
 		builder.append(", ");
 		
-		builder.append(this.getReferent());
+		builder.append(this.getReferentIui());
 		builder.append(", ");
 		
 		builder.append(this.getConceptCui());

@@ -2,6 +2,7 @@ package edu.ufl.ctsi.rts.text;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -61,7 +62,7 @@ public class TemplateTextWriter {
 	private void writeATemplate(RtsTemplate rtt) throws IOException {
 		ATemplate rtta = (ATemplate)rtt;
 		
-		w.write(rtta.getReferent().toString());
+		w.write(rtta.getReferentIui().toString());
 		w.write(FIELD_DELIM);
 		w.write(formatter.format(rtta.getAuthoringTimestamp()));
 		w.write(FIELD_DELIM);
@@ -119,7 +120,7 @@ public class TemplateTextWriter {
 		w.write(FIELD_DELIM);
 		w.write(rttc.getConceptSystemIui().toString());
 		w.write(FIELD_DELIM);
-		w.write(rttc.getReferent().toString());
+		w.write(rttc.getReferentIui().toString());
 		w.write(FIELD_DELIM);
 		w.write(rttc.getConceptCui().toString());
 		w.write(FIELD_DELIM);
@@ -148,7 +149,7 @@ public class TemplateTextWriter {
 		w.write(FIELD_DELIM);
 		w.write(rttl.getRelationshipOntologyIui().toString());
 		w.write(FIELD_DELIM);
-		w.write(rttl.getReferent().toString());
+		w.write(rttl.getReferentIui().toString());
 		w.write(FIELD_DELIM);
 		w.write('<');
 		w.write(rttl.getUniversalUui().toString());
@@ -205,7 +206,7 @@ public class TemplateTextWriter {
 		w.write(FIELD_DELIM);
 		w.write(rttu.getRelationshipOntologyIui().toString());
 		w.write(FIELD_DELIM);
-		w.write(rttu.getReferent().toString());
+		w.write(rttu.getReferentIui().toString());
 		w.write(FIELD_DELIM);
 		w.write('<');
 		w.write(rttu.getUniversalUui().toString());
@@ -224,5 +225,63 @@ public class TemplateTextWriter {
 		w.write(FIELD_DELIM);
 		w.write(rtte.getAuthoringTimeReference().getIdentifier());
 		w.write(FIELD_DELIM);
+		w.write('<');
+		w.write(rtte.getRelationshipURI().toString());
+		w.write('>');
+		w.write(FIELD_DELIM);
+		w.write(rtte.getRelationshipOntologyIui().toString());
+		w.write(FIELD_DELIM);
+		ParticularReference pr = rtte.getReferent();
+		if (pr instanceof Iui)
+			w.write(rtte.getReferent().toString());
+		else if (pr instanceof TemporalReference) {
+			TemporalReference tr = (TemporalReference)pr;
+			w.write(tr.getIdentifier());
+		} else
+			throw new RuntimeException("Uknown kind of particular reference" + pr.getClass());
+		w.write(FIELD_DELIM);
+		w.write('<');
+		w.write(rtte.getDatatypeUui().toString());
+		w.write('>');
+		w.write(FIELD_DELIM);
+		w.write(rtte.getDatatypeOntologyIui().toString());
+		w.write(FIELD_DELIM);
+		w.write(rtte.getNamingSystem().toString());
+		w.write(FIELD_DELIM);
+		/* Not a long term solution.  Right now all data are Java UTF-8 strings.  So this line
+		 	of code will break with any kind of data other than UTF-8 encoded String.  On the other hand, 
+		 	we really only need to escape String data.  So other types of encoded Strings will also 
+		 	require escaping
+		 */
+		System.out.println(Charset.defaultCharset());
+		System.out.println(Charset.defaultCharset().name());
+		System.out.println(Charset.defaultCharset().displayName());
+		String data = new String(rtte.getData());
+		String dataForWriting = escapeData(data);
+		w.write(dataForWriting);
+	}
+	
+	public String escapeData(String data) {
+		StringBuffer sb = new StringBuffer();
+		for (char c : data.toCharArray()) {
+			if (c == FIELD_DELIM || c == BLOCK_DELIM || c == TEMPLATE_DELIM) {
+				sb.append(ESCAPE);
+			}
+			sb.append(c);
+		}
+		return sb.toString();
+	}
+	
+	public void writeTemporalReference(TemporalReference tr) throws IOException {
+		w.write("T");
+		w.write(FIELD_DELIM);
+		w.write(tr.getIdentifier());
+		w.write(FIELD_DELIM);
+		w.write('<');
+		w.write(tr.getTemporalType().toString());
+		w.write('>');
+		w.write(FIELD_DELIM);
+		w.write(tr.getCalendarSystemIui().toString());
+		w.write(TEMPLATE_DELIM);
 	}
 }

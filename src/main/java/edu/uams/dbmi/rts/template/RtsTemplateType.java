@@ -5,11 +5,14 @@ public enum RtsTemplateType {
 	ATEMPLATE(ATemplate.class),
 	METADATATEMPLATE(MetadataTemplate.class),
 	PTODETEMPLATE(PtoDETemplate.class),
-	PTOLACKUTEMPLATE(PtoDETemplate.class),
+	PTOLACKUTEMPLATE(PtoLackUTemplate.class),
 	PTOPTEMPLATE(PtoPTemplate.class),
-	PTOUTEMPLATE(PtoDETemplate.class),
-	TENTEMPLATE(PtoDETemplate.class),
-	TETEMPLATE(PtoDETemplate.class);
+	PTOUTEMPLATE(PtoUTemplate.class),
+	PTOCTEMPLATE(PtoCTemplate.class),
+	@Deprecated
+	TENTEMPLATE(TenTemplate.class),
+	@Deprecated
+	TETEMPLATE(TenTemplate.class);
 	
 	Class<?> type;
 	

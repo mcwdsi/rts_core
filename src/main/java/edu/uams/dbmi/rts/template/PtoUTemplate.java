@@ -29,14 +29,14 @@ public class PtoUTemplate extends RtsTemplate {
 		this.particularComponent = new ParticularComponent<Iui>();
 	}
 	
-	public void setReferent(Iui iui) {
+	public void setReferentIui(Iui iui) {
 		if (particularComponent.isEmpty()) {
 			particularComponent.addParticular(iui);
 		} else 
 			throw new IllegalStateException("the referent of this PtoU template has been set already.");
 	}
 	
-	public Iui getReferent() {
+	public Iui getReferentIui() {
 		return particularComponent.getParticular();
 	}
 
@@ -146,7 +146,7 @@ public class PtoUTemplate extends RtsTemplate {
 		builder.append(this.getAuthoringTimeReference());
 		builder.append(", ");
 		
-		builder.append(this.getReferent());
+		builder.append(this.getReferentIui());
 		builder.append(", ");
 		
 		builder.append(this.getRelationshipURI());

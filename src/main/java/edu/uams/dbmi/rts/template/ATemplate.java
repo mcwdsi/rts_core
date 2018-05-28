@@ -34,14 +34,14 @@ public class ATemplate extends RtsTemplate {
 		return true;
 	}
 	
-	public void setReferent(Iui iui) {
+	public void setReferentIui(Iui iui) {
 		if (particularComponent.isEmpty())
 			particularComponent.addParticular(iui);
 		else 
 			throw new IllegalStateException("particular for this ATemplate has been set already");
 	}
 	
-	public Iui getReferent() {
+	public Iui getReferentIui() {
 		return particularComponent.getParticular();
 	}
 
@@ -61,7 +61,7 @@ public class ATemplate extends RtsTemplate {
 		builder.append(formatter.format(this.getAuthoringTimestamp()));
 		builder.append(", ");
 		
-		builder.append(this.getReferent());
+		builder.append(this.getReferentIui());
 		
 		builder.append(" >");
 		
