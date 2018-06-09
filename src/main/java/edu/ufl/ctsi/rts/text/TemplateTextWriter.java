@@ -26,6 +26,8 @@ public class TemplateTextWriter {
 	public static char BLOCK_DELIM = '~';
 	public static char ESCAPE = '\\';
 	public static char TEMPLATE_DELIM = '\n';
+	public static char QUOTE_OPEN = '<';
+	public static char QUOTE_CLOSE = '>';
 	
 	protected Writer w;
 	
@@ -264,7 +266,10 @@ public class TemplateTextWriter {
 	public String escapeData(String data) {
 		StringBuffer sb = new StringBuffer();
 		for (char c : data.toCharArray()) {
-			if (c == FIELD_DELIM || c == BLOCK_DELIM || c == TEMPLATE_DELIM) {
+			if (c == FIELD_DELIM || c == BLOCK_DELIM 
+					|| c == TEMPLATE_DELIM || c == SUBFIELD_DELIM 
+					|| c == QUOTE_OPEN || c == QUOTE_CLOSE
+					|| c == ESCAPE ) {
 				sb.append(ESCAPE);
 			}
 			sb.append(c);
@@ -274,7 +279,7 @@ public class TemplateTextWriter {
 	
 	public void writeTemporalReference(TemporalReference tr) throws IOException {
 		w.write("T");
-		w.write(FIELD_DELIM);
+		w.write(BLOCK_DELIM);
 		w.write(tr.getIdentifier());
 		w.write(FIELD_DELIM);
 		w.write('<');
