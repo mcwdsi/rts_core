@@ -64,11 +64,11 @@ public class TemplateTextWriter {
 	private void writeATemplate(RtsTemplate rtt) throws IOException {
 		ATemplate rtta = (ATemplate)rtt;
 		
-		w.write(rtta.getReferentIui().toString());
+		w.write(rtta.getAuthorIui().toString());
 		w.write(FIELD_DELIM);
 		w.write(formatter.format(rtta.getAuthoringTimestamp()));
 		w.write(FIELD_DELIM);
-		w.write(rtta.getAuthorIui().toString());
+		w.write(rtta.getReferentIui().toString());
 	}
 
 	private void writeDTemplate(RtsTemplate rtt) throws IOException {
