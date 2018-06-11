@@ -262,8 +262,10 @@ public class TemplateTextParser {
 	}
 
 	private void populateATemplate(ATemplate t, List<String> contentFields) {
+		// set the referent IUI - IUIp
 		t.setReferentIui(Iui.createFromString(contentFields.get(2)));
 		try {
+			//set the authoring timestamp - ta
 			t.setAuthoringTimestamp(dt_parser.parse(contentFields.get(1)));
 		} catch (Iso8601DateParseException e) {
 			e.printStackTrace();
