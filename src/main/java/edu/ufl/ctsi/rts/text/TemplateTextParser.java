@@ -2,6 +2,7 @@ package edu.ufl.ctsi.rts.text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.net.URI;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -17,6 +18,8 @@ import edu.uams.dbmi.rts.template.PtoPTemplate;
 import edu.uams.dbmi.rts.template.PtoUTemplate;
 import edu.uams.dbmi.rts.template.RtsTemplate;
 import edu.uams.dbmi.rts.time.TemporalReference;
+import edu.uams.dbmi.rts.time.TemporalRegion;
+import edu.uams.dbmi.rts.uui.Uui;
 import edu.uams.dbmi.util.iso8601.Iso8601DateParseException;
 import edu.uams.dbmi.util.iso8601.Iso8601DateTimeParser;
 import edu.uams.dbmi.util.iso8601.Iso8601TimeParseException;
@@ -26,14 +29,14 @@ public class TemplateTextParser {
 	protected BufferedReader r;
 	
 	HashSet<RtsTemplate> templates;
-	HashSet<TemporalReference> temporalReferences;
+	HashSet<TemporalRegion> temporalReferences;
 	
 	protected Iso8601DateTimeParser dt_parser;
 	
 	public TemplateTextParser(BufferedReader r) {
 		this.r = r;
 		templates = new HashSet<RtsTemplate>();
-		temporalReferences = new HashSet<TemporalReference>();
+		temporalReferences = new HashSet<TemporalRegion>();
 		
 		dt_parser = new Iso8601DateTimeParser();
 	}
@@ -107,7 +110,7 @@ public class TemplateTextParser {
 				TemplateTextWriter.QUOTE_OPEN,
 				TemplateTextWriter.QUOTE_CLOSE,
 				TemplateTextWriter.ESCAPE);
-		System.out.println("There are " + blocks.size() + " blocks.");
+	
 		if (blocks.size() != 2) System.err.println("INCORRECT NUMBER OF BLOCKS!!! " + blocks.size());
 		
 		String templateBlock = blocks.get(0);
@@ -127,7 +130,7 @@ public class TemplateTextParser {
 		
 		String tupleType = templateFields.get(0);
 		RtsTemplate template = null;
-		TemporalReference temporalReference = null;
+		TemporalRegion temporalReference = null;
 		if (tupleType.equals("A")) {
 			template = new ATemplate();		
 		} else if (tupleType.equals("U")) {
@@ -153,57 +156,6 @@ public class TemplateTextParser {
 			template.setAuthorIui(Iui.createFromString(contentFields.get(0)));
 			populateTemplate(template, contentFields);
 		}
-		
-		for (String s : blocks) {
-			//System.out.println("\t" + s);
-			List<String> tupleElements = splitDelimitedQuotedAndEscapedText(s, 
-					TemplateTextWriter.FIELD_DELIM,
-					TemplateTextWriter.QUOTE_OPEN,
-					TemplateTextWriter.QUOTE_CLOSE,
-					TemplateTextWriter.ESCAPE);
-			System.out.println("\tBlock has " + tupleElements.size() + " fields in it.");
-		}
-		/*
-		 * Split on non-escaped template block delimiter and the delimiter
-		 * 	cannot be inside quotes either.
-		 
-		char[] templateChars = templateText.toCharArray();
-		
-		String[] blocks = new String[2];
-		boolean inside_quote = false;
-		char lastChar = '\0';
-		boolean found = false;
-		for (int i=0; i<templateChars.length; i++) {
-			char c = templateChars[i];
-			/*
-			 * We should have only one of these
-			 
-			if (c == TemplateTextWriter.BLOCK_DELIM && lastChar != TemplateTextWriter.ESCAPE
-					&& !inside_quote) {
-				if (!found) {
-					blocks[0] = templateText.substring(0,i);
-					blocks[1] = templateText.substring(i+1);
-					found = true;
-				} else {
-					throw new ParseException("Template text should have only two blocks: " + templateText, i);
-				}
-			} else if (c == TemplateTextWriter.QUOTE_OPEN && lastChar != TemplateTextWriter.ESCAPE) {
-				if (!inside_quote) {
-					inside_quote = true;
-				} else {
-					throw new ParseException("Already inside quote. Cannot open quote." + templateText, i);
-				}
-			} else if (c == TemplateTextWriter.QUOTE_CLOSE && lastChar != TemplateTextWriter.ESCAPE) {
-				if (inside_quote) {
-					inside_quote = false;
-				} else {
-					throw new ParseException("Not inside quote. Cannot close quote." + templateText, i);
-				}
-			}
-			lastChar = c;
-		}
-		System.out.println("BLOCK: " + blocks[0]);
-		*/
 	}
 	
 	protected List<String> splitDelimitedQuotedAndEscapedText(String text, char delim, char openQuote, 
@@ -222,7 +174,10 @@ public class TemplateTextParser {
 			char c = textChars[i];
 
 			if (c == delim && lastChar != escape && !inside_quote) {
-				fragments.add(text.substring(begin,i));  //gets every character up to ith character, but not including it
+				String nextFragment = text.substring(begin,i);
+				if (nextFragment.indexOf(openQuote) == 0) nextFragment = nextFragment.substring(1);
+				if (nextFragment.indexOf(closeQuote) == nextFragment.length()-1) nextFragment = nextFragment.substring(0, nextFragment.length()-1);
+				fragments.add(nextFragment);  //gets every character up to ith character, but not including it
 				begin = i+1;		//skip ith character because it's a delimiter		
 			} else if (c == openQuote && lastChar != escape) {
 				if (!inside_quote) {
@@ -277,6 +232,28 @@ public class TemplateTextParser {
 	private void populatePtoUTemplate(PtoUTemplate t, List<String> contentFields) {
 		// TODO Auto-generated method stub
 		
+		//contentFields.get(1) is ta
+		TemporalReference tr = new TemporalReference(contentFields.get(1), contentFields.get(1).contains("Z"));
+		t.setAuthoringTimeReference(tr);
+		
+		//contentFields.get(2) is r
+		t.setRelationshipURI(URI.create(contentFields.get(2)));
+		
+		//contentFields.get(3) is IUIo for r
+		t.setRelationshipOntologyIui(Iui.createFromString(contentFields.get(3)));
+		
+		//contentFields.get(4) is IUIp
+		t.setReferentIui(Iui.createFromString(contentFields.get(4)));
+		
+		//contentFields.get(5) is UUI 
+		t.setUniversalUui(new Uui(contentFields.get(5)));
+		
+		//contentFields.get(6) is IUIo for UUI
+		t.setUniversalOntologyIui(Iui.createFromString(contentFields.get(6)));
+		
+		//contentFields.get(7) is tr
+		t.setTemporalReference(new TemporalReference(contentFields.get(7), contentFields.get(7).contains("Z")));
+
 	}
 
 	private void populatePtoPTemplate(PtoPTemplate t, List<String> contentFields) {

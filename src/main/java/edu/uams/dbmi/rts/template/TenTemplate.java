@@ -131,7 +131,7 @@ public class TenTemplate extends RtsTemplate {
 
 		//builder.append(this.getTemporalEntityIui());
 		
-		builder.append(this.temporalEntityReference.getTemporalReference().getIdentifier());
+		builder.append(this.temporalEntityReference.getTemporalReference().toString());
 
 		builder.append(" >");
 

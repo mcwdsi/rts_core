@@ -17,6 +17,7 @@ import edu.uams.dbmi.rts.template.PtoPTemplate;
 import edu.uams.dbmi.rts.template.PtoUTemplate;
 import edu.uams.dbmi.rts.template.RtsTemplate;
 import edu.uams.dbmi.rts.time.TemporalReference;
+import edu.uams.dbmi.rts.time.TemporalRegion;
 import edu.uams.dbmi.util.iso8601.Iso8601DateTimeFormatter;
 
 public class TemplateTextWriter {
@@ -118,7 +119,7 @@ public class TemplateTextWriter {
 
 		w.write(rttc.getAuthorIui().toString());
 		w.write(FIELD_DELIM);
-		w.write(rttc.getAuthoringTimeReference().getIdentifier());
+		w.write(rttc.getAuthoringTimeReference().toString());
 		w.write(FIELD_DELIM);
 		w.write(rttc.getConceptSystemIui().toString());
 		w.write(FIELD_DELIM);
@@ -126,7 +127,7 @@ public class TemplateTextWriter {
 		w.write(FIELD_DELIM);
 		w.write(rttc.getConceptCui().toString());
 		w.write(FIELD_DELIM);
-		w.write(rttc.getTemporalReference().getIdentifier());
+		w.write(rttc.getTemporalReference().toString());
 
 	}
 
@@ -143,7 +144,7 @@ public class TemplateTextWriter {
 		
 		w.write(rttl.getAuthorIui().toString());
 		w.write(FIELD_DELIM);
-		w.write(rttl.getAuthoringTimeReference().getIdentifier());
+		w.write(rttl.getAuthoringTimeReference().toString());
 		w.write(FIELD_DELIM);
 		w.write('<');
 		w.write(rttl.getRelationshipURI().toString());
@@ -159,7 +160,7 @@ public class TemplateTextWriter {
 		w.write(FIELD_DELIM);
 		w.write(rttl.getUniversalOntologyIui().toString());
 		w.write(FIELD_DELIM);
-		w.write(rttl.getTemporalReference().getIdentifier());
+		w.write(rttl.getTemporalReference().toString());
 	}
 
 	private void writePtoPTemplate(RtsTemplate rtt) throws IOException {
@@ -168,7 +169,7 @@ public class TemplateTextWriter {
 		
 		w.write(rttp.getAuthorIui().toString());
 		w.write(FIELD_DELIM);
-		w.write(rttp.getAuthoringTimeReference().getIdentifier());
+		w.write(rttp.getAuthoringTimeReference().toString());
 		w.write(FIELD_DELIM);
 		w.write('<');
 		w.write(rttp.getRelationshipURI().toString());
@@ -184,14 +185,14 @@ public class TemplateTextWriter {
 				w.write(iui.toString());
 			} else if (pr instanceof TemporalReference) {
 				TemporalReference tr = (TemporalReference)pr;
-				w.write(tr.getIdentifier());
+				w.write(tr.toString());
 			} else {
 				throw new RuntimeException("Bad particular reference.");
 			}
 			if (iuis.hasNext()) w.write(SUBFIELD_DELIM);
 		}
 		w.write(FIELD_DELIM);
-		w.write(rttp.getTemporalReference().getIdentifier());
+		w.write(rttp.getTemporalReference().toString());
 	}
 
 	private void writePtoUTemplate(RtsTemplate rtt) throws IOException {
@@ -200,7 +201,7 @@ public class TemplateTextWriter {
 		
 		w.write(rttu.getAuthorIui().toString());
 		w.write(FIELD_DELIM);
-		w.write(rttu.getAuthoringTimeReference().getIdentifier());
+		w.write(rttu.getAuthoringTimeReference().toString());
 		w.write(FIELD_DELIM);
 		w.write('<');
 		w.write(rttu.getRelationshipURI().toString());
@@ -216,7 +217,7 @@ public class TemplateTextWriter {
 		w.write(FIELD_DELIM);
 		w.write(rttu.getUniversalOntologyIui().toString());
 		w.write(FIELD_DELIM);
-		w.write(rttu.getTemporalReference().getIdentifier());
+		w.write(rttu.getTemporalReference().toString());
 	}
 
 	private void writePtoDETemplate(RtsTemplate rtt) throws IOException {
@@ -225,7 +226,7 @@ public class TemplateTextWriter {
 		
 		w.write(rtte.getAuthorIui().toString());
 		w.write(FIELD_DELIM);
-		w.write(rtte.getAuthoringTimeReference().getIdentifier());
+		w.write(rtte.getAuthoringTimeReference().toString());
 		w.write(FIELD_DELIM);
 		w.write('<');
 		w.write(rtte.getRelationshipURI().toString());
@@ -238,7 +239,7 @@ public class TemplateTextWriter {
 			w.write(rtte.getReferent().toString());
 		else if (pr instanceof TemporalReference) {
 			TemporalReference tr = (TemporalReference)pr;
-			w.write(tr.getIdentifier());
+			w.write(tr.toString());
 		} else
 			throw new RuntimeException("Uknown kind of particular reference" + pr.getClass());
 		w.write(FIELD_DELIM);
@@ -277,10 +278,10 @@ public class TemplateTextWriter {
 		return sb.toString();
 	}
 	
-	public void writeTemporalReference(TemporalReference tr) throws IOException {
+	public void writeTemporalRegion(TemporalRegion tr) throws IOException {
 		w.write("T");
 		w.write(BLOCK_DELIM);
-		w.write(tr.getIdentifier());
+		w.write(tr.getTemporalRefeence().toString());
 		w.write(FIELD_DELIM);
 		w.write('<');
 		w.write(tr.getTemporalType().toString());

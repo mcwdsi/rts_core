@@ -20,28 +20,28 @@ public class TemporalReferenceTest extends TestCase {
 		public void testUtcIdentifierForDate() {
 			Iso8601Date d = new Iso8601Date(DateConfiguration.YEAR_MONTH_DAY, 2016, 12, 1);
 			TemporalReference tr = new TemporalReference(d, TimeZone.getTimeZone("UTC"));
-			assertEquals(tr.getIdentifier(), "2016-12-01_Z");
+			assertEquals(tr.toString(), "2016-12-01_Z");
 		}
 		
 		@Test
 		public void testUtcIdentifierForMonth() {
 			Iso8601Date d = new Iso8601Date(DateConfiguration.YEAR_MONTH, 2016, 12);
 			TemporalReference tr = new TemporalReference(d, TimeZone.getTimeZone("UTC"));
-			assertEquals(tr.getIdentifier(), "2016-12_Z");
+			assertEquals(tr.toString(), "2016-12_Z");
 		}
 		
 		@Test
 		public void testUtcIdentifierForYear() {
 			Iso8601Date d = new Iso8601Date(DateConfiguration.YEAR, 2016);
 			TemporalReference tr = new TemporalReference(d, TimeZone.getTimeZone("UTC"));
-			assertEquals(tr.getIdentifier(), "2016_Z");
+			assertEquals(tr.toString(), "2016_Z");
 		}
 			
 		@Test
 		public void testUtcIdentifierForCentury() {
 			Iso8601Date d = new Iso8601Date(DateConfiguration.CENTURY, 20);
 			TemporalReference tr = new TemporalReference(d, TimeZone.getTimeZone("UTC"));
-			assertEquals(tr.getIdentifier(), "20_Z");
+			assertEquals(tr.toString(), "20_Z");
 		}
 		
 		
@@ -65,6 +65,6 @@ public class TemporalReferenceTest extends TestCase {
 			
 			TemporalReference tr = new TemporalReference(d, tz);
 			
-			assertEquals(comparisonId, tr.getIdentifier());
+			assertEquals(comparisonId, tr.toString());
 		}
 }

@@ -136,7 +136,7 @@ public class TemplateFactory {
 		// setting the ontology where the relationship is defined
 		template.setRelationshipOntologyIui(relationshipOntologyIui);
 
-		// setting the univeral identifier
+		// setting the universal identifier
 		template.setUniversalUui(new Uui(universalUri.toString()));
 
 		// setting the ontology the universal is defined in
