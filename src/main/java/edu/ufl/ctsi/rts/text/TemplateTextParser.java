@@ -7,8 +7,13 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.regex.Pattern;
 
+import edu.uams.dbmi.rts.cui.Cui;
 import edu.uams.dbmi.rts.iui.Iui;
+import edu.uams.dbmi.rts.metadata.RtsChangeReason;
+import edu.uams.dbmi.rts.metadata.RtsChangeType;
+import edu.uams.dbmi.rts.metadata.RtsErrorCode;
 import edu.uams.dbmi.rts.template.ATemplate;
 import edu.uams.dbmi.rts.template.MetadataTemplate;
 import edu.uams.dbmi.rts.template.PtoCTemplate;
@@ -146,7 +151,7 @@ public class TemplateTextParser {
 		} else if (tupleType.equals("D")) {
 			template = new MetadataTemplate();
 		} else if (tupleType.equals("T")) {
-			
+			// TODO
 		} else {
 			throw new RuntimeException("Unrecognized tuple type: " + tupleType);
 		}
@@ -230,7 +235,6 @@ public class TemplateTextParser {
 	}
 
 	private void populatePtoUTemplate(PtoUTemplate t, List<String> contentFields) {
-		// TODO Auto-generated method stub
 		
 		//contentFields.get(1) is ta
 		TemporalReference tr = new TemporalReference(contentFields.get(1), contentFields.get(1).contains("Z"));
@@ -257,27 +261,155 @@ public class TemplateTextParser {
 	}
 
 	private void populatePtoPTemplate(PtoPTemplate t, List<String> contentFields) {
-		// TODO Auto-generated method stub
 		
+		//contentFields.get(1) is ta
+		TemporalReference tr = new TemporalReference(contentFields.get(1), contentFields.get(1).contains("Z"));
+		t.setAuthoringTimeReference(tr);
+		
+		//contentFields.get(2) is r
+		t.setRelationshipURI(URI.create(contentFields.get(2)));
+		
+		//contentFields.get(3) is IUIo for r
+		t.setRelationshipOntologyIui(Iui.createFromString(contentFields.get(3)));
+		
+		//contentFields.get(4) is P
+		String[] prefs = contentFields.get(4).split(Pattern.quote(""+TemplateTextWriter.SUBFIELD_DELIM));
+		for (String pref : prefs) {
+			String[] refInfo = pref.split(Pattern.quote("="));
+			if (refInfo[0].equals("iui")) {
+				Iui iui = Iui.createFromString(refInfo[1]);
+				t.addParticular(iui);
+			} else if (refInfo[0].equals("tref")) {
+				TemporalReference tref = new TemporalReference(refInfo[1], refInfo[1].contains("Z"));
+				t.addParticular(tref);
+			} else {
+				throw new IllegalArgumentException("particular reference type must be 'iui' or 'tref'");
+			}
+		}
+					
+		//contentFields.get(5) is tr
+		t.setTemporalReference(new TemporalReference(contentFields.get(5), contentFields.get(5).contains("Z")));
+
 	}
 
 	private void populatePtoLackUTemplate(PtoLackUTemplate t, List<String> contentFields) {
-		// TODO Auto-generated method stub
+		
+		//contentFields.get(1) is ta
+		TemporalReference tr = new TemporalReference(contentFields.get(1), contentFields.get(1).contains("Z"));
+		t.setAuthoringTimeReference(tr);
+		
+		//contentFields.get(2) is r
+		t.setRelationshipURI(URI.create(contentFields.get(2)));
+		
+		//contentFields.get(3) is IUIo for r
+		t.setRelationshipOntologyIui(Iui.createFromString(contentFields.get(3)));
+		
+		//contentFields.get(4) is IUIp
+		t.setReferentIui(Iui.createFromString(contentFields.get(4)));
+		
+		//contentFields.get(5) is UUI 
+		t.setUniversalUui(new Uui(contentFields.get(5)));
+		
+		//contentFields.get(6) is IUIo for UUI
+		t.setUniversalOntologyIui(Iui.createFromString(contentFields.get(6)));
+		
+		//contentFields.get(7) is tr
+		t.setTemporalReference(new TemporalReference(contentFields.get(7), contentFields.get(7).contains("Z")));
 		
 	}
 
 	private void populatePtoCTemplate(PtoCTemplate t, List<String> contentFields) {
-		// TODO Auto-generated method stub
 		
+		//contentFields.get(1) is ta
+		TemporalReference tr = new TemporalReference(contentFields.get(1), contentFields.get(1).contains("Z"));
+		t.setAuthoringTimeReference(tr);
+		
+		//contentFields.get(2) is IUIc
+		t.setConceptSystemIui(Iui.createFromString(contentFields.get(2)));
+		
+		//contentFields.get(3) is IUIp
+		t.setReferentIui(Iui.createFromString(contentFields.get(3)));
+		
+		//contentFields.get(4) is UUI 
+		t.setConceptCui(new Cui(contentFields.get(4)));
+		
+		//contentFields.get(5) is tr
+		t.setTemporalReference(new TemporalReference(contentFields.get(5), contentFields.get(5).contains("Z")));
 	}
 
 	private void populatePtoDETemplate(PtoDETemplate t, List<String> contentFields) {
-		// TODO Auto-generated method stub
+		
+		//contentFields.get(1) is ta
+		TemporalReference tr = new TemporalReference(contentFields.get(1), contentFields.get(1).contains("Z"));
+		t.setAuthoringTimeReference(tr);
+		
+		//contentFields.get(2) is r
+		t.setRelationshipURI(URI.create(contentFields.get(2)));
+		
+		//contentFields.get(3) is IUIo for r
+		t.setRelationshipOntologyIui(Iui.createFromString(contentFields.get(3)));
+		
+		//contentFields.get(4) is IUIp
+		String[] refInfo = contentFields.get(4).split(Pattern.quote("="));
+		if (refInfo[0].equals("iui")) {
+			Iui iui = Iui.createFromString(refInfo[1]);
+			t.setReferent(iui);
+		} else if (refInfo[0].equals("tref")) {
+			TemporalReference tref = new TemporalReference(refInfo[1], refInfo[1].contains("Z"));
+			t.setReferent(tref);
+		} else {
+			throw new IllegalArgumentException("particular reference type must be 'iui' or 'tref'");
+		}
+		
+		//contentFields.get(5) is datatype UUI 
+		t.setDatatypeUui(new Uui(contentFields.get(5)));
+		
+		//contentFields.get(6) is IUIo for datatype UUI
+		t.setDatatypeOntologyIui(Iui.createFromString(contentFields.get(6)));
+		
+		//contentFields.get(7) is naming system IUI
+		t.setNamingSystem(Iui.createFromString(contentFields.get(7)));
+		
+		//contentFields.get(8) is data
+		t.setData(contentFields.get(8).getBytes());
 		
 	}
 
 	private void populateMetadataTemplate(MetadataTemplate t, List<String> contentFields) {
 		// TODO Auto-generated method stub
 		
+		//contentFields.get(1) is td
+		try {
+			t.setAuthoringTimestamp(dt_parser.parse(contentFields.get(1)));
+		} catch (Iso8601DateParseException | Iso8601TimeParseException e) {
+			e.printStackTrace();
+		}
+		
+		//contentFields.get(2) is template IUI
+		t.setReferent(Iui.createFromString(contentFields.get(2)));
+		
+		//contentFields.get(3) is change type
+		RtsChangeType ct = RtsChangeType.valueOf(contentFields.get(3));
+		t.setChangeType(ct);
+		
+		//contentFields.get(4) is change reason
+		RtsChangeReason cr = RtsChangeReason.valueOf(contentFields.get(4));
+		t.setChangeReason(cr);
+		
+		//contentFields.get(5) is error code
+		RtsErrorCode ec = RtsErrorCode.valueOf(contentFields.get(5));
+		t.setErrorCode(ec);
+		
+		//contentFields.get(6) is list of replacement templates
+		String replTemplateField = contentFields.get(6);
+		if (replTemplateField.length() > 0) {
+			String[] replTemplateIuis = replTemplateField.split(Pattern.quote(""+TemplateTextWriter.SUBFIELD_DELIM));
+			HashSet<Iui> replIuis = new HashSet<Iui>();
+			for (String replTemplateIui : replTemplateIuis) {
+				Iui replIui = Iui.createFromString(replTemplateIui);
+				replIuis.add(replIui);
+			}
+			if (replIuis.size() > 0) t.setReplacementTemplateIuis(replIuis);
+		}
 	}
 }

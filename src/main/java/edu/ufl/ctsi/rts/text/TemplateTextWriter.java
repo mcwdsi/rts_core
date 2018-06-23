@@ -182,10 +182,10 @@ public class TemplateTextWriter {
 			ParticularReference pr = iuis.next();
 			if (pr instanceof Iui) {
 				Iui iui = (Iui)pr;
-				w.write(iui.toString());
+				w.write("iui=" + iui.toString());
 			} else if (pr instanceof TemporalReference) {
 				TemporalReference tr = (TemporalReference)pr;
-				w.write(tr.toString());
+				w.write("tref=" + tr.toString());
 			} else {
 				throw new RuntimeException("Bad particular reference.");
 			}
@@ -236,10 +236,10 @@ public class TemplateTextWriter {
 		w.write(FIELD_DELIM);
 		ParticularReference pr = rtte.getReferent();
 		if (pr instanceof Iui)
-			w.write(rtte.getReferent().toString());
+			w.write("iui=" + rtte.getReferent().toString());
 		else if (pr instanceof TemporalReference) {
 			TemporalReference tr = (TemporalReference)pr;
-			w.write(tr.toString());
+			w.write("tref=" + tr.toString());
 		} else
 			throw new RuntimeException("Uknown kind of particular reference" + pr.getClass());
 		w.write(FIELD_DELIM);
