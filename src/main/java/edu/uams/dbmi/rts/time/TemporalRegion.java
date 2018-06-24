@@ -56,15 +56,32 @@ public class TemporalRegion  {
 	public static Uui ZERO_D_REGION_TYPE = new Uui("http://purl.obolibrary.org/obo/BFO_0000148");
 	public static Uui ONE_D_REGION_TYPE = new Uui("http://purl.obolibrary.org/obo/BFO_0000038");
 	
-	public static TemporalRegion MAX_TEMPORAL_REGION = new TemporalRegion(
+	public static final TemporalRegion MAX_TEMPORAL_REGION;
+	
+	public static final Iui ISO_IUI;
+	public static final Iui RTS_TR_IUI;
+	
+	static {
+		ISO_IUI = Iui.createFromString("D4AF5C9A-47BA-4BF4-9BAE-F13A8ED6455E");
+		RTS_TR_IUI =  Iui.createFromString("DB2282A4-631F-4D2C-940F-A220C496F6BE");
+		MAX_TEMPORAL_REGION = new TemporalRegion(
 					UUID.fromString("26F1052B-311D-43B1-9ABC-B4E2EDD1B283"), 
 						TemporalRegion.ONE_D_REGION_TYPE);
+	}
 	
 	
-	public TemporalRegion(TemporalReference tr, Uui type) {
+	public TemporalRegion(TemporalReference tr, Uui type, Iui namingSystemIui) {
 		this.tr = tr;
-		if (tr.isIso)
-			calendarSystemIui = Iui.createFromString("D4AF5C9A-47BA-4BF4-9BAE-F13A8ED6455E");
+		if (tr.isIso && !namingSystemIui.equals(ISO_IUI))
+			throw new IllegalArgumentException("If temporal reference isIso, then calendar system iui must be" +
+					"the Iui for Gregorian calendar: " + ISO_IUI.toString());
+		if (!tr.isIso && namingSystemIui.equals(ISO_IUI))
+			throw new IllegalArgumentException("If temporal reference not isIso, then calendar system iui cannot be" +
+					"the Iui for Gregorian calendar: " + ISO_IUI.toString());
+		if (namingSystemIui == null) {
+			throw new IllegalArgumentException("calendar system IUI cannot be null: " + namingSystemIui);
+		}
+		this.calendarSystemIui = namingSystemIui;
 		this.type = type;
 	}
 	
@@ -80,7 +97,7 @@ public class TemporalRegion  {
 		Iso8601DateTimeFormatter dtf = new Iso8601DateTimeFormatter();
 		
 		tr = new TemporalReference(dtf.format(dtZ), true);
-		calendarSystemIui = Iui.createFromString("D4AF5C9A-47BA-4BF4-9BAE-F13A8ED6455E");
+		calendarSystemIui = ISO_IUI;
 		Iso8601Time t = dateTime.getTime();
 		type = ONE_D_REGION_TYPE;
 		if (t instanceof Iso8601UnitTime) {
@@ -127,7 +144,8 @@ public class TemporalRegion  {
 		Iso8601DateTimeFormatter dtf = new Iso8601DateTimeFormatter();
 		tr = new TemporalReference(dtf.format(txDt), true);
 				
-		calendarSystemIui = Iui.createFromString("D4AF5C9A-47BA-4BF4-9BAE-F13A8ED6455E");
+		calendarSystemIui = ISO_IUI;
+		//System.out.println(calendarSystemIui);
 		type = ONE_D_REGION_TYPE;
 		Iso8601Time t = dateTime.getTime();
 		if (t instanceof Iso8601UnitTime) {
@@ -155,23 +173,25 @@ public class TemporalRegion  {
 		
 		tr = new TemporalReference(UUID.randomUUID().toString(), false);
 		//DB2282A4-631F-4D2C-940F-A220C496F6BE refers to general RTS temporal reference
-		calendarSystemIui = Iui.createFromString("DB2282A4-631F-4D2C-940F-A220C496F6BE");
+		calendarSystemIui = RTS_TR_IUI;
 		this.type = type;
 	}
 	
+
 	public TemporalRegion(UUID id, Uui type) {
 		tr = new TemporalReference(UUID.randomUUID().toString(), false);
 		this.type = type;
-		calendarSystemIui = Iui.createFromString("DB2282A4-631F-4D2C-940F-A220C496F6BE");
+		calendarSystemIui = RTS_TR_IUI;
 	}
+
 	
 	public TemporalRegion(Iso8601Date db, TimeZone tz) {
 		tr = new TemporalReference(db, tz);
 		this.type = ONE_D_REGION_TYPE;
-		calendarSystemIui = Iui.createFromString("D4AF5C9A-47BA-4BF4-9BAE-F13A8ED6455E");
+		this.calendarSystemIui = ISO_IUI;
 	}
 
-	public TemporalReference getTemporalRefeence() {
+	public TemporalReference getTemporalReference() {
 		return tr;
 	}
 	

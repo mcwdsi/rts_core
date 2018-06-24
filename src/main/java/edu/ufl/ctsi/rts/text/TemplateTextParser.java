@@ -31,17 +31,18 @@ import edu.uams.dbmi.util.iso8601.Iso8601TimeParseException;
 
 
 public class TemplateTextParser {
+	
 	protected BufferedReader r;
 	
 	HashSet<RtsTemplate> templates;
-	HashSet<TemporalRegion> temporalReferences;
+	HashSet<TemporalRegion> temporalRegions;
 	
 	protected Iso8601DateTimeParser dt_parser;
 	
 	public TemplateTextParser(BufferedReader r) {
 		this.r = r;
 		templates = new HashSet<RtsTemplate>();
-		temporalReferences = new HashSet<TemporalRegion>();
+		temporalRegions = new HashSet<TemporalRegion>();
 		
 		dt_parser = new Iso8601DateTimeParser();
 	}
@@ -135,7 +136,7 @@ public class TemplateTextParser {
 		
 		String tupleType = templateFields.get(0);
 		RtsTemplate template = null;
-		TemporalRegion temporalReference = null;
+		TemporalRegion temporalRegion = null;
 		if (tupleType.equals("A")) {
 			template = new ATemplate();		
 		} else if (tupleType.equals("U")) {
@@ -151,7 +152,7 @@ public class TemplateTextParser {
 		} else if (tupleType.equals("D")) {
 			template = new MetadataTemplate();
 		} else if (tupleType.equals("T")) {
-			// TODO
+			temporalRegion = createTemporalRegion(contentFields);
 		} else {
 			throw new RuntimeException("Unrecognized tuple type: " + tupleType);
 		}
@@ -160,9 +161,14 @@ public class TemplateTextParser {
 			template.setTemplateIui(Iui.createFromString(templateFields.get(1)));
 			template.setAuthorIui(Iui.createFromString(contentFields.get(0)));
 			populateTemplate(template, contentFields);
+			templates.add(template);
+		}
+		
+		if (temporalRegion != null) {
+			temporalRegions.add(temporalRegion);
 		}
 	}
-	
+
 	protected List<String> splitDelimitedQuotedAndEscapedText(String text, char delim, char openQuote, 
 			char closeQuote, char escape) throws ParseException {
 		ArrayList<String> fragments = new ArrayList<String>(text.length()/2);
@@ -180,8 +186,9 @@ public class TemplateTextParser {
 
 			if (c == delim && lastChar != escape && !inside_quote) {
 				String nextFragment = text.substring(begin,i);
-				if (nextFragment.indexOf(openQuote) == 0) nextFragment = nextFragment.substring(1);
-				if (nextFragment.indexOf(closeQuote) == nextFragment.length()-1) nextFragment = nextFragment.substring(0, nextFragment.length()-1);
+				if (nextFragment.indexOf(openQuote) == 0 && 
+						nextFragment.indexOf(closeQuote) == nextFragment.length()-1) 
+					nextFragment = nextFragment.substring(1, nextFragment.length()-1);
 				fragments.add(nextFragment);  //gets every character up to ith character, but not including it
 				begin = i+1;		//skip ith character because it's a delimiter		
 			} else if (c == openQuote && lastChar != escape) {
@@ -411,5 +418,30 @@ public class TemplateTextParser {
 			}
 			if (replIuis.size() > 0) t.setReplacementTemplateIuis(replIuis);
 		}
+	}
+	
+	private TemporalRegion createTemporalRegion(List<String> contentFields) {
+		/* 2 - last thing in content fields is IUI of naming system
+		 * 	This must be: 
+		 *     1. D4AF5C9A-47BA-4BF4-9BAE-F13A8ED6455E if it's an ISO8601 date/time, and possibly even 
+		 *     		any Gregorian Calendar system.
+		 *     2. DB2282A4-631F-4D2C-940F-A220C496F6BE if it's a generic temporal reference that refers to 
+		 *     	    some time interval either whose boundaries are not known or that spans but does not 
+		 *          equate to intervals named in ISO8601 or the Gregorian more generally.
+		 *     3. Some other IUI that refers to some calendaring or other naming system for temporal
+		 *          regions.  Could be Hebrew calendar, Julian calendar, for example.
+		 */
+		String nsIuiTxt = contentFields.get(2);
+		Iui nsIui = Iui.createFromString(nsIuiTxt);	
+		
+		// 0 - first thing in content fields is the temporal reference for the region
+		String tRefTxt = contentFields.get(0);
+		TemporalReference tref = new TemporalReference(tRefTxt, nsIui.equals(TemporalRegion.ISO_IUI));
+		
+		// 1 - next thing in content fields is UUI -- almost always will BFO IRI -- for type of region
+		String typeTxt = contentFields.get(1);
+		Uui typeUui = new Uui(typeTxt);
+				
+		return new TemporalRegion(tref, typeUui, nsIui);
 	}
 }

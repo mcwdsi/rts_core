@@ -279,9 +279,13 @@ public class TemplateTextWriter {
 	}
 	
 	public void writeTemporalRegion(TemporalRegion tr) throws IOException {
+		if (tr.getCalendarSystemIui() == null) {
+			System.err.println(tr.getTemporalReference().toString() + "\t" +
+					tr.getTemporalReference().isIso());
+		}
 		w.write("T");
 		w.write(BLOCK_DELIM);
-		w.write(tr.getTemporalRefeence().toString());
+		w.write(tr.getTemporalReference().toString());
 		w.write(FIELD_DELIM);
 		w.write('<');
 		w.write(tr.getTemporalType().toString());
