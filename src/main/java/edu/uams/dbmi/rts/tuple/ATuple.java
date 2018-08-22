@@ -1,10 +1,10 @@
-package edu.uams.dbmi.rts.template;
+package edu.uams.dbmi.rts.tuple;
 
 import edu.uams.dbmi.util.iso8601.Iso8601DateTime;
 import edu.uams.dbmi.util.iso8601.Iso8601DateTimeFormatter;
 
 import edu.uams.dbmi.rts.iui.Iui;
-import edu.uams.dbmi.rts.template.component.ParticularComponent;
+import edu.uams.dbmi.rts.tuple.component.ParticularComponent;
 
 /**
  * template which assigns a referent an Iui.
@@ -12,11 +12,11 @@ import edu.uams.dbmi.rts.template.component.ParticularComponent;
  * @author Josh Hanna
  *
  */
-public class ATemplate extends RtsTemplate {
+public class ATuple extends RtsTuple {
 	
 	ParticularComponent<Iui> particularComponent;
 	
-	public ATemplate() {
+	public ATuple() {
 		super();
 		particularComponent = new ParticularComponent<Iui>();
 	}

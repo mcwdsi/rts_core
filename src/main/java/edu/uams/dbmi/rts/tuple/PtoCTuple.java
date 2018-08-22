@@ -1,30 +1,20 @@
-package edu.uams.dbmi.rts.template;
+package edu.uams.dbmi.rts.tuple;
 
-import java.net.URI;
-
+import edu.uams.dbmi.rts.cui.Cui;
 import edu.uams.dbmi.rts.iui.Iui;
-import edu.uams.dbmi.rts.template.component.ParticularComponent;
-import edu.uams.dbmi.rts.template.component.RelationshipComponent;
-import edu.uams.dbmi.rts.template.component.TemporalComponent;
-import edu.uams.dbmi.rts.template.component.UniversalComponent;
 import edu.uams.dbmi.rts.time.TemporalReference;
-import edu.uams.dbmi.rts.uui.Uui;
+import edu.uams.dbmi.rts.tuple.component.ConceptComponent;
+import edu.uams.dbmi.rts.tuple.component.ParticularComponent;
+import edu.uams.dbmi.rts.tuple.component.TemporalComponent;
 
-/**
- * Template that relates a particular (e.g. Josh Hanna) to a universal (e.g. Person)
- * @author 1070675
- *
- */
-public class PtoUTemplate extends RtsTemplate {
+public class PtoCTuple extends RtsTuple {
 	
-	private RelationshipComponent relationshipComponent;
-	private UniversalComponent universalComponent;
+	private ConceptComponent conceptComponent;
 	private TemporalComponent temporalComponent;
 	private ParticularComponent<Iui> particularComponent;
 	
-	public PtoUTemplate(){
-		this.relationshipComponent = new RelationshipComponent();
-		this.universalComponent = new UniversalComponent();
+	public PtoCTuple() {
+		this.conceptComponent = new ConceptComponent();
 		this.temporalComponent = new TemporalComponent();
 		this.particularComponent = new ParticularComponent<Iui>();
 	}
@@ -32,14 +22,14 @@ public class PtoUTemplate extends RtsTemplate {
 	public void setReferentIui(Iui iui) {
 		if (particularComponent.isEmpty()) {
 			particularComponent.addParticular(iui);
-		} else 
-			throw new IllegalStateException("the referent of this PtoU template has been set already.");
+		} else
+			throw new IllegalStateException("the referent iui of this template has been set already.");
 	}
 	
 	public Iui getReferentIui() {
 		return particularComponent.getParticular();
 	}
-
+	
 	/**
 	 * deprecated.  Use getAuthoringTimeReference() instead.
 	 * @return
@@ -66,36 +56,20 @@ public class PtoUTemplate extends RtsTemplate {
 		this.authoringComponent.setAuthoringTimeReference(tr);
 	}
 	
-	public URI getRelationshipURI(){
-		return this.relationshipComponent.getRelationshipURI();
+	public Cui getConceptCui() {
+		return conceptComponent.getCui();
 	}
 	
-	public void setRelationshipURI(URI newURI){
-		this.relationshipComponent.setRelationshipURI(newURI);
+	public void setConceptCui(Cui cui) {
+		this.conceptComponent.setCui(cui);
 	}
 	
-	public Iui getRelationshipOntologyIui(){
-		return this.relationshipComponent.getOntologyIui();
+	public Iui getConceptSystemIui() {
+		return conceptComponent.getConceptSystemIui();
 	}
 	
-	public void setRelationshipOntologyIui(Iui newIui){
-		this.relationshipComponent.setOntologyIui(newIui);
-	}
-	
-	public Uui getUniversalUui(){
-		return this.universalComponent.getUniversalUui();
-	}
-	
-	public void setUniversalUui(Uui newUui){
-		this.universalComponent.setUniversalUui(newUui);
-	}
-	
-	public Iui getUniversalOntologyIui(){
-		return this.universalComponent.getOntologyIui();
-	}
-	
-	public void setUniversalOntologyIui(Iui newIui){
-		this.universalComponent.setOntologyIui(newIui);
+	public void setConceptSystemIui(Iui conceptSystemIui) {
+		this.conceptComponent.setConceptSystemIui(conceptSystemIui);
 	}
 	
 	/**
@@ -125,14 +99,14 @@ public class PtoUTemplate extends RtsTemplate {
 	}
 	
 	@Override
-	public boolean isPtoUTemplate(){
+	public boolean isPtoCTemplate() {
 		return true;
 	}
 	
 	@Override
-	public String toString(){
+	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("PtoU< ");
+		builder.append("PtoC< ");
 		
 		builder.append(this.getTemplateIui());
 		builder.append(", ");
@@ -149,17 +123,10 @@ public class PtoUTemplate extends RtsTemplate {
 		builder.append(this.getReferentIui());
 		builder.append(", ");
 		
-		builder.append(this.getRelationshipURI());
+		builder.append(this.getConceptCui());
 		builder.append(", ");
 		
-		builder.append(this.getRelationshipOntologyIui());
-		builder.append(", ");
-		
-		builder.append(this.getUniversalUui());
-		builder.append(", ");
-		
-		builder.append(this.getUniversalOntologyIui());
-		
+		builder.append(this.getConceptSystemIui());
 		builder.append(" >");
 		
 		return builder.toString();

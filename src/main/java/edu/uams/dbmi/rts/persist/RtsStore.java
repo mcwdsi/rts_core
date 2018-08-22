@@ -17,9 +17,9 @@ package edu.uams.dbmi.rts.persist;
 import java.util.Set;
 
 import edu.uams.dbmi.rts.iui.Iui;
-import edu.uams.dbmi.rts.query.TemplateQuery;
-import edu.uams.dbmi.rts.template.RtsTemplate;
-import edu.uams.dbmi.rts.template.RtsTemplateType;
+import edu.uams.dbmi.rts.query.TupleQuery;
+import edu.uams.dbmi.rts.tuple.RtsTuple;
+import edu.uams.dbmi.rts.tuple.RtsTupleType;
 
 /**
  * This interface specifies the contract of an entity that persists Referent
@@ -36,14 +36,14 @@ public interface RtsStore {
 	 * @param template
 	 * @return true if successful
 	 */
-	public boolean saveTemplate(RtsTemplate template);
+	public boolean saveTemplate(RtsTuple template);
 	
 	/**
 	 * Get a template by its IUI
 	 * @param iui
 	 * @return An RtsTemplate whose IUI is that specified.
 	 */
-	public RtsTemplate getTemplate(Iui iui);
+	public RtsTuple getTemplate(Iui iui);
 	
 	/**
 	 * Get all the templates where the IUI is the iuip parameter or in the 
@@ -51,14 +51,14 @@ public interface RtsStore {
 	 * @param iui
 	 * @return The set of unique templates where the given IUI is iuip or P
 	 */
-	public Set<RtsTemplate> getByReferentIui(Iui iui);
+	public Set<RtsTuple> getByReferentIui(Iui iui);
 	
 	/**
 	 * Get all the templates where the IUI is the iuia parameter 
 	 * @param iui
 	 * @return The set of unique templates where the given IUI is iuia
 	 */
-	public Set<RtsTemplate> getByAuthorIui(Iui iui);
+	public Set<RtsTuple> getByAuthorIui(Iui iui);
 	
 	/**
 	 * A convenience method used to generate an unused Iui from the store.  
@@ -74,6 +74,6 @@ public interface RtsStore {
 	 * @param templateQuery
 	 * @param templateType 
 	 */
-	public Set<RtsTemplate> runQuery(TemplateQuery templateQuery, RtsTemplateType templateType);
+	public Set<RtsTuple> runQuery(TupleQuery templateQuery, RtsTupleType templateType);
 	
 }

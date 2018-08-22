@@ -1,11 +1,11 @@
-package edu.uams.dbmi.rts.template;
+package edu.uams.dbmi.rts.tuple;
 
 import java.net.URI;
 
 import edu.uams.dbmi.rts.iui.Iui;
-import edu.uams.dbmi.rts.template.component.DataComponent;
-import edu.uams.dbmi.rts.template.component.RelationshipComponent;
-import edu.uams.dbmi.rts.template.component.UniversalComponent;
+import edu.uams.dbmi.rts.tuple.component.DataComponent;
+import edu.uams.dbmi.rts.tuple.component.RelationshipComponent;
+import edu.uams.dbmi.rts.tuple.component.UniversalComponent;
 import edu.uams.dbmi.rts.uui.Uui;
 
 /**
@@ -17,7 +17,7 @@ import edu.uams.dbmi.rts.uui.Uui;
  *
  */
 @Deprecated
-public class PtoDRTemplate extends RtsTemplate {
+public class PtoDRTemplate extends RtsTuple {
 	
 	private DataComponent dataComponent;
 	private RelationshipComponent relationshipComponent;

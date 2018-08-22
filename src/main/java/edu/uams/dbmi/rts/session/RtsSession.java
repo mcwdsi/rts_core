@@ -18,8 +18,8 @@ import java.util.Set;
 
 import edu.uams.dbmi.rts.iui.Iui;
 import edu.uams.dbmi.rts.persist.RtsStore;
-import edu.uams.dbmi.rts.query.TemplateQuery;
-import edu.uams.dbmi.rts.template.RtsTemplate;
+import edu.uams.dbmi.rts.query.TupleQuery;
+import edu.uams.dbmi.rts.tuple.RtsTuple;
 
 
 public abstract class RtsSession {
@@ -34,23 +34,23 @@ public abstract class RtsSession {
 		return new RtsTransaction(this);
 	}
 	
-	public TemplateQuery createTemplateQuery(){
-		return new TemplateQuery(store);
+	public TupleQuery createTemplateQuery(){
+		return new TupleQuery(store);
 	}
 	
 	public Iui getAvailableIui(){
 		return store.getAvailableIui();
 	}
 	
-	protected boolean saveTemplate(RtsTemplate template){
+	protected boolean saveTemplate(RtsTuple template){
 		if(template.getTemplateIui() == null){
 			template.setTemplateIui(this.getAvailableIui());
 		}
 		return store.saveTemplate(template);
 	}
 	
-	protected boolean saveTemplates(Set<RtsTemplate> cache){
-		for(RtsTemplate template : cache){
+	protected boolean saveTemplates(Set<RtsTuple> cache){
+		for(RtsTuple template : cache){
 			this.saveTemplate(template);
 		}
 		return true;
@@ -63,7 +63,7 @@ public abstract class RtsSession {
 	 * @param iui
 	 * @return An RtsTemplate whose IUI is that specified.
 	 */
-	public RtsTemplate getTemplate(Iui iui){
+	public RtsTuple getTemplate(Iui iui){
 		return this.store.getTemplate(iui);
 	}
 	
@@ -73,7 +73,7 @@ public abstract class RtsSession {
 	 * @param iui
 	 * @return The set of unique templates where the given IUI is iuip or P
 	 */
-	public Set<RtsTemplate> getByReferentIui(Iui iui){
+	public Set<RtsTuple> getByReferentIui(Iui iui){
 		return this.store.getByReferentIui(iui);
 	}
 	
@@ -82,7 +82,7 @@ public abstract class RtsSession {
 	 * @param iui
 	 * @return The set of unique templates where the given IUI is iuia
 	 */
-	public Set<RtsTemplate> getByAuthorIui(Iui iui){
+	public Set<RtsTuple> getByAuthorIui(Iui iui){
 		return this.store.getByAuthorIui(iui);
 	}		
 	

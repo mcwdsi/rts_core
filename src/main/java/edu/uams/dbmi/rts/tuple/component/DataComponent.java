@@ -1,4 +1,4 @@
-package edu.uams.dbmi.rts.template.component;
+package edu.uams.dbmi.rts.tuple.component;
 
 /**
  * represents the data component used in Ten and PtoDR templates to store non-relationship

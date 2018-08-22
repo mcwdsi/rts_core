@@ -1,4 +1,4 @@
-package edu.uams.dbmi.rts.template.component;
+package edu.uams.dbmi.rts.tuple.component;
 
 import edu.uams.dbmi.rts.iui.Iui;
 

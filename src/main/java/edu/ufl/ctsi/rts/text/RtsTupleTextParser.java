@@ -14,34 +14,34 @@ import edu.uams.dbmi.rts.iui.Iui;
 import edu.uams.dbmi.rts.metadata.RtsChangeReason;
 import edu.uams.dbmi.rts.metadata.RtsChangeType;
 import edu.uams.dbmi.rts.metadata.RtsErrorCode;
-import edu.uams.dbmi.rts.template.ATemplate;
-import edu.uams.dbmi.rts.template.MetadataTemplate;
-import edu.uams.dbmi.rts.template.PtoCTemplate;
-import edu.uams.dbmi.rts.template.PtoDETemplate;
-import edu.uams.dbmi.rts.template.PtoLackUTemplate;
-import edu.uams.dbmi.rts.template.PtoPTemplate;
-import edu.uams.dbmi.rts.template.PtoUTemplate;
-import edu.uams.dbmi.rts.template.RtsTemplate;
 import edu.uams.dbmi.rts.time.TemporalReference;
 import edu.uams.dbmi.rts.time.TemporalRegion;
+import edu.uams.dbmi.rts.tuple.ATuple;
+import edu.uams.dbmi.rts.tuple.MetadataTuple;
+import edu.uams.dbmi.rts.tuple.PtoCTuple;
+import edu.uams.dbmi.rts.tuple.PtoDETuple;
+import edu.uams.dbmi.rts.tuple.PtoLackUTuple;
+import edu.uams.dbmi.rts.tuple.PtoPTuple;
+import edu.uams.dbmi.rts.tuple.PtoUTuple;
+import edu.uams.dbmi.rts.tuple.RtsTuple;
 import edu.uams.dbmi.rts.uui.Uui;
 import edu.uams.dbmi.util.iso8601.Iso8601DateParseException;
 import edu.uams.dbmi.util.iso8601.Iso8601DateTimeParser;
 import edu.uams.dbmi.util.iso8601.Iso8601TimeParseException;
 
 
-public class TemplateTextParser {
+public class RtsTupleTextParser {
 	
 	protected BufferedReader r;
 	
-	HashSet<RtsTemplate> templates;
+	HashSet<RtsTuple> templates;
 	HashSet<TemporalRegion> temporalRegions;
 	
 	protected Iso8601DateTimeParser dt_parser;
 	
-	public TemplateTextParser(BufferedReader r) {
+	public RtsTupleTextParser(BufferedReader r) {
 		this.r = r;
-		templates = new HashSet<RtsTemplate>();
+		templates = new HashSet<RtsTuple>();
 		temporalRegions = new HashSet<TemporalRegion>();
 		
 		dt_parser = new Iso8601DateTimeParser();
@@ -68,7 +68,7 @@ public class TemplateTextParser {
 					 * If we get an opening quote character, and it is not escaped, then we have
 					 * 	to open a quote, or if we're already in a quote, signal an error
 					 */
-					if (read[j] == TemplateTextWriter.QUOTE_OPEN && prior_read != TemplateTextWriter.ESCAPE) {
+					if (read[j] == RtsTupleTextWriter.QUOTE_OPEN && prior_read != RtsTupleTextWriter.ESCAPE) {
 						if (!inside_quote) {
 							inside_quote = true;
 							sb.append(read[j]);
@@ -81,8 +81,8 @@ public class TemplateTextParser {
 					 * If we get a closing quote character, and it is not escaped, then we have
 					 *   to close the quote, or if we're not in a quote, signal an error.
 					 */
-					else if (read[j] == TemplateTextWriter.QUOTE_CLOSE 
-								&& prior_read != TemplateTextWriter.ESCAPE) {
+					else if (read[j] == RtsTupleTextWriter.QUOTE_CLOSE 
+								&& prior_read != RtsTupleTextWriter.ESCAPE) {
 						if (inside_quote) {
 							inside_quote = false;
 							sb.append(read[j]);
@@ -94,7 +94,7 @@ public class TemplateTextParser {
 					 * A TEMPLATE_DELIM character terminates a template iff we are not 
 					 * 	inside a quote and it is not escaped.
 					 */
-					else if (read[j] == TemplateTextWriter.TEMPLATE_DELIM && prior_read != '\\' && !inside_quote) {
+					else if (read[j] == RtsTupleTextWriter.TEMPLATE_DELIM && prior_read != '\\' && !inside_quote) {
 						String template = sb.toString();
 						parseTemplateFromText(template);
 						System.out.println("Template = \"" + sb.toString() + "\"");
@@ -112,10 +112,10 @@ public class TemplateTextParser {
 	protected void parseTemplateFromText(String templateText) throws ParseException {
 		
 		List<String> blocks = splitDelimitedQuotedAndEscapedText(templateText, 
-				TemplateTextWriter.BLOCK_DELIM,
-				TemplateTextWriter.QUOTE_OPEN,
-				TemplateTextWriter.QUOTE_CLOSE,
-				TemplateTextWriter.ESCAPE);
+				RtsTupleTextWriter.BLOCK_DELIM,
+				RtsTupleTextWriter.QUOTE_OPEN,
+				RtsTupleTextWriter.QUOTE_CLOSE,
+				RtsTupleTextWriter.ESCAPE);
 	
 		if (blocks.size() != 2) System.err.println("INCORRECT NUMBER OF BLOCKS!!! " + blocks.size());
 		
@@ -123,34 +123,34 @@ public class TemplateTextParser {
 		String contentBlock = blocks.get(1);
 		
 		List<String> templateFields = splitDelimitedQuotedAndEscapedText(templateBlock, 
-				TemplateTextWriter.FIELD_DELIM,
-				TemplateTextWriter.QUOTE_OPEN,
-				TemplateTextWriter.QUOTE_CLOSE,
-				TemplateTextWriter.ESCAPE);
+				RtsTupleTextWriter.FIELD_DELIM,
+				RtsTupleTextWriter.QUOTE_OPEN,
+				RtsTupleTextWriter.QUOTE_CLOSE,
+				RtsTupleTextWriter.ESCAPE);
 		
 		List<String> contentFields = splitDelimitedQuotedAndEscapedText(contentBlock, 
-				TemplateTextWriter.FIELD_DELIM,
-				TemplateTextWriter.QUOTE_OPEN,
-				TemplateTextWriter.QUOTE_CLOSE,
-				TemplateTextWriter.ESCAPE);
+				RtsTupleTextWriter.FIELD_DELIM,
+				RtsTupleTextWriter.QUOTE_OPEN,
+				RtsTupleTextWriter.QUOTE_CLOSE,
+				RtsTupleTextWriter.ESCAPE);
 		
 		String tupleType = templateFields.get(0);
-		RtsTemplate template = null;
+		RtsTuple template = null;
 		TemporalRegion temporalRegion = null;
 		if (tupleType.equals("A")) {
-			template = new ATemplate();		
+			template = new ATuple();		
 		} else if (tupleType.equals("U")) {
-			template = new PtoUTemplate();
+			template = new PtoUTuple();
 		} else if (tupleType.equals("P")) {
-			template = new PtoPTemplate();
+			template = new PtoPTuple();
 		} else if (tupleType.equals("L")) {
-			template = new PtoLackUTemplate();
+			template = new PtoLackUTuple();
 		} else if (tupleType.equals("C")) {
-			template = new PtoCTemplate();
+			template = new PtoCTuple();
 		} else if (tupleType.equals("E")) {
-			template = new PtoDETemplate();
+			template = new PtoDETuple();
 		} else if (tupleType.equals("D")) {
-			template = new MetadataTemplate();
+			template = new MetadataTuple();
 		} else if (tupleType.equals("T")) {
 			temporalRegion = createTemporalRegion(contentFields);
 		} else {
@@ -210,25 +210,25 @@ public class TemplateTextParser {
 		return fragments;
 	}
 	
-	protected void populateTemplate(RtsTemplate t, List<String> contentFields) {
-		if (t instanceof ATemplate) {
-			populateATemplate((ATemplate)t, contentFields);
-		} else if (t instanceof PtoUTemplate) {
-			populatePtoUTemplate((PtoUTemplate)t, contentFields);
-		} else if (t instanceof PtoPTemplate) {
-			populatePtoPTemplate((PtoPTemplate)t, contentFields);
-		} else if (t instanceof PtoLackUTemplate) {
-			populatePtoLackUTemplate((PtoLackUTemplate)t, contentFields);
-		} else if (t instanceof PtoCTemplate) {
-			populatePtoCTemplate((PtoCTemplate)t, contentFields);
-		} else if (t instanceof PtoDETemplate) {
-			populatePtoDETemplate((PtoDETemplate)t, contentFields);
-		} else if (t instanceof MetadataTemplate) {
-			populateMetadataTemplate((MetadataTemplate)t, contentFields);
+	protected void populateTemplate(RtsTuple t, List<String> contentFields) {
+		if (t instanceof ATuple) {
+			populateATemplate((ATuple)t, contentFields);
+		} else if (t instanceof PtoUTuple) {
+			populatePtoUTemplate((PtoUTuple)t, contentFields);
+		} else if (t instanceof PtoPTuple) {
+			populatePtoPTemplate((PtoPTuple)t, contentFields);
+		} else if (t instanceof PtoLackUTuple) {
+			populatePtoLackUTemplate((PtoLackUTuple)t, contentFields);
+		} else if (t instanceof PtoCTuple) {
+			populatePtoCTemplate((PtoCTuple)t, contentFields);
+		} else if (t instanceof PtoDETuple) {
+			populatePtoDETemplate((PtoDETuple)t, contentFields);
+		} else if (t instanceof MetadataTuple) {
+			populateMetadataTemplate((MetadataTuple)t, contentFields);
 		}
 	}
 
-	private void populateATemplate(ATemplate t, List<String> contentFields) {
+	private void populateATemplate(ATuple t, List<String> contentFields) {
 		// set the referent IUI - IUIp
 		t.setReferentIui(Iui.createFromString(contentFields.get(2)));
 		try {
@@ -241,7 +241,7 @@ public class TemplateTextParser {
 		}
 	}
 
-	private void populatePtoUTemplate(PtoUTemplate t, List<String> contentFields) {
+	private void populatePtoUTemplate(PtoUTuple t, List<String> contentFields) {
 		
 		//contentFields.get(1) is ta
 		TemporalReference tr = new TemporalReference(contentFields.get(1), contentFields.get(1).contains("Z"));
@@ -267,7 +267,7 @@ public class TemplateTextParser {
 
 	}
 
-	private void populatePtoPTemplate(PtoPTemplate t, List<String> contentFields) {
+	private void populatePtoPTemplate(PtoPTuple t, List<String> contentFields) {
 		
 		//contentFields.get(1) is ta
 		TemporalReference tr = new TemporalReference(contentFields.get(1), contentFields.get(1).contains("Z"));
@@ -280,7 +280,7 @@ public class TemplateTextParser {
 		t.setRelationshipOntologyIui(Iui.createFromString(contentFields.get(3)));
 		
 		//contentFields.get(4) is P
-		String[] prefs = contentFields.get(4).split(Pattern.quote(""+TemplateTextWriter.SUBFIELD_DELIM));
+		String[] prefs = contentFields.get(4).split(Pattern.quote(""+RtsTupleTextWriter.SUBFIELD_DELIM));
 		for (String pref : prefs) {
 			String[] refInfo = pref.split(Pattern.quote("="));
 			if (refInfo[0].equals("iui")) {
@@ -299,7 +299,7 @@ public class TemplateTextParser {
 
 	}
 
-	private void populatePtoLackUTemplate(PtoLackUTemplate t, List<String> contentFields) {
+	private void populatePtoLackUTemplate(PtoLackUTuple t, List<String> contentFields) {
 		
 		//contentFields.get(1) is ta
 		TemporalReference tr = new TemporalReference(contentFields.get(1), contentFields.get(1).contains("Z"));
@@ -325,7 +325,7 @@ public class TemplateTextParser {
 		
 	}
 
-	private void populatePtoCTemplate(PtoCTemplate t, List<String> contentFields) {
+	private void populatePtoCTemplate(PtoCTuple t, List<String> contentFields) {
 		
 		//contentFields.get(1) is ta
 		TemporalReference tr = new TemporalReference(contentFields.get(1), contentFields.get(1).contains("Z"));
@@ -344,7 +344,7 @@ public class TemplateTextParser {
 		t.setTemporalReference(new TemporalReference(contentFields.get(5), contentFields.get(5).contains("Z")));
 	}
 
-	private void populatePtoDETemplate(PtoDETemplate t, List<String> contentFields) {
+	private void populatePtoDETemplate(PtoDETuple t, List<String> contentFields) {
 		
 		//contentFields.get(1) is ta
 		TemporalReference tr = new TemporalReference(contentFields.get(1), contentFields.get(1).contains("Z"));
@@ -382,7 +382,7 @@ public class TemplateTextParser {
 		
 	}
 
-	private void populateMetadataTemplate(MetadataTemplate t, List<String> contentFields) {
+	private void populateMetadataTemplate(MetadataTuple t, List<String> contentFields) {
 		// TODO Auto-generated method stub
 		
 		//contentFields.get(1) is td
@@ -410,7 +410,7 @@ public class TemplateTextParser {
 		//contentFields.get(6) is list of replacement templates
 		String replTemplateField = contentFields.get(6);
 		if (replTemplateField.length() > 0) {
-			String[] replTemplateIuis = replTemplateField.split(Pattern.quote(""+TemplateTextWriter.SUBFIELD_DELIM));
+			String[] replTemplateIuis = replTemplateField.split(Pattern.quote(""+RtsTupleTextWriter.SUBFIELD_DELIM));
 			HashSet<Iui> replIuis = new HashSet<Iui>();
 			for (String replTemplateIui : replTemplateIuis) {
 				Iui replIui = Iui.createFromString(replTemplateIui);

@@ -8,19 +8,19 @@ import java.util.Set;
 
 import edu.uams.dbmi.rts.ParticularReference;
 import edu.uams.dbmi.rts.iui.Iui;
-import edu.uams.dbmi.rts.template.ATemplate;
-import edu.uams.dbmi.rts.template.MetadataTemplate;
-import edu.uams.dbmi.rts.template.PtoCTemplate;
-import edu.uams.dbmi.rts.template.PtoDETemplate;
-import edu.uams.dbmi.rts.template.PtoLackUTemplate;
-import edu.uams.dbmi.rts.template.PtoPTemplate;
-import edu.uams.dbmi.rts.template.PtoUTemplate;
-import edu.uams.dbmi.rts.template.RtsTemplate;
 import edu.uams.dbmi.rts.time.TemporalReference;
 import edu.uams.dbmi.rts.time.TemporalRegion;
+import edu.uams.dbmi.rts.tuple.ATuple;
+import edu.uams.dbmi.rts.tuple.MetadataTuple;
+import edu.uams.dbmi.rts.tuple.PtoCTuple;
+import edu.uams.dbmi.rts.tuple.PtoDETuple;
+import edu.uams.dbmi.rts.tuple.PtoLackUTuple;
+import edu.uams.dbmi.rts.tuple.PtoPTuple;
+import edu.uams.dbmi.rts.tuple.PtoUTuple;
+import edu.uams.dbmi.rts.tuple.RtsTuple;
 import edu.uams.dbmi.util.iso8601.Iso8601DateTimeFormatter;
 
-public class TemplateTextWriter {
+public class RtsTupleTextWriter {
 
 	public static char FIELD_DELIM = '|';
 	public static char SUBFIELD_DELIM = ',';
@@ -32,11 +32,11 @@ public class TemplateTextWriter {
 	
 	protected Writer w;
 	
-	public TemplateTextWriter(Writer w) {
+	public RtsTupleTextWriter(Writer w) {
 		this.w = w;
 	}
 	
-	public void writeTemplate(RtsTemplate rtt) throws IOException {
+	public void writeTemplate(RtsTuple rtt) throws IOException {
 		if (rtt.isATemplate()) w.write('A');
 		else if (rtt.isMetadataTemplate()) w.write('D');
 		else if (rtt.isPtoCTemplate()) w.write('C');
@@ -62,8 +62,8 @@ public class TemplateTextWriter {
 
 	static Iso8601DateTimeFormatter formatter = new Iso8601DateTimeFormatter();
 	
-	private void writeATemplate(RtsTemplate rtt) throws IOException {
-		ATemplate rtta = (ATemplate)rtt;
+	private void writeATemplate(RtsTuple rtt) throws IOException {
+		ATuple rtta = (ATuple)rtt;
 		
 		w.write(rtta.getAuthorIui().toString());
 		w.write(FIELD_DELIM);
@@ -72,7 +72,7 @@ public class TemplateTextWriter {
 		w.write(rtta.getReferentIui().toString());
 	}
 
-	private void writeDTemplate(RtsTemplate rtt) throws IOException {
+	private void writeDTemplate(RtsTuple rtt) throws IOException {
 		/*
 		 * Write metadata template in order of specification.  We already wrote template
 		 *  	info block before this method was called.  
@@ -81,7 +81,7 @@ public class TemplateTextWriter {
 		 *  
 		 *  No need to write template delimiter at end.  That's handled above.
 		 */
-		MetadataTemplate rttd = (MetadataTemplate)rtt;
+		MetadataTuple rttd = (MetadataTuple)rtt;
 		
 		w.write(rttd.getAuthorIui().toString());
 		w.write(FIELD_DELIM);
@@ -106,7 +106,7 @@ public class TemplateTextWriter {
 		}
 	}
 
-	private void writePtoCTemplate(RtsTemplate rtt) throws IOException {
+	private void writePtoCTemplate(RtsTuple rtt) throws IOException {
 		/*
 		 * Write PtoC template in order of specification.  We already wrote template
 		 *  	info block before this method was called.  
@@ -115,7 +115,7 @@ public class TemplateTextWriter {
 		 *  
 		 *  No need to write template delimiter at end.  That's handled above.
 		 */
-		PtoCTemplate rttc = (PtoCTemplate)rtt;
+		PtoCTuple rttc = (PtoCTuple)rtt;
 
 		w.write(rttc.getAuthorIui().toString());
 		w.write(FIELD_DELIM);
@@ -131,7 +131,7 @@ public class TemplateTextWriter {
 
 	}
 
-	private void writePtoLackUTemplate(RtsTemplate rtt) throws IOException {
+	private void writePtoLackUTemplate(RtsTuple rtt) throws IOException {
 		/*
 		 * Write PtoLackU template in order of specification.  We already wrote template
 		 *  	info block before this method was called.  
@@ -140,7 +140,7 @@ public class TemplateTextWriter {
 		 *  
 		 *  No need to write template delimiter at end.  That's handled above.
 		 */
-		PtoLackUTemplate rttl = (PtoLackUTemplate)rtt;
+		PtoLackUTuple rttl = (PtoLackUTuple)rtt;
 		
 		w.write(rttl.getAuthorIui().toString());
 		w.write(FIELD_DELIM);
@@ -163,9 +163,9 @@ public class TemplateTextWriter {
 		w.write(rttl.getTemporalReference().toString());
 	}
 
-	private void writePtoPTemplate(RtsTemplate rtt) throws IOException {
+	private void writePtoPTemplate(RtsTuple rtt) throws IOException {
 		// TODO Auto-generated method stub
-		PtoPTemplate rttp = (PtoPTemplate)rtt;
+		PtoPTuple rttp = (PtoPTuple)rtt;
 		
 		w.write(rttp.getAuthorIui().toString());
 		w.write(FIELD_DELIM);
@@ -195,9 +195,9 @@ public class TemplateTextWriter {
 		w.write(rttp.getTemporalReference().toString());
 	}
 
-	private void writePtoUTemplate(RtsTemplate rtt) throws IOException {
+	private void writePtoUTemplate(RtsTuple rtt) throws IOException {
 		// TODO Auto-generated method stub
-		PtoUTemplate rttu = (PtoUTemplate)rtt;
+		PtoUTuple rttu = (PtoUTuple)rtt;
 		
 		w.write(rttu.getAuthorIui().toString());
 		w.write(FIELD_DELIM);
@@ -220,9 +220,9 @@ public class TemplateTextWriter {
 		w.write(rttu.getTemporalReference().toString());
 	}
 
-	private void writePtoDETemplate(RtsTemplate rtt) throws IOException {
+	private void writePtoDETemplate(RtsTuple rtt) throws IOException {
 		// TODO Auto-generated method stub
-		PtoDETemplate rtte = (PtoDETemplate)rtt;
+		PtoDETuple rtte = (PtoDETuple)rtt;
 		
 		w.write(rtte.getAuthorIui().toString());
 		w.write(FIELD_DELIM);

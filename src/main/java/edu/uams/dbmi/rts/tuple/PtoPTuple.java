@@ -1,44 +1,43 @@
-package edu.uams.dbmi.rts.template;
+package edu.uams.dbmi.rts.tuple;
 
 import java.net.URI;
+import java.util.Iterator;
+import java.util.List;
 
+import edu.uams.dbmi.rts.ParticularReference;
 import edu.uams.dbmi.rts.iui.Iui;
-import edu.uams.dbmi.rts.template.component.ParticularComponent;
-import edu.uams.dbmi.rts.template.component.RelationshipComponent;
-import edu.uams.dbmi.rts.template.component.TemporalComponent;
-import edu.uams.dbmi.rts.template.component.UniversalComponent;
 import edu.uams.dbmi.rts.time.TemporalReference;
-import edu.uams.dbmi.rts.uui.Uui;
+import edu.uams.dbmi.rts.tuple.component.ParticularComponent;
+import edu.uams.dbmi.rts.tuple.component.RelationshipComponent;
+import edu.uams.dbmi.rts.tuple.component.TemporalComponent;
 
 /**
- * Template that asserts a particular (e.g. Josh Hanna) is not an instantiation of a 
- * universal (e.g. Chair).
+ * Template that relates to particulars together using a specified relationship
  * @author Josh Hanna
  *
  */
-public class PtoLackUTemplate extends RtsTemplate {
+public class PtoPTuple extends RtsTuple {
 	
 	private RelationshipComponent relationshipComponent;
-	private UniversalComponent universalComponent;
 	private TemporalComponent temporalComponent;
-	private ParticularComponent<Iui> particularComponent;
+	private ParticularComponent<ParticularReference> particularComponent; 
 	
-	public PtoLackUTemplate(){
+	public PtoPTuple(){
 		this.relationshipComponent = new RelationshipComponent();
-		this.universalComponent = new UniversalComponent();
 		this.temporalComponent = new TemporalComponent();
-		this.particularComponent = new ParticularComponent<Iui>();
+		this.particularComponent = new ParticularComponent<ParticularReference>();
 	}
 	
-	public void setReferentIui(Iui iui) {
-		if (particularComponent.isEmpty()) {
-			particularComponent.addParticular(iui);
-		} else
-			throw new IllegalStateException("the referent of this PtoLackU template has been set already.");
+	public void setReferent(ParticularReference pr) {
+		particularComponent.addParticular(pr);
 	}
 	
-	public Iui getReferentIui() {
+	public ParticularReference getReferent() {
 		return particularComponent.getParticular();
+	}
+	
+	public List<ParticularReference> getAllParticulars() {
+		return particularComponent.getParticulars();
 	}
 
 	/**
@@ -82,23 +81,7 @@ public class PtoLackUTemplate extends RtsTemplate {
 	public void setRelationshipOntologyIui(Iui newIui){
 		this.relationshipComponent.setOntologyIui(newIui);
 	}
-	
-	public Uui getUniversalUui(){
-		return this.universalComponent.getUniversalUui();
-	}
-	
-	public void setUniversalUui(Uui newUui){
-		this.universalComponent.setUniversalUui(newUui);
-	}
-	
-	public Iui getUniversalOntologyIui(){
-		return this.universalComponent.getOntologyIui();
-	}
-	
-	public void setUniversalOntologyIui(Iui newIui){
-		this.universalComponent.setOntologyIui(newIui);
-	}
-	
+
 	/**
 	 * deprecated.  Use getTemporalReference() instead.
 	 * @return
@@ -125,15 +108,32 @@ public class PtoLackUTemplate extends RtsTemplate {
 		this.temporalComponent.setTemporalReference(tr);
 	}
 	
-	@Override
-	public boolean isPtoLackUTemplate(){
-		return true;
+	public void addParticular(ParticularReference particular){
+		this.particularComponent.addParticular(particular);
+	}
+	
+	public void setParticular(int index, ParticularReference particular){
+		this.particularComponent.setParticular(index, particular);
+	}
+	
+	public void setParticulars(List<ParticularReference> particulars){
+		this.particularComponent.addAllParticulars(particulars);
+	}
+	
+	public void clearParticulars(){
+		this.particularComponent.clearParticulars();
 	}
 	
 	@Override
+	public boolean isPtoPTemplate(){
+		return true;
+	}
+	
+
+	@Override
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
-		builder.append("PtoLackU< ");
+		builder.append("PtoP< ");
 		
 		builder.append(this.getTemplateIui());
 		builder.append(", ");
@@ -147,7 +147,7 @@ public class PtoLackUTemplate extends RtsTemplate {
 		builder.append(this.getAuthoringTimeReference());
 		builder.append(", ");
 		
-		builder.append(this.getReferentIui());
+		builder.append(this.getReferent());
 		builder.append(", ");
 
 		builder.append(this.getRelationshipURI());
@@ -156,10 +156,14 @@ public class PtoLackUTemplate extends RtsTemplate {
 		builder.append(this.getRelationshipOntologyIui());
 		builder.append(", ");
 		
-		builder.append(this.getUniversalUui());
-		builder.append(", ");
-		
-		builder.append(this.getUniversalOntologyIui());
+		builder.append("(");
+		Iterator<ParticularReference> p = this.getAllParticulars().iterator();
+		while(p.hasNext()) {
+			builder.append(p.next().toString());
+			builder.append(", ");
+		}
+		builder.setLength(builder.length()-2);
+		builder.append(")");
 		
 		builder.append(" >");
 		

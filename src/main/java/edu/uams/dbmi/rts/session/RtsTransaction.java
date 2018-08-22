@@ -3,14 +3,14 @@ package edu.uams.dbmi.rts.session;
 import java.util.HashSet;
 import java.util.Set;
 
-import edu.uams.dbmi.rts.template.MetadataTemplate;
-import edu.uams.dbmi.rts.template.RtsTemplate;
+import edu.uams.dbmi.rts.tuple.MetadataTuple;
+import edu.uams.dbmi.rts.tuple.RtsTuple;
 
 public class RtsTransaction {
 
 	private RtsSession session;
 	
-	private Set<RtsTemplate> cache = new HashSet<RtsTemplate>();
+	private Set<RtsTuple> cache = new HashSet<RtsTuple>();
 
 	public RtsTransaction(RtsSession session) {
 		this.session = session;
@@ -21,7 +21,7 @@ public class RtsTransaction {
 	 * 
 	 * @param template
 	 */
-	public void addTemplate(RtsTemplate template) {
+	public void addTemplate(RtsTuple template) {
 		cache.add(template);
 	}
 	
@@ -31,7 +31,7 @@ public class RtsTransaction {
 	 * @param template
 	 * @param metadata
 	 */
-	public void updateTemplate(RtsTemplate template, MetadataTemplate metadata){
+	public void updateTemplate(RtsTuple template, MetadataTuple metadata){
 		cache.add(template);
 		cache.add(metadata);
 		

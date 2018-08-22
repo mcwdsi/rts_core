@@ -10,14 +10,14 @@ import edu.uams.dbmi.rts.iui.Iui;
 import edu.uams.dbmi.rts.metadata.RtsChangeReason;
 import edu.uams.dbmi.rts.metadata.RtsErrorCode;
 import edu.uams.dbmi.rts.persist.RtsStore;
-import edu.uams.dbmi.rts.template.RtsTemplateType;
-import edu.uams.dbmi.rts.template.RtsTemplate;
+import edu.uams.dbmi.rts.tuple.RtsTuple;
+import edu.uams.dbmi.rts.tuple.RtsTupleType;
 import edu.uams.dbmi.rts.uui.Uui;
 import edu.uams.dbmi.util.iso8601.Iso8601DateTime;
 
-public class TemplateQuery {
+public class TupleQuery {
 
-	private List<RtsTemplateType> types = new ArrayList<RtsTemplateType>();;
+	private List<RtsTupleType> types = new ArrayList<RtsTupleType>();;
 	private Iui referentIui = null;
 	private URI relationshipURI = null;
 	private Uui universalUui = null;
@@ -33,15 +33,15 @@ public class TemplateQuery {
 	private Iui namingSystem = null;
 	private String temporalEntityName = null;
 
-	public TemplateQuery(RtsStore rtsStore) {
+	public TupleQuery(RtsStore rtsStore) {
 		this.store = rtsStore;
 	}
 
-	public void addType(RtsTemplateType templateType){
+	public void addType(RtsTupleType templateType){
 		this.types.add(templateType);
 	}
 
-	public void removeType(RtsTemplateType templateType){
+	public void removeType(RtsTupleType templateType){
 		this.types.remove(templateType);
 	}
 
@@ -149,48 +149,48 @@ public class TemplateQuery {
 		this.authoringTimeIui = authoringTimeIui;
 	}
 
-	public Set<RtsTemplate> runQuery() throws Exception{
-		Set<RtsTemplate> results = new HashSet<RtsTemplate>();
+	public Set<RtsTuple> runQuery() throws Exception{
+		Set<RtsTuple> results = new HashSet<RtsTuple>();
 		
 		boolean parametersMatched = false;
 		if(this.parametersMatchATemplate()){
 			parametersMatched = true;
-			results.addAll(this.store.runQuery(this, RtsTemplateType.ATEMPLATE));
+			results.addAll(this.store.runQuery(this, RtsTupleType.ATEMPLATE));
 		}
 
 		if(this.parametersMatchMetadataTemplate()){
 			parametersMatched = true;
-			results.addAll(this.store.runQuery(this, RtsTemplateType.METADATATEMPLATE));
+			results.addAll(this.store.runQuery(this, RtsTupleType.METADATATEMPLATE));
 		}
 
 		if(this.parametersMatchPtoDRTemplate()){
 			parametersMatched = true;
-			results.addAll(this.store.runQuery(this, RtsTemplateType.PTODETEMPLATE));
+			results.addAll(this.store.runQuery(this, RtsTupleType.PTODETEMPLATE));
 		}
 
 		if(this.parametersMatchPtoLackUTemplate()){
 			parametersMatched = true;
-			results.addAll(this.store.runQuery(this, RtsTemplateType.PTOLACKUTEMPLATE));
+			results.addAll(this.store.runQuery(this, RtsTupleType.PTOLACKUTEMPLATE));
 		}
 
 		if(this.parametersMatchPtoPTemplate()){
 			parametersMatched = true;
-			results.addAll(this.store.runQuery(this, RtsTemplateType.PTOPTEMPLATE));
+			results.addAll(this.store.runQuery(this, RtsTupleType.PTOPTEMPLATE));
 		}
 
 		if(this.parametersMatchPtoUTemplate()){
 			parametersMatched = true;
-			results.addAll(this.store.runQuery(this, RtsTemplateType.PTOUTEMPLATE));
+			results.addAll(this.store.runQuery(this, RtsTupleType.PTOUTEMPLATE));
 		}
 
 		if(this.parametersMatchTenTemplate()){
 			parametersMatched = true;
-			results.addAll(this.store.runQuery(this, RtsTemplateType.TENTEMPLATE));
+			results.addAll(this.store.runQuery(this, RtsTupleType.TENTEMPLATE));
 		}
 
 		if(this.parametersMatchTeTemplate()){
 			parametersMatched = true;
-			results.addAll(this.store.runQuery(this, RtsTemplateType.TETEMPLATE));
+			results.addAll(this.store.runQuery(this, RtsTupleType.TETEMPLATE));
 		}
 
 		if(!parametersMatched){
@@ -201,7 +201,7 @@ public class TemplateQuery {
 	}
 
 	private boolean parametersMatchTeTemplate() {
-		if(this.types.contains(RtsTemplateType.TETEMPLATE) || this.types.isEmpty()){
+		if(this.types.contains(RtsTupleType.TETEMPLATE) || this.types.isEmpty()){
 			if(this.relationshipURI != null){
 				return false;
 			} else if(data != null){
@@ -233,7 +233,7 @@ public class TemplateQuery {
 	}
 
 	private boolean parametersMatchTenTemplate() {
-		if(this.types.contains(RtsTemplateType.TENTEMPLATE) || this.types.isEmpty()){
+		if(this.types.contains(RtsTupleType.TENTEMPLATE) || this.types.isEmpty()){
 			if(this.relationshipURI != null){
 				return false;
 			} else if(data != null){
@@ -265,7 +265,7 @@ public class TemplateQuery {
 	}
 
 	private boolean parametersMatchPtoUTemplate() {
-		if(this.types.contains(RtsTemplateType.PTOUTEMPLATE) || this.types.isEmpty()){
+		if(this.types.contains(RtsTupleType.PTOUTEMPLATE) || this.types.isEmpty()){
 			if(data != null){
 				return false;
 			} else if(datatype != null){
@@ -297,7 +297,7 @@ public class TemplateQuery {
 	}
 
 	private boolean parametersMatchPtoPTemplate() {
-		if(this.types.contains(RtsTemplateType.PTOPTEMPLATE) || this.types.isEmpty()){
+		if(this.types.contains(RtsTupleType.PTOPTEMPLATE) || this.types.isEmpty()){
 			if(data != null){
 				return false;
 			} else if(datatype != null){
@@ -329,7 +329,7 @@ public class TemplateQuery {
 	}
 
 	private boolean parametersMatchPtoLackUTemplate() {
-		if(this.types.contains(RtsTemplateType.PTOLACKUTEMPLATE) || this.types.isEmpty()){
+		if(this.types.contains(RtsTupleType.PTOLACKUTEMPLATE) || this.types.isEmpty()){
 			if(data != null){
 				return false;
 			} else if(datatype != null){
@@ -361,7 +361,7 @@ public class TemplateQuery {
 	}
 
 	private boolean parametersMatchPtoDRTemplate() {
-		if(this.types.contains(RtsTemplateType.PTODETEMPLATE) || this.types.isEmpty()){
+		if(this.types.contains(RtsTupleType.PTODETEMPLATE) || this.types.isEmpty()){
 			if(changeReason != null){
 				return false;
 			} else if(errorCode != null){
@@ -393,7 +393,7 @@ public class TemplateQuery {
 	}
 
 	private boolean parametersMatchMetadataTemplate() {
-		if(this.types.contains(RtsTemplateType.METADATATEMPLATE) || this.types.isEmpty()){
+		if(this.types.contains(RtsTupleType.METADATATEMPLATE) || this.types.isEmpty()){
 			if(data != null){
 				return false;
 			} else if(datatype != null){
@@ -425,7 +425,7 @@ public class TemplateQuery {
 	}
 
 	private boolean parametersMatchATemplate() {
-		if(this.types.contains(RtsTemplateType.ATEMPLATE) || this.types.isEmpty()){
+		if(this.types.contains(RtsTupleType.ATEMPLATE) || this.types.isEmpty()){
 			if(this.relationshipURI != null){
 				return false;
 			} else if(data != null){

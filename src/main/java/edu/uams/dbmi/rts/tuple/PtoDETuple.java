@@ -1,45 +1,60 @@
-package edu.uams.dbmi.rts.template;
+package edu.uams.dbmi.rts.tuple;
 
 import java.net.URI;
-import java.util.Iterator;
-import java.util.List;
 
 import edu.uams.dbmi.rts.ParticularReference;
 import edu.uams.dbmi.rts.iui.Iui;
-import edu.uams.dbmi.rts.template.component.ParticularComponent;
-import edu.uams.dbmi.rts.template.component.RelationshipComponent;
-import edu.uams.dbmi.rts.template.component.TemporalComponent;
 import edu.uams.dbmi.rts.time.TemporalReference;
+import edu.uams.dbmi.rts.tuple.component.DataComponent;
+import edu.uams.dbmi.rts.tuple.component.ParticularComponent;
+import edu.uams.dbmi.rts.tuple.component.RelationshipComponent;
+import edu.uams.dbmi.rts.tuple.component.UniversalComponent;
+import edu.uams.dbmi.rts.uui.Uui;
 
 /**
- * Template that relates to particulars together using a specified relationship
- * @author Josh Hanna
+ * Template that associates a particular (e.g. Josh Hanna's first name) with its 
+ * digital representation (e.g. the string "Josh").
+ * @author 1070675
  *
  */
-public class PtoPTemplate extends RtsTemplate {
+public class PtoDETuple extends RtsTuple {
 	
+	private DataComponent dataComponent;
 	private RelationshipComponent relationshipComponent;
-	private TemporalComponent temporalComponent;
-	private ParticularComponent<ParticularReference> particularComponent; 
+	private UniversalComponent datatypeComponent;
+	private ParticularComponent<ParticularReference> particularComponent;
+	private ParticularComponent<Iui> namingSystemComponent;
 	
-	public PtoPTemplate(){
+	public PtoDETuple(){
+		this.dataComponent = new DataComponent();
 		this.relationshipComponent = new RelationshipComponent();
-		this.temporalComponent = new TemporalComponent();
+		this.datatypeComponent = new UniversalComponent();
 		this.particularComponent = new ParticularComponent<ParticularReference>();
+		this.namingSystemComponent = new ParticularComponent<Iui>();
 	}
 	
 	public void setReferent(ParticularReference pr) {
-		particularComponent.addParticular(pr);
+		if (particularComponent.isEmpty()) {
+			particularComponent.addParticular(pr);
+		} else
+			throw new IllegalStateException("the referent of this PtoDE template has been set already.");
 	}
 	
 	public ParticularReference getReferent() {
 		return particularComponent.getParticular();
 	}
 	
-	public List<ParticularReference> getAllParticulars() {
-		return particularComponent.getParticulars();
+	public void setNamingSystem(Iui iui) {
+		if (namingSystemComponent.isEmpty()) {
+			namingSystemComponent.addParticular(iui);
+		} else
+			throw new IllegalStateException("the referent of this PtoDE template has been set already.");
 	}
-
+	
+	public Iui getNamingSystem() {
+		return namingSystemComponent.getParticular();
+	} 
+	
 	/**
 	 * deprecated.  Use getAuthoringTimeReference() instead.
 	 * @return
@@ -66,6 +81,14 @@ public class PtoPTemplate extends RtsTemplate {
 		this.authoringComponent.setAuthoringTimeReference(tr);
 	}
 	
+	public byte[] getData(){
+		return dataComponent.getData();
+	}
+	
+	public void setData(byte[] newData){
+		this.dataComponent.setData(newData);
+	}
+	
 	public URI getRelationshipURI(){
 		return this.relationshipComponent.getRelationshipURI();
 	}
@@ -81,59 +104,32 @@ public class PtoPTemplate extends RtsTemplate {
 	public void setRelationshipOntologyIui(Iui newIui){
 		this.relationshipComponent.setOntologyIui(newIui);
 	}
-
-	/**
-	 * deprecated.  Use getTemporalReference() instead.
-	 * @return
-	 */
-	@Deprecated
-	public Iui getTemporalEntityIui() {
-		return this.temporalComponent.getTemporalEntityIui();
+	
+	public Uui getDatatypeUui(){
+		return this.datatypeComponent.getUniversalUui();
 	}
 	
-	public TemporalReference getTemporalReference() {
-		return this.temporalComponent.getTemporalReference();
+	public void setDatatypeUui(Uui newUui){
+		this.datatypeComponent.setUniversalUui(newUui);
 	}
 	
-	/**
-	 * deprecated.  Use setTemporalReference() instead.
-	 * @param temporalEntityIui
-	 */
-	@Deprecated
-	public void setTemporalEntityIui(Iui temporalEntityIui) {
-		this.temporalComponent.setTemporalEntityIui(temporalEntityIui);
+	public Iui getDatatypeOntologyIui(){
+		return this.datatypeComponent.getOntologyIui();
 	}
 	
-	public void setTemporalReference(TemporalReference tr) {
-		this.temporalComponent.setTemporalReference(tr);
-	}
-	
-	public void addParticular(ParticularReference particular){
-		this.particularComponent.addParticular(particular);
-	}
-	
-	public void setParticular(int index, ParticularReference particular){
-		this.particularComponent.setParticular(index, particular);
-	}
-	
-	public void setParticulars(List<ParticularReference> particulars){
-		this.particularComponent.addAllParticulars(particulars);
-	}
-	
-	public void clearParticulars(){
-		this.particularComponent.clearParticulars();
+	public void setDatatypeOntologyIui(Iui newIui){
+		this.datatypeComponent.setOntologyIui(newIui);
 	}
 	
 	@Override
-	public boolean isPtoPTemplate(){
+	public boolean isPtoDETemplate() {
 		return true;
 	}
 	
-
 	@Override
 	public String toString(){
 		StringBuilder builder = new StringBuilder();
-		builder.append("PtoP< ");
+		builder.append("PtoDE< ");
 		
 		builder.append(this.getTemplateIui());
 		builder.append(", ");
@@ -150,20 +146,19 @@ public class PtoPTemplate extends RtsTemplate {
 		builder.append(this.getReferent());
 		builder.append(", ");
 
+		builder.append(this.getData());
+		builder.append(", ");
+		
 		builder.append(this.getRelationshipURI());
 		builder.append(", ");
 		
 		builder.append(this.getRelationshipOntologyIui());
 		builder.append(", ");
 		
-		builder.append("(");
-		Iterator<ParticularReference> p = this.getAllParticulars().iterator();
-		while(p.hasNext()) {
-			builder.append(p.next().toString());
-			builder.append(", ");
-		}
-		builder.setLength(builder.length()-2);
-		builder.append(")");
+		builder.append(this.getDatatypeUui());
+		builder.append(", ");
+		
+		builder.append(this.getDatatypeOntologyIui());
 		
 		builder.append(" >");
 		

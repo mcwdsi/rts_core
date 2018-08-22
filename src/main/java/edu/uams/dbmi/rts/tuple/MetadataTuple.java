@@ -1,4 +1,4 @@
-package edu.uams.dbmi.rts.template;
+package edu.uams.dbmi.rts.tuple;
 
 import java.util.Iterator;
 import java.util.Set;
@@ -6,8 +6,8 @@ import java.util.Set;
 import edu.uams.dbmi.rts.metadata.RtsChangeType;
 import edu.uams.dbmi.rts.metadata.RtsChangeReason;
 import edu.uams.dbmi.rts.metadata.RtsErrorCode;
-import edu.uams.dbmi.rts.template.component.MetadataComponent;
-import edu.uams.dbmi.rts.template.component.ParticularComponent;
+import edu.uams.dbmi.rts.tuple.component.MetadataComponent;
+import edu.uams.dbmi.rts.tuple.component.ParticularComponent;
 import edu.uams.dbmi.util.iso8601.Iso8601DateTime;
 import edu.uams.dbmi.util.iso8601.Iso8601DateTimeFormatter;
 import edu.uams.dbmi.rts.iui.Iui;
@@ -25,7 +25,7 @@ import edu.uams.dbmi.rts.iui.Iui;
  * @author Josh Hanna
  * 
  */
-public class MetadataTemplate extends RtsTemplate {
+public class MetadataTuple extends RtsTuple {
 
 	/*
 	 * in addition to IuiComponent, AuthoringComponent,
@@ -42,7 +42,7 @@ public class MetadataTemplate extends RtsTemplate {
 	
 	ParticularComponent<Iui> particularComponent;
 
-	public MetadataTemplate() {
+	public MetadataTuple() {
 		this.metadataComponent = new MetadataComponent();
 		this.particularComponent = new ParticularComponent<Iui>();
 	}

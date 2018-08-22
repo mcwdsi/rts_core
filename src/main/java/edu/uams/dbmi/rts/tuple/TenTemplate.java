@@ -1,10 +1,10 @@
-package edu.uams.dbmi.rts.template;
+package edu.uams.dbmi.rts.tuple;
 
 import edu.uams.dbmi.rts.iui.Iui;
-import edu.uams.dbmi.rts.template.component.DataComponent;
-import edu.uams.dbmi.rts.template.component.IuiComponent;
-import edu.uams.dbmi.rts.template.component.TemporalComponent;
 import edu.uams.dbmi.rts.time.TemporalReference;
+import edu.uams.dbmi.rts.tuple.component.DataComponent;
+import edu.uams.dbmi.rts.tuple.component.IuiComponent;
+import edu.uams.dbmi.rts.tuple.component.TemporalComponent;
 
 /**
  * Template that concretizes a name of a temporal entity
@@ -12,7 +12,7 @@ import edu.uams.dbmi.rts.time.TemporalReference;
  *
  */
 @Deprecated
-public class TenTemplate extends RtsTemplate {
+public class TenTemplate extends RtsTuple {
 
 	IuiComponent namingSystemIui;
 	DataComponent name;

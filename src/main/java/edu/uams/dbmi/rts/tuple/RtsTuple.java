@@ -1,8 +1,8 @@
-package edu.uams.dbmi.rts.template;
+package edu.uams.dbmi.rts.tuple;
 
 import edu.uams.dbmi.rts.iui.Iui;
-import edu.uams.dbmi.rts.template.component.AuthoringComponent;
-import edu.uams.dbmi.rts.template.component.IuiComponent;
+import edu.uams.dbmi.rts.tuple.component.AuthoringComponent;
+import edu.uams.dbmi.rts.tuple.component.IuiComponent;
 
 /**
  * Class which is a superclass of all templates.  All templates 
@@ -13,7 +13,7 @@ import edu.uams.dbmi.rts.template.component.IuiComponent;
  * @author Josh Hanna
  *
  */
-public abstract class RtsTemplate {
+public abstract class RtsTuple {
 	
 	/*
 	 * IuiComponent contains IUI of template itself
@@ -27,7 +27,7 @@ public abstract class RtsTemplate {
 	 **/
 	AuthoringComponent authoringComponent;
 	
-	public RtsTemplate() {
+	public RtsTuple() {
 		this.iuiComponent = new IuiComponent();
 		this.authoringComponent = new AuthoringComponent();
 	}
