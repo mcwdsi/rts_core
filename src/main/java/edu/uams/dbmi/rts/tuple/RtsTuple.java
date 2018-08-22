@@ -5,8 +5,8 @@ import edu.uams.dbmi.rts.tuple.component.AuthoringComponent;
 import edu.uams.dbmi.rts.tuple.component.IuiComponent;
 
 /**
- * Class which is a superclass of all templates.  All templates 
- * 	have an IUI component (the IUI of the template itself), 
+ * Class which is a superclass of all Tuples.  All Tuples 
+ * 	have an IUI component (the IUI of the Tuple itself), 
  * 	an authoring component (IUI_a, t_a, and t_d), and 
  *  particular component (IUI_p).
  * 
@@ -16,13 +16,13 @@ import edu.uams.dbmi.rts.tuple.component.IuiComponent;
 public abstract class RtsTuple {
 	
 	/*
-	 * IuiComponent contains IUI of template itself
+	 * IuiComponent contains IUI of Tuple itself
 	 */
 	IuiComponent iuiComponent;
 	
 	/*
-	 * Author of template (Iui), ta parameter (TemporalReference),
-	 * 	td parameter of associated metadata template (td)
+	 * Author of Tuple (Iui), ta parameter (TemporalReference),
+	 * 	td parameter of associated metadata Tuple (td)
 	 *	 
 	 **/
 	AuthoringComponent authoringComponent;
@@ -32,11 +32,11 @@ public abstract class RtsTuple {
 		this.authoringComponent = new AuthoringComponent();
 	}
 	
-	public Iui getTemplateIui() {
+	public Iui getTupleIui() {
 		return iuiComponent.getIui();
 	}
 	
-	public void setTemplateIui(Iui newIui) {
+	public void setTupleIui(Iui newIui) {
 		this.iuiComponent.setIui(newIui);
 	}
 	
@@ -48,11 +48,11 @@ public abstract class RtsTuple {
 		this.authoringComponent.setAuthorIui(newIui);
 	}
 	
-	public boolean isATemplate() {
+	public boolean isATuple() {
 		return false; 
 	}
 	
-	public boolean isMetadataTemplate() {
+	public boolean isMetadataTuple() {
 		return false;
 	}
 	
@@ -61,19 +61,19 @@ public abstract class RtsTuple {
 		return false;
 	}
 	
-	public boolean isPtoDETemplate() {
+	public boolean isPtoDETuple() {
 		return false;
 	}
 	
-	public boolean isPtoUTemplate() {
+	public boolean isPtoUTuple() {
 		return false;
 	}
 	
-	public boolean isPtoPTemplate() {
+	public boolean isPtoPTuple() {
 		return false;
 	}
 	
-	public boolean isPtoLackUTemplate() {
+	public boolean isPtoLackUTuple() {
 		return false;
 	}
 	
@@ -83,11 +83,11 @@ public abstract class RtsTuple {
 	}
 	
 	@Deprecated
-	public boolean isTeTemplate() {
+	public boolean isTeTuple() {
 		return false;
 	}
 	
-	public boolean isPtoCTemplate() {
+	public boolean isPtoCTuple() {
 		return false;
 	}
 	
@@ -96,7 +96,7 @@ public abstract class RtsTuple {
 		StringBuilder builder = new StringBuilder();
 		builder.append("T <");
 		
-		builder.append(this.getTemplateIui());
+		builder.append(this.getTupleIui());
 		builder.append(", ");
 		
 		builder.append(this.getAuthorIui());

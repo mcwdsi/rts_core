@@ -108,7 +108,7 @@ public class TenTemplate extends RtsTuple {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Ten< ");
 
-		builder.append(this.getTemplateIui());
+		builder.append(this.getTupleIui());
 		builder.append(", ");
 
 		builder.append(this.getAuthorIui());

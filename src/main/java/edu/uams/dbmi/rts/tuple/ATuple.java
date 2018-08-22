@@ -7,7 +7,7 @@ import edu.uams.dbmi.rts.iui.Iui;
 import edu.uams.dbmi.rts.tuple.component.ParticularComponent;
 
 /**
- * template which assigns a referent an Iui.
+ * Tuple which assigns a referent an Iui.
  * 
  * @author Josh Hanna
  *
@@ -30,7 +30,7 @@ public class ATuple extends RtsTuple {
 	}
 	
 	@Override
-	public boolean isATemplate(){
+	public boolean isATuple(){
 		return true;
 	}
 	
@@ -38,7 +38,7 @@ public class ATuple extends RtsTuple {
 		if (particularComponent.isEmpty())
 			particularComponent.addParticular(iui);
 		else 
-			throw new IllegalStateException("particular for this ATemplate has been set already");
+			throw new IllegalStateException("particular for this ATuple has been set already");
 	}
 	
 	public Iui getReferentIui() {
@@ -50,7 +50,7 @@ public class ATuple extends RtsTuple {
 		StringBuilder builder = new StringBuilder();
 		builder.append("A< ");
 		
-		builder.append(this.getTemplateIui());
+		builder.append(this.getTupleIui());
 		builder.append(", ");
 		
 		builder.append(this.getAuthorIui());

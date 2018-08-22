@@ -12,7 +12,7 @@ import edu.uams.dbmi.rts.tuple.component.RelationshipComponent;
 import edu.uams.dbmi.rts.tuple.component.TemporalComponent;
 
 /**
- * Template that relates to particulars together using a specified relationship
+ * Tuple that relates to particulars together using a specified relationship
  * @author Josh Hanna
  *
  */
@@ -125,7 +125,7 @@ public class PtoPTuple extends RtsTuple {
 	}
 	
 	@Override
-	public boolean isPtoPTemplate(){
+	public boolean isPtoPTuple(){
 		return true;
 	}
 	
@@ -135,7 +135,7 @@ public class PtoPTuple extends RtsTuple {
 		StringBuilder builder = new StringBuilder();
 		builder.append("PtoP< ");
 		
-		builder.append(this.getTemplateIui());
+		builder.append(this.getTupleIui());
 		builder.append(", ");
 		
 		builder.append(this.getAuthorIui());

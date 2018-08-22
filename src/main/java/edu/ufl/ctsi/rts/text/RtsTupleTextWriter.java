@@ -26,7 +26,7 @@ public class RtsTupleTextWriter {
 	public static char SUBFIELD_DELIM = ',';
 	public static char BLOCK_DELIM = '~';
 	public static char ESCAPE = '\\';
-	public static char TEMPLATE_DELIM = '\n';
+	public static char TUPLE_DELIM = '\n';
 	public static char QUOTE_OPEN = '<';
 	public static char QUOTE_CLOSE = '>';
 	
@@ -36,33 +36,33 @@ public class RtsTupleTextWriter {
 		this.w = w;
 	}
 	
-	public void writeTemplate(RtsTuple rtt) throws IOException {
-		if (rtt.isATemplate()) w.write('A');
-		else if (rtt.isMetadataTemplate()) w.write('D');
-		else if (rtt.isPtoCTemplate()) w.write('C');
-		else if (rtt.isPtoLackUTemplate()) w.write('L');
-		else if (rtt.isPtoPTemplate()) w.write('P');
-		else if (rtt.isPtoUTemplate()) w.write('U');
-		else if (rtt.isPtoDETemplate()) w.write('E');
+	public void writeTuple(RtsTuple rtt) throws IOException {
+		if (rtt.isATuple()) w.write('A');
+		else if (rtt.isMetadataTuple()) w.write('D');
+		else if (rtt.isPtoCTuple()) w.write('C');
+		else if (rtt.isPtoLackUTuple()) w.write('L');
+		else if (rtt.isPtoPTuple()) w.write('P');
+		else if (rtt.isPtoUTuple()) w.write('U');
+		else if (rtt.isPtoDETuple()) w.write('E');
 		
 		w.write(FIELD_DELIM);
-		w.write(rtt.getTemplateIui().toString());
+		w.write(rtt.getTupleIui().toString());
 		w.write(BLOCK_DELIM);
 		
-		if (rtt.isATemplate()) writeATemplate(rtt);
-		else if (rtt.isMetadataTemplate()) writeDTemplate(rtt);
-		else if (rtt.isPtoCTemplate()) writePtoCTemplate(rtt);
-		else if (rtt.isPtoLackUTemplate()) writePtoLackUTemplate(rtt);
-		else if (rtt.isPtoPTemplate()) writePtoPTemplate(rtt);
-		else if (rtt.isPtoUTemplate()) writePtoUTemplate(rtt);
-		else if (rtt.isPtoDETemplate()) writePtoDETemplate(rtt);
+		if (rtt.isATuple()) writeATuple(rtt);
+		else if (rtt.isMetadataTuple()) writeDTuple(rtt);
+		else if (rtt.isPtoCTuple()) writePtoCTuple(rtt);
+		else if (rtt.isPtoLackUTuple()) writePtoLackUTuple(rtt);
+		else if (rtt.isPtoPTuple()) writePtoPTuple(rtt);
+		else if (rtt.isPtoUTuple()) writePtoUTuple(rtt);
+		else if (rtt.isPtoDETuple()) writePtoDETuple(rtt);
 		
-		w.write(TEMPLATE_DELIM);
+		w.write(TUPLE_DELIM);
 	}
 
 	static Iso8601DateTimeFormatter formatter = new Iso8601DateTimeFormatter();
 	
-	private void writeATemplate(RtsTuple rtt) throws IOException {
+	private void writeATuple(RtsTuple rtt) throws IOException {
 		ATuple rtta = (ATuple)rtt;
 		
 		w.write(rtta.getAuthorIui().toString());
@@ -72,14 +72,14 @@ public class RtsTupleTextWriter {
 		w.write(rtta.getReferentIui().toString());
 	}
 
-	private void writeDTemplate(RtsTuple rtt) throws IOException {
+	private void writeDTuple(RtsTuple rtt) throws IOException {
 		/*
-		 * Write metadata template in order of specification.  We already wrote template
+		 * Write metadata Tuple in order of specification.  We already wrote Tuple
 		 *  	info block before this method was called.  
 		 *  
 		 *  No quoting needed.
 		 *  
-		 *  No need to write template delimiter at end.  That's handled above.
+		 *  No need to write Tuple delimiter at end.  That's handled above.
 		 */
 		MetadataTuple rttd = (MetadataTuple)rtt;
 		
@@ -95,8 +95,8 @@ public class RtsTupleTextWriter {
 		w.write(FIELD_DELIM);
 		w.write(rttd.getErrorCode().toString());
 		w.write(FIELD_DELIM);
-		if (rttd.getReplacementTemplateIuis() != null) {
-			Set<Iui> iuis = rttd.getReplacementTemplateIuis();
+		if (rttd.getReplacementTupleIuis() != null) {
+			Set<Iui> iuis = rttd.getReplacementTupleIuis();
 			Iterator<Iui> i = iuis.iterator();
 			while (i.hasNext()) {
 				Iui replRtt = i.next();
@@ -106,14 +106,14 @@ public class RtsTupleTextWriter {
 		}
 	}
 
-	private void writePtoCTemplate(RtsTuple rtt) throws IOException {
+	private void writePtoCTuple(RtsTuple rtt) throws IOException {
 		/*
-		 * Write PtoC template in order of specification.  We already wrote template
+		 * Write PtoC Tuple in order of specification.  We already wrote Tuple
 		 *  	info block before this method was called.  
 		 *  
 		 *  No quoting needed.
 		 *  
-		 *  No need to write template delimiter at end.  That's handled above.
+		 *  No need to write Tuple delimiter at end.  That's handled above.
 		 */
 		PtoCTuple rttc = (PtoCTuple)rtt;
 
@@ -131,14 +131,14 @@ public class RtsTupleTextWriter {
 
 	}
 
-	private void writePtoLackUTemplate(RtsTuple rtt) throws IOException {
+	private void writePtoLackUTuple(RtsTuple rtt) throws IOException {
 		/*
-		 * Write PtoLackU template in order of specification.  We already wrote template
+		 * Write PtoLackU Tuple in order of specification.  We already wrote Tuple
 		 *  	info block before this method was called.  
 		 *  
 		 *  No quoting needed.
 		 *  
-		 *  No need to write template delimiter at end.  That's handled above.
+		 *  No need to write Tuple delimiter at end.  That's handled above.
 		 */
 		PtoLackUTuple rttl = (PtoLackUTuple)rtt;
 		
@@ -163,7 +163,7 @@ public class RtsTupleTextWriter {
 		w.write(rttl.getTemporalReference().toString());
 	}
 
-	private void writePtoPTemplate(RtsTuple rtt) throws IOException {
+	private void writePtoPTuple(RtsTuple rtt) throws IOException {
 		// TODO Auto-generated method stub
 		PtoPTuple rttp = (PtoPTuple)rtt;
 		
@@ -195,7 +195,7 @@ public class RtsTupleTextWriter {
 		w.write(rttp.getTemporalReference().toString());
 	}
 
-	private void writePtoUTemplate(RtsTuple rtt) throws IOException {
+	private void writePtoUTuple(RtsTuple rtt) throws IOException {
 		// TODO Auto-generated method stub
 		PtoUTuple rttu = (PtoUTuple)rtt;
 		
@@ -220,7 +220,7 @@ public class RtsTupleTextWriter {
 		w.write(rttu.getTemporalReference().toString());
 	}
 
-	private void writePtoDETemplate(RtsTuple rtt) throws IOException {
+	private void writePtoDETuple(RtsTuple rtt) throws IOException {
 		// TODO Auto-generated method stub
 		PtoDETuple rtte = (PtoDETuple)rtt;
 		
@@ -268,7 +268,7 @@ public class RtsTupleTextWriter {
 		StringBuffer sb = new StringBuffer();
 		for (char c : data.toCharArray()) {
 			if (c == FIELD_DELIM || c == BLOCK_DELIM 
-					|| c == TEMPLATE_DELIM || c == SUBFIELD_DELIM 
+					|| c == TUPLE_DELIM || c == SUBFIELD_DELIM 
 					|| c == QUOTE_OPEN || c == QUOTE_CLOSE
 					|| c == ESCAPE ) {
 				sb.append(ESCAPE);
@@ -292,6 +292,6 @@ public class RtsTupleTextWriter {
 		w.write('>');
 		w.write(FIELD_DELIM);
 		w.write(tr.getCalendarSystemIui().toString());
-		w.write(TEMPLATE_DELIM);
+		w.write(TUPLE_DELIM);
 	}
 }

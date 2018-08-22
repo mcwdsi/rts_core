@@ -13,14 +13,14 @@ import edu.uams.dbmi.util.iso8601.Iso8601DateTimeFormatter;
 import edu.uams.dbmi.rts.iui.Iui;
 
 /**
- * The template that records changes to other templates, including all relevant
+ * The Tuple that records changes to other Tuples, including all relevant
  *   provenance information.
  *   
- * The referent of a metadata template is always another template.  So the
- *   referent IUI should always be an IUI that denotes an RT template.
+ * The referent of a metadata Tuple is always another Tuple.  So the
+ *   referent IUI should always be an IUI that denotes an RT Tuple.
  * 
  * Contains a metadata component in addition to the other components all
- *   templates share.
+ *   Tuples share.
  * 
  * @author Josh Hanna
  * 
@@ -31,12 +31,12 @@ public class MetadataTuple extends RtsTuple {
 	 * in addition to IuiComponent, AuthoringComponent,
 	 *  and ParticularComponent.
 	 *  
-	 *  In the case of MetadataTemplate, the authorIui is 
+	 *  In the case of MetadataTuple, the authorIui is 
 	 *  	the IUI_d parameter, the timestamp is the t_d
 	 *  	parameter and should exactly equal the timestampe
-	 *  	of the associated template, and the particular
-	 *  	component should be a template IUI of the a
-	 *  	associated template.
+	 *  	of the associated Tuple, and the particular
+	 *  	component should be a Tuple IUI of the a
+	 *  	associated Tuple.
 	 */
 	MetadataComponent metadataComponent;
 	
@@ -51,7 +51,7 @@ public class MetadataTuple extends RtsTuple {
 		if (particularComponent.isEmpty()) {
 			particularComponent.addParticular(iui);
 		} else
-			throw new IllegalStateException("the iui of the template to which this metadata template refers is already set.");
+			throw new IllegalStateException("the iui of the Tuple to which this metadata Tuple refers is already set.");
 	}
 	
 	public Iui getReferent() {
@@ -59,7 +59,7 @@ public class MetadataTuple extends RtsTuple {
 	}
 
 	/**
-	 * This timestamp is the td parameter of the template
+	 * This timestamp is the td parameter of the Tuple
 	 * 
 	 * @return
 	 * An ISO8601 formatted date/time
@@ -73,7 +73,7 @@ public class MetadataTuple extends RtsTuple {
 	}
 
 	/**
-	 * The change type is the CT parameter of the template
+	 * The change type is the CT parameter of the Tuple
 	 * @return
 	 * One of three, mutually exclusive (and we think exhaustive) values for 
 	 *   types of change.
@@ -83,7 +83,7 @@ public class MetadataTuple extends RtsTuple {
 	}
 
 	/**
-	 * The change reason is the C parameter of the template
+	 * The change reason is the C parameter of the Tuple
 	 * @return
 	 * One of four, mutually exclusive (and we think exhaustive) reasons for
 	 *   change.
@@ -108,16 +108,16 @@ public class MetadataTuple extends RtsTuple {
 		this.metadataComponent.setErrorCode(errorCode);
 	}
 
-	public Set<Iui> getReplacementTemplateIuis() {
-		return metadataComponent.getReplacementTemplateIuis();
+	public Set<Iui> getReplacementTupleIuis() {
+		return metadataComponent.getReplacementTupleIuis();
 	}
 
-	public void setReplacementTemplateIuis(Set<Iui> replacements) {
-		this.metadataComponent.setReplacementTemplateIuis(replacements);
+	public void setReplacementTupleIuis(Set<Iui> replacements) {
+		this.metadataComponent.setReplacementTupleIuis(replacements);
 	}
 
 	@Override
-	public boolean isMetadataTemplate() {
+	public boolean isMetadataTuple() {
 		return true;
 	}
 
@@ -126,7 +126,7 @@ public class MetadataTuple extends RtsTuple {
 		StringBuilder builder = new StringBuilder();
 		builder.append("D< ");
 
-		builder.append(this.getTemplateIui());  // iui of template
+		builder.append(this.getTupleIui());  // iui of Tuple
 		builder.append(", ");
 
 		builder.append(this.getAuthorIui());  // iuid
@@ -150,7 +150,7 @@ public class MetadataTuple extends RtsTuple {
 		builder.append(", ");
 
 		builder.append("(");
-		Iterator<Iui> s = this.getReplacementTemplateIuis().iterator();
+		Iterator<Iui> s = this.getReplacementTupleIuis().iterator();
 		while (s.hasNext()) {
 			builder.append(s.next().toString() + ", ");
 		}

@@ -11,7 +11,7 @@ import edu.uams.dbmi.rts.tuple.component.UniversalComponent;
 import edu.uams.dbmi.rts.uui.Uui;
 
 /**
- * Template that asserts a particular (e.g. Josh Hanna) is not an instantiation of a 
+ * Tuple that asserts a particular (e.g. Josh Hanna) is not an instantiation of a 
  * universal (e.g. Chair).
  * @author Josh Hanna
  *
@@ -34,7 +34,7 @@ public class PtoLackUTuple extends RtsTuple {
 		if (particularComponent.isEmpty()) {
 			particularComponent.addParticular(iui);
 		} else
-			throw new IllegalStateException("the referent of this PtoLackU template has been set already.");
+			throw new IllegalStateException("the referent of this PtoLackU Tuple has been set already.");
 	}
 	
 	public Iui getReferentIui() {
@@ -126,7 +126,7 @@ public class PtoLackUTuple extends RtsTuple {
 	}
 	
 	@Override
-	public boolean isPtoLackUTemplate(){
+	public boolean isPtoLackUTuple(){
 		return true;
 	}
 	
@@ -135,7 +135,7 @@ public class PtoLackUTuple extends RtsTuple {
 		StringBuilder builder = new StringBuilder();
 		builder.append("PtoLackU< ");
 		
-		builder.append(this.getTemplateIui());
+		builder.append(this.getTupleIui());
 		builder.append(", ");
 		
 		builder.append(this.getAuthorIui());

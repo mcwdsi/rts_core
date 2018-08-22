@@ -23,7 +23,7 @@ public class PtoCTuple extends RtsTuple {
 		if (particularComponent.isEmpty()) {
 			particularComponent.addParticular(iui);
 		} else
-			throw new IllegalStateException("the referent iui of this template has been set already.");
+			throw new IllegalStateException("the referent iui of this Tuple has been set already.");
 	}
 	
 	public Iui getReferentIui() {
@@ -99,7 +99,7 @@ public class PtoCTuple extends RtsTuple {
 	}
 	
 	@Override
-	public boolean isPtoCTemplate() {
+	public boolean isPtoCTuple() {
 		return true;
 	}
 	
@@ -108,7 +108,7 @@ public class PtoCTuple extends RtsTuple {
 		StringBuilder builder = new StringBuilder();
 		builder.append("PtoC< ");
 		
-		builder.append(this.getTemplateIui());
+		builder.append(this.getTupleIui());
 		builder.append(", ");
 		
 		builder.append(this.getAuthorIui());

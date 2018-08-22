@@ -43,7 +43,7 @@ public class RtsTransaction {
 	 * @return true if the commit was successful, false otherwise
 	 */
 	public boolean commit() {
-		boolean status = session.saveTemplates(cache);
+		boolean status = session.saveTuples(cache);
 		cache.clear();
 		
 		return status;

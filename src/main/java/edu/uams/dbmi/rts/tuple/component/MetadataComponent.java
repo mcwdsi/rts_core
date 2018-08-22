@@ -13,7 +13,7 @@ public class MetadataComponent {
 	private RtsChangeType type;
 	private RtsChangeReason reason;
 	private RtsErrorCode errorCode;
-	private Set<Iui> replacementTemplateIuis = new HashSet<Iui>();
+	private Set<Iui> replacementTupleIuis = new HashSet<Iui>();
 
 	/**
 	 * 
@@ -51,14 +51,14 @@ public class MetadataComponent {
 
 	/**
 	 * 
-	 * @return the error code that what was wrong with the original template
+	 * @return the error code that what was wrong with the original Tuple
 	 */
 	public RtsErrorCode getErrorCode() {
 		return errorCode;
 	}
 
 	/**
-	 * sets the error code describing what was wrong with the original template
+	 * sets the error code describing what was wrong with the original Tuple
 	 * 
 	 * @param errorCode
 	 */
@@ -68,50 +68,50 @@ public class MetadataComponent {
 
 	/**
 	 * 
-	 * @return the set of new templates that more accurately describe reality
+	 * @return the set of new Tuples that more accurately describe reality
 	 */
-	public Set<Iui> getReplacementTemplateIuis() {
-		return replacementTemplateIuis;
+	public Set<Iui> getReplacementTupleIuis() {
+		return replacementTupleIuis;
 	}
 
 	/**
-	 * adds a set of templates to the component that more accurately describes
+	 * adds a set of Tuples to the component that more accurately describes
 	 * reality
 	 * 
-	 * @param replacementTemplates
+	 * @param replacementTuples
 	 */
-	public void setReplacementTemplateIuis(Set<Iui> replacementTemplateIuis) {
-		this.replacementTemplateIuis = replacementTemplateIuis;
+	public void setReplacementTupleIuis(Set<Iui> replacementTupleIuis) {
+		this.replacementTupleIuis = replacementTupleIuis;
 	}
 
 	/**
-	 * creates a metadata component of a template where there are more than one
-	 * replacement templates
+	 * creates a metadata component of a Tuple where there are more than one
+	 * replacement Tuples
 	 * 
 	 * @param reason
 	 * @param errorCode
-	 * @param replacementTemplates
+	 * @param replacementTuples
 	 */
 	public MetadataComponent(RtsChangeReason reason, RtsErrorCode errorCode,
-			Set<Iui> replacementTemplateIuis) {
+			Set<Iui> replacementTupleIuis) {
 		this.reason = reason;
 		this.errorCode = errorCode;
-		this.replacementTemplateIuis.addAll(replacementTemplateIuis);
+		this.replacementTupleIuis.addAll(replacementTupleIuis);
 	}
 
 	/**
-	 * creates a metadata component of a template where there is only one
-	 * replacement template
+	 * creates a metadata component of a Tuple where there is only one
+	 * replacement Tuple
 	 * 
 	 * @param reason
 	 * @param errorCode
-	 * @param replacementTemplate
+	 * @param replacementTuple
 	 */
 	public MetadataComponent(RtsChangeReason reason, RtsErrorCode errorCode,
-			Iui replacementTemplateIui) {
+			Iui replacementTupleIui) {
 		this.reason = reason;
 		this.errorCode = errorCode;
-		this.replacementTemplateIuis.add(replacementTemplateIui);
+		this.replacementTupleIuis.add(replacementTupleIui);
 	}
 
 	public MetadataComponent() {

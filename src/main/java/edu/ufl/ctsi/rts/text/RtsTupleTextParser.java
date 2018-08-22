@@ -34,20 +34,20 @@ public class RtsTupleTextParser {
 	
 	protected BufferedReader r;
 	
-	HashSet<RtsTuple> templates;
+	HashSet<RtsTuple> Tuples;
 	HashSet<TemporalRegion> temporalRegions;
 	
 	protected Iso8601DateTimeParser dt_parser;
 	
 	public RtsTupleTextParser(BufferedReader r) {
 		this.r = r;
-		templates = new HashSet<RtsTuple>();
+		Tuples = new HashSet<RtsTuple>();
 		temporalRegions = new HashSet<TemporalRegion>();
 		
 		dt_parser = new Iso8601DateTimeParser();
 	}
 	
-	public void parseTemplates() throws IOException, ParseException {
+	public void parseTuples() throws IOException, ParseException {
 		
 		/* Here, we cannot use the generic parsing method because we are only
 		 * pulling in text in 64 character chunks at a time.
@@ -91,13 +91,13 @@ public class RtsTupleTextParser {
 						}
 					} 
 					/*
-					 * A TEMPLATE_DELIM character terminates a template iff we are not 
+					 * A Tuple_DELIM character terminates a Tuple iff we are not 
 					 * 	inside a quote and it is not escaped.
 					 */
-					else if (read[j] == RtsTupleTextWriter.TEMPLATE_DELIM && prior_read != '\\' && !inside_quote) {
-						String template = sb.toString();
-						parseTemplateFromText(template);
-						System.out.println("Template = \"" + sb.toString() + "\"");
+					else if (read[j] == RtsTupleTextWriter.TUPLE_DELIM && prior_read != '\\' && !inside_quote) {
+						String Tuple = sb.toString();
+						parseTupleFromText(Tuple);
+						System.out.println("Tuple = \"" + sb.toString() + "\"");
 						sb = new StringBuilder();
 						prior_read = '\0';
 					} else {
@@ -109,9 +109,9 @@ public class RtsTupleTextParser {
 			}
 	}
 	
-	protected void parseTemplateFromText(String templateText) throws ParseException {
+	protected void parseTupleFromText(String TupleText) throws ParseException {
 		
-		List<String> blocks = splitDelimitedQuotedAndEscapedText(templateText, 
+		List<String> blocks = splitDelimitedQuotedAndEscapedText(TupleText, 
 				RtsTupleTextWriter.BLOCK_DELIM,
 				RtsTupleTextWriter.QUOTE_OPEN,
 				RtsTupleTextWriter.QUOTE_CLOSE,
@@ -119,10 +119,10 @@ public class RtsTupleTextParser {
 	
 		if (blocks.size() != 2) System.err.println("INCORRECT NUMBER OF BLOCKS!!! " + blocks.size());
 		
-		String templateBlock = blocks.get(0);
+		String TupleBlock = blocks.get(0);
 		String contentBlock = blocks.get(1);
 		
-		List<String> templateFields = splitDelimitedQuotedAndEscapedText(templateBlock, 
+		List<String> TupleFields = splitDelimitedQuotedAndEscapedText(TupleBlock, 
 				RtsTupleTextWriter.FIELD_DELIM,
 				RtsTupleTextWriter.QUOTE_OPEN,
 				RtsTupleTextWriter.QUOTE_CLOSE,
@@ -134,34 +134,34 @@ public class RtsTupleTextParser {
 				RtsTupleTextWriter.QUOTE_CLOSE,
 				RtsTupleTextWriter.ESCAPE);
 		
-		String tupleType = templateFields.get(0);
-		RtsTuple template = null;
+		String tupleType = TupleFields.get(0);
+		RtsTuple Tuple = null;
 		TemporalRegion temporalRegion = null;
 		if (tupleType.equals("A")) {
-			template = new ATuple();		
+			Tuple = new ATuple();		
 		} else if (tupleType.equals("U")) {
-			template = new PtoUTuple();
+			Tuple = new PtoUTuple();
 		} else if (tupleType.equals("P")) {
-			template = new PtoPTuple();
+			Tuple = new PtoPTuple();
 		} else if (tupleType.equals("L")) {
-			template = new PtoLackUTuple();
+			Tuple = new PtoLackUTuple();
 		} else if (tupleType.equals("C")) {
-			template = new PtoCTuple();
+			Tuple = new PtoCTuple();
 		} else if (tupleType.equals("E")) {
-			template = new PtoDETuple();
+			Tuple = new PtoDETuple();
 		} else if (tupleType.equals("D")) {
-			template = new MetadataTuple();
+			Tuple = new MetadataTuple();
 		} else if (tupleType.equals("T")) {
 			temporalRegion = createTemporalRegion(contentFields);
 		} else {
 			throw new RuntimeException("Unrecognized tuple type: " + tupleType);
 		}
 		
-		if (template != null) {
-			template.setTemplateIui(Iui.createFromString(templateFields.get(1)));
-			template.setAuthorIui(Iui.createFromString(contentFields.get(0)));
-			populateTemplate(template, contentFields);
-			templates.add(template);
+		if (Tuple != null) {
+			Tuple.setTupleIui(Iui.createFromString(TupleFields.get(1)));
+			Tuple.setAuthorIui(Iui.createFromString(contentFields.get(0)));
+			populateTuple(Tuple, contentFields);
+			Tuples.add(Tuple);
 		}
 		
 		if (temporalRegion != null) {
@@ -173,7 +173,7 @@ public class RtsTupleTextParser {
 			char closeQuote, char escape) throws ParseException {
 		ArrayList<String> fragments = new ArrayList<String>(text.length()/2);
 		/*
-		 * Split on non-escaped template block delimiter and the delimiter
+		 * Split on non-escaped Tuple block delimiter and the delimiter
 		 * 	cannot be inside quotes either.
 		 */
 		char[] textChars = text.toCharArray();
@@ -210,25 +210,25 @@ public class RtsTupleTextParser {
 		return fragments;
 	}
 	
-	protected void populateTemplate(RtsTuple t, List<String> contentFields) {
+	protected void populateTuple(RtsTuple t, List<String> contentFields) {
 		if (t instanceof ATuple) {
-			populateATemplate((ATuple)t, contentFields);
+			populateATuple((ATuple)t, contentFields);
 		} else if (t instanceof PtoUTuple) {
-			populatePtoUTemplate((PtoUTuple)t, contentFields);
+			populatePtoUTuple((PtoUTuple)t, contentFields);
 		} else if (t instanceof PtoPTuple) {
-			populatePtoPTemplate((PtoPTuple)t, contentFields);
+			populatePtoPTuple((PtoPTuple)t, contentFields);
 		} else if (t instanceof PtoLackUTuple) {
-			populatePtoLackUTemplate((PtoLackUTuple)t, contentFields);
+			populatePtoLackUTuple((PtoLackUTuple)t, contentFields);
 		} else if (t instanceof PtoCTuple) {
-			populatePtoCTemplate((PtoCTuple)t, contentFields);
+			populatePtoCTuple((PtoCTuple)t, contentFields);
 		} else if (t instanceof PtoDETuple) {
-			populatePtoDETemplate((PtoDETuple)t, contentFields);
+			populatePtoDETuple((PtoDETuple)t, contentFields);
 		} else if (t instanceof MetadataTuple) {
-			populateMetadataTemplate((MetadataTuple)t, contentFields);
+			populateMetadataTuple((MetadataTuple)t, contentFields);
 		}
 	}
 
-	private void populateATemplate(ATuple t, List<String> contentFields) {
+	private void populateATuple(ATuple t, List<String> contentFields) {
 		// set the referent IUI - IUIp
 		t.setReferentIui(Iui.createFromString(contentFields.get(2)));
 		try {
@@ -241,7 +241,7 @@ public class RtsTupleTextParser {
 		}
 	}
 
-	private void populatePtoUTemplate(PtoUTuple t, List<String> contentFields) {
+	private void populatePtoUTuple(PtoUTuple t, List<String> contentFields) {
 		
 		//contentFields.get(1) is ta
 		TemporalReference tr = new TemporalReference(contentFields.get(1), contentFields.get(1).contains("Z"));
@@ -267,7 +267,7 @@ public class RtsTupleTextParser {
 
 	}
 
-	private void populatePtoPTemplate(PtoPTuple t, List<String> contentFields) {
+	private void populatePtoPTuple(PtoPTuple t, List<String> contentFields) {
 		
 		//contentFields.get(1) is ta
 		TemporalReference tr = new TemporalReference(contentFields.get(1), contentFields.get(1).contains("Z"));
@@ -299,7 +299,7 @@ public class RtsTupleTextParser {
 
 	}
 
-	private void populatePtoLackUTemplate(PtoLackUTuple t, List<String> contentFields) {
+	private void populatePtoLackUTuple(PtoLackUTuple t, List<String> contentFields) {
 		
 		//contentFields.get(1) is ta
 		TemporalReference tr = new TemporalReference(contentFields.get(1), contentFields.get(1).contains("Z"));
@@ -325,7 +325,7 @@ public class RtsTupleTextParser {
 		
 	}
 
-	private void populatePtoCTemplate(PtoCTuple t, List<String> contentFields) {
+	private void populatePtoCTuple(PtoCTuple t, List<String> contentFields) {
 		
 		//contentFields.get(1) is ta
 		TemporalReference tr = new TemporalReference(contentFields.get(1), contentFields.get(1).contains("Z"));
@@ -344,7 +344,7 @@ public class RtsTupleTextParser {
 		t.setTemporalReference(new TemporalReference(contentFields.get(5), contentFields.get(5).contains("Z")));
 	}
 
-	private void populatePtoDETemplate(PtoDETuple t, List<String> contentFields) {
+	private void populatePtoDETuple(PtoDETuple t, List<String> contentFields) {
 		
 		//contentFields.get(1) is ta
 		TemporalReference tr = new TemporalReference(contentFields.get(1), contentFields.get(1).contains("Z"));
@@ -382,7 +382,7 @@ public class RtsTupleTextParser {
 		
 	}
 
-	private void populateMetadataTemplate(MetadataTuple t, List<String> contentFields) {
+	private void populateMetadataTuple(MetadataTuple t, List<String> contentFields) {
 		// TODO Auto-generated method stub
 		
 		//contentFields.get(1) is td
@@ -392,7 +392,7 @@ public class RtsTupleTextParser {
 			e.printStackTrace();
 		}
 		
-		//contentFields.get(2) is template IUI
+		//contentFields.get(2) is Tuple IUI
 		t.setReferent(Iui.createFromString(contentFields.get(2)));
 		
 		//contentFields.get(3) is change type
@@ -407,16 +407,16 @@ public class RtsTupleTextParser {
 		RtsErrorCode ec = RtsErrorCode.valueOf(contentFields.get(5));
 		t.setErrorCode(ec);
 		
-		//contentFields.get(6) is list of replacement templates
-		String replTemplateField = contentFields.get(6);
-		if (replTemplateField.length() > 0) {
-			String[] replTemplateIuis = replTemplateField.split(Pattern.quote(""+RtsTupleTextWriter.SUBFIELD_DELIM));
+		//contentFields.get(6) is list of replacement Tuples
+		String replTupleField = contentFields.get(6);
+		if (replTupleField.length() > 0) {
+			String[] replTupleIuis = replTupleField.split(Pattern.quote(""+RtsTupleTextWriter.SUBFIELD_DELIM));
 			HashSet<Iui> replIuis = new HashSet<Iui>();
-			for (String replTemplateIui : replTemplateIuis) {
-				Iui replIui = Iui.createFromString(replTemplateIui);
+			for (String replTupleIui : replTupleIuis) {
+				Iui replIui = Iui.createFromString(replTupleIui);
 				replIuis.add(replIui);
 			}
-			if (replIuis.size() > 0) t.setReplacementTemplateIuis(replIuis);
+			if (replIuis.size() > 0) t.setReplacementTupleIuis(replIuis);
 		}
 	}
 	

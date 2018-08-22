@@ -23,7 +23,7 @@ import edu.uams.dbmi.rts.tuple.RtsTupleType;
 
 /**
  * This interface specifies the contract of an entity that persists Referent
- * 	Tracking templates, and retrieves them.
+ * 	Tracking Tuples, and retrieves them.
  * 
  * @author williamhogan
  *
@@ -31,32 +31,32 @@ import edu.uams.dbmi.rts.tuple.RtsTupleType;
 public interface RtsStore {
 	
 	/**
-	 * Persists template in the backing store
+	 * Persists Tuple in the backing store
 	 * 
-	 * @param template
+	 * @param Tuple
 	 * @return true if successful
 	 */
-	public boolean saveTemplate(RtsTuple template);
+	public boolean saveTuple(RtsTuple Tuple);
 	
 	/**
-	 * Get a template by its IUI
+	 * Get a Tuple by its IUI
 	 * @param iui
-	 * @return An RtsTemplate whose IUI is that specified.
+	 * @return An RtsTuple whose IUI is that specified.
 	 */
-	public RtsTuple getTemplate(Iui iui);
+	public RtsTuple getTuple(Iui iui);
 	
 	/**
-	 * Get all the templates where the IUI is the iuip parameter or in the 
-	 * 	list of IUIs P of the PtoP template.
+	 * Get all the Tuples where the IUI is the iuip parameter or in the 
+	 * 	list of IUIs P of the PtoP Tuple.
 	 * @param iui
-	 * @return The set of unique templates where the given IUI is iuip or P
+	 * @return The set of unique Tuples where the given IUI is iuip or P
 	 */
 	public Set<RtsTuple> getByReferentIui(Iui iui);
 	
 	/**
-	 * Get all the templates where the IUI is the iuia parameter 
+	 * Get all the Tuples where the IUI is the iuia parameter 
 	 * @param iui
-	 * @return The set of unique templates where the given IUI is iuia
+	 * @return The set of unique Tuples where the given IUI is iuia
 	 */
 	public Set<RtsTuple> getByAuthorIui(Iui iui);
 	
@@ -70,10 +70,10 @@ public interface RtsStore {
 	public Iui getAvailableIui();
 
 	/**
-	 * runs a query given the template parameters
-	 * @param templateQuery
-	 * @param templateType 
+	 * runs a query given the Tuple parameters
+	 * @param TupleQuery
+	 * @param TupleType 
 	 */
-	public Set<RtsTuple> runQuery(TupleQuery templateQuery, RtsTupleType templateType);
+	public Set<RtsTuple> runQuery(TupleQuery TupleQuery, RtsTupleType TupleType);
 	
 }

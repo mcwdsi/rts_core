@@ -87,7 +87,7 @@ public class PtoDRTemplate extends RtsTuple {
 		StringBuilder builder = new StringBuilder();
 		builder.append("PtoDR <");
 		
-		builder.append(this.getTemplateIui());
+		builder.append(this.getTupleIui());
 		builder.append(", ");
 		
 		builder.append(this.getAuthorIui());

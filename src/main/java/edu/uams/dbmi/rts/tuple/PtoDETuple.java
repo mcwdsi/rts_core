@@ -12,7 +12,7 @@ import edu.uams.dbmi.rts.tuple.component.UniversalComponent;
 import edu.uams.dbmi.rts.uui.Uui;
 
 /**
- * Template that associates a particular (e.g. Josh Hanna's first name) with its 
+ * Tuple that associates a particular (e.g. Josh Hanna's first name) with its 
  * digital representation (e.g. the string "Josh").
  * @author 1070675
  *
@@ -37,7 +37,7 @@ public class PtoDETuple extends RtsTuple {
 		if (particularComponent.isEmpty()) {
 			particularComponent.addParticular(pr);
 		} else
-			throw new IllegalStateException("the referent of this PtoDE template has been set already.");
+			throw new IllegalStateException("the referent of this PtoDE Tuple has been set already.");
 	}
 	
 	public ParticularReference getReferent() {
@@ -48,7 +48,7 @@ public class PtoDETuple extends RtsTuple {
 		if (namingSystemComponent.isEmpty()) {
 			namingSystemComponent.addParticular(iui);
 		} else
-			throw new IllegalStateException("the referent of this PtoDE template has been set already.");
+			throw new IllegalStateException("the referent of this PtoDE Tuple has been set already.");
 	}
 	
 	public Iui getNamingSystem() {
@@ -122,7 +122,7 @@ public class PtoDETuple extends RtsTuple {
 	}
 	
 	@Override
-	public boolean isPtoDETemplate() {
+	public boolean isPtoDETuple() {
 		return true;
 	}
 	
@@ -131,7 +131,7 @@ public class PtoDETuple extends RtsTuple {
 		StringBuilder builder = new StringBuilder();
 		builder.append("PtoDE< ");
 		
-		builder.append(this.getTemplateIui());
+		builder.append(this.getTupleIui());
 		builder.append(", ");
 		
 		builder.append(this.getAuthorIui());

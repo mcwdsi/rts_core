@@ -11,7 +11,7 @@ import edu.uams.dbmi.rts.tuple.component.UniversalComponent;
 import edu.uams.dbmi.rts.uui.Uui;
 
 /**
- * Template that relates a particular (e.g. Josh Hanna) to a universal (e.g. Person)
+ * Tuple that relates a particular (e.g. Josh Hanna) to a universal (e.g. Person)
  * @author 1070675
  *
  */
@@ -33,7 +33,7 @@ public class PtoUTuple extends RtsTuple {
 		if (particularComponent.isEmpty()) {
 			particularComponent.addParticular(iui);
 		} else 
-			throw new IllegalStateException("the referent of this PtoU template has been set already.");
+			throw new IllegalStateException("the referent of this PtoU Tuple has been set already.");
 	}
 	
 	public Iui getReferentIui() {
@@ -125,7 +125,7 @@ public class PtoUTuple extends RtsTuple {
 	}
 	
 	@Override
-	public boolean isPtoUTemplate(){
+	public boolean isPtoUTuple(){
 		return true;
 	}
 	
@@ -134,7 +134,7 @@ public class PtoUTuple extends RtsTuple {
 		StringBuilder builder = new StringBuilder();
 		builder.append("PtoU< ");
 		
-		builder.append(this.getTemplateIui());
+		builder.append(this.getTupleIui());
 		builder.append(", ");
 		
 		builder.append(this.getAuthorIui());
