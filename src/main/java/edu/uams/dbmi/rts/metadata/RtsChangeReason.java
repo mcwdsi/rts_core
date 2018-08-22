@@ -16,7 +16,7 @@ package edu.uams.dbmi.rts.metadata;
 
 /**
  * An enumerated list of change reasons used to populate the C parameter of
- * 	metadata templates.
+ * 	metadata tuples.
  * 
  * @author williamhogan
  *

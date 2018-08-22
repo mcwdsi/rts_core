@@ -4,21 +4,21 @@ import edu.uams.dbmi.rts.session.RtsSession;
 
 public abstract class RtsManager {
 	
-	protected RtsTupleFactory templateFactory;
+	protected RtsTupleFactory tupleFactory;
 	
 	public RtsManager(){
-		this.templateFactory = createTemplateFactory();
+		this.tupleFactory = createTupleFactory();
 	}
 	
-	public RtsTupleFactory getTemplateFactory(){
-		return templateFactory;
+	public RtsTupleFactory getTupleFactory(){
+		return tupleFactory;
 	}
 		
 	public RtsSession getRtsSession(){
 		return createRtsSession();
 	}
 	
-	protected RtsTupleFactory createTemplateFactory(){
+	protected RtsTupleFactory createTupleFactory(){
 		return new RtsTupleFactory();
 	}
 	
