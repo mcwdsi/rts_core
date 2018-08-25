@@ -1,0 +1,75 @@
+#configuration / arguments input into the process
+#IUI of the database from which the source data derives
+IUIp-1 = $1             
+ #ISO8601 timestamp to associate with time of IUI assignment               
+timestamp-1 = $2	     
+#IUI of the user running this process
+IUIp-16 = $3		   
+ #ISO8601 timestamp to associate with time of template insertion  
+timestamp-2 = $3	   
+
+# A templates, starting with assigning template IUIs.
+IUIt-1 = [new-iui]
+IUIt-2 = [new-iui]
+IUIp-2 = A|[IUIt-1]~[IUIp-1]|[timestamp-1]|[new-iui]   #new-iui is instruction to create a new IUI
+IUIp-3 = A|[IUIt-2]~[IUIp-1]|[timestamp-1]|[new-iui]
+D|[new-iui]|IUIp-16|[timestamp-2]|[IUIt-1]|CR   #for now, not storing D tuple’s IUI for later use
+D|[new-iui]|IUIp-16|[timestamp-2]|[IUIt-2]|CR
+
+#some temporal references we’ll need later
+#interval over which person has been instance of human being
+tr-1 = T~[new-iui]|<http://purl.obolibrary.org/obo/BFO_0000038>|db2282a4-631f-4d2c-940f-a220c496f6be
+#interval over which person has been bearer of his/her phenotypic sex
+tr-2 = T~[new-iui]|<http://purl.obolibrary.org/obo/BFO_0000038>|db2282a4-631f-4d2c-940f-a220c496f6be
+#temporal instant for time of assertion
+tr-3 = T~[timestamp-2]|<http://purl.obolibrary.org/obo/BFO_0000148>|d4af5c9a-47ba-4bf4-9bae-f13a8ed6455e
+#temporal instant at which person was born.  
+tr-4 = T~[new-iui]|<http://purl.obolibrary.org/obo/BFO_0000148>|d4af5c9a-47ba-4bf4-9bae-f13a8ed6455e
+
+IUI-t4 = [new-iui]
+IUI-t5 = [new-iui]
+U|[IUIt-4]~[IUI-p1]|[tr-3]|instance-of|BFO|[IUIp-2]|obo:NCBITaxon_9606|NCBI|[tr-1]
+U|[IUIt-5]~[IUIp-1]|[tr-3]|instance-of|BFO|[IUIp-3]|Birth|PATO?|[tmax]
+
+if ({4} =="M") 
+IUIt-3 = [new-iui]
+IUIp-4 = A|[IUIt-3]~[IUIp-1]|[timestamp-1]|[new-iui]
+D|[new-iui]|IUIp-16|[timestamp-2]|[IUIt-3]|CR
+ 	IUIt-6 = [new-iui]
+	U|[IUIt-6]~[IUIp-1]|[tr-3]|instance-of|BFO|[IUIp-4]|<http://purl.obolibrary.org/obo/PATO_0000384>|PATO|[tr-2]
+D|[new-iui]|[IUIp-16]|[timestamp-2]|[IUIt-6]|CR
+endif
+
+if ({4} == "F")
+IUIt-3 = [new-iui]
+IUIp-4 = A|[IUIt-3]~[IUIp-1]|[timestamp-1]|[new-iui]
+D|[new-iui]|IUIp-16|[timestamp-2]|[IUIt-3]|CR
+ 	IUIt-6 = [new-iui]
+	U|[IUIt-6]~[IUIp-1]|[tr-3]|instance-of|BFO|[IUIp-4]|<http://purl.obolibrary.org/obo/PATO_0000383>|PATO|[tr-2]
+D|[new-iui]|[IUIp-16]|[timestamp-2]|[IUIt-6]|CR
+endif
+
+
+if ({4}=="A")
+IUIt-3 = [new-iui]
+IUIp-4 = A|[IUIt-3]~[IUIp-1]|[timestamp-1]|[new-iui]
+D|[new-iui]|IUIp-16|[timestamp-2]|[IUIt-3]|CR
+ 	IUIt-6 = [new-iui]
+	IUIt-6 = U|[IUIt-6]~[IUIp-1]|[tr-3]|instance-of|BFO|[IUIp-4]|<http://purl.obolibrary.org/obo/PATO_0001340>|PATO|[tr-2]
+D|[new-iui]|[IUIp-16]|[timestamp-2]|[IUIt-6]|CR
+endif
+
+
+IUIt-7= [new-iui]
+IUIt-8 = [new-iui]
+IUIt-9 = [new-iui]
+IUIt-10 = [new-iui]
+tr-5 = T~{2}|<http://purl.obolibrary.org/obo/BFO_0000038>|d4af5c9a-47ba-4bf4-9bae-f13a8ed6455e
+P|[IUIt-7]|[IUIp-1]|[tr-3]|agent in|BFO|[IUIp-1, IUIp-2]|[tr-4]
+P|[IUIt-8]|[IUIp-1]|[tr-3]|bearer-of|BFO|[IUIp-1, IUIp-3]|[tr-2]
+P|[IUIt-9]|[IUIp-1]|[tr-3]|occupies temporal region|BFO|[IUIp-2, tr-4]|[tmax]
+P|[IUIt-10]|[IUIp-1]|[tr-3]|during|RO|[tr-1, tr-5]|[tmax]
+D|[new-iui]|IUIp-16|[timestamp-2]|[IUIt-7]|CR
+D|[new-iui]|IUIp-16|[timestamp-2]|[IUIt-8]|CR
+D|[new-iui]|IUIp-16|[timestamp-2]|[IUIt-9]|CR
+D|[new-iui]|IUIp-16|[timestamp-2]|[IUIt-10]|CR
