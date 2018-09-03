@@ -169,7 +169,7 @@ public class RtsTupleTextParser {
 		}
 	}
 
-	protected List<String> splitDelimitedQuotedAndEscapedText(String text, char delim, char openQuote, 
+	public static List<String> splitDelimitedQuotedAndEscapedText(String text, char delim, char openQuote, 
 			char closeQuote, char escape) throws ParseException {
 		ArrayList<String> fragments = new ArrayList<String>(text.length()/2);
 		/*
