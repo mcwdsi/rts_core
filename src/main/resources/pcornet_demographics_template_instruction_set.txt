@@ -28,9 +28,9 @@ tr-3 = T~[timestamp-2]|<http://purl.obolibrary.org/obo/BFO_0000148>|d4af5c9a-47b
 #temporal instant at which person was born.  
 tr-4 = T~[new-iui]|<http://purl.obolibrary.org/obo/BFO_0000148>|d4af5c9a-47ba-4bf4-9bae-f13a8ed6455e
 
-IUI-t4 = [new-iui]
-IUI-t5 = [new-iui]
-U|[IUIt-4]~[IUI-p1]|[tr-3]|instance-of|BFO|[IUIp-2]|obo:NCBITaxon_9606|NCBI|[tr-1]
+IUIt-4 = [new-iui]
+IUIt-5 = [new-iui]
+U|[IUIt-4]~[IUIp-1]|[tr-3]|instance-of|BFO|[IUIp-2]|obo:NCBITaxon_9606|NCBI|[tr-1]
 U|[IUIt-5]~[IUIp-1]|[tr-3]|instance-of|BFO|[IUIp-3]|Birth|PATO?|[tmax]
 
 if ({4} =="M") 

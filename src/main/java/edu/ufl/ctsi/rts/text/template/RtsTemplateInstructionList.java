@@ -49,7 +49,8 @@ public class RtsTemplateInstructionList implements Iterable<RtsTemplateInstructi
 	}
 	
 	public int getConditionFieldNum() {
-		return condition.getFieldNum();
+		if (condition == null) return 1;
+		else return condition.getFieldNum();
 	}
 
 	public int size() {

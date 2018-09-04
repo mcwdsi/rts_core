@@ -117,6 +117,13 @@ public class RtsTemplateInstructionListPseudoCompiler {
 		lnr.close();
 		fr.close();
 	}
+	
+	public RtsTemplateInstructionListExecutor getInstructionListExecutor() {
+		instructionListExecutor.setGlobalVariables(globalVariables);
+		instructionListExecutor.addInstructionList(currentInstructionList); //got to add whatever was hanging out there in the end...
+		
+		return instructionListExecutor;
+	}
 
 	private void handleConditionalEndPattern(Matcher m3) {
 		if (currentInstructionList.size() > 0)
@@ -154,8 +161,8 @@ public class RtsTemplateInstructionListPseudoCompiler {
 			String tupleBlock = blocks.get(0);
 			String contentBlock = blocks.get(1);
 		
-			List<String> tupleFields = RtsTupleTextParser.splitDelimitedQuotedAndEscapedText(tupleBlock, blockDelim, quoteOpen, quoteClose, escape);
-			List<String> contentFields = RtsTupleTextParser.splitDelimitedQuotedAndEscapedText(contentBlock, blockDelim, quoteOpen, quoteClose, escape);
+			List<String> tupleFields = RtsTupleTextParser.splitDelimitedQuotedAndEscapedText(tupleBlock, fieldDelim, quoteOpen, quoteClose, escape);
+			List<String> contentFields = RtsTupleTextParser.splitDelimitedQuotedAndEscapedText(contentBlock, fieldDelim, quoteOpen, quoteClose, escape);
 			
 			RtsTupleCompletionInstruction inst = new RtsTupleCompletionInstruction(tupleFields, contentFields);
 			currentInstructionList.addInstruction(inst);
