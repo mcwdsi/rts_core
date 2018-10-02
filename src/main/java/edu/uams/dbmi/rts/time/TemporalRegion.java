@@ -5,6 +5,7 @@ import java.util.GregorianCalendar;
 import java.util.TimeZone;
 import java.util.UUID;
 
+import edu.uams.dbmi.rts.RtsDeclaration;
 import edu.uams.dbmi.rts.iui.Iui;
 import edu.uams.dbmi.rts.uui.Uui;
 import edu.uams.dbmi.util.iso8601.Iso8601Date;
@@ -46,7 +47,7 @@ import edu.uams.dbmi.util.iso8601.TimeUnit;
  * 
  * 
  */
-public class TemporalRegion  {
+public class TemporalRegion extends RtsDeclaration {
 
 
 	Iui calendarSystemIui;

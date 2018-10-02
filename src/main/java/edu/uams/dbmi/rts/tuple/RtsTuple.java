@@ -1,5 +1,6 @@
 package edu.uams.dbmi.rts.tuple;
 
+import edu.uams.dbmi.rts.RtsDeclaration;
 import edu.uams.dbmi.rts.iui.Iui;
 import edu.uams.dbmi.rts.tuple.component.AuthoringComponent;
 import edu.uams.dbmi.rts.tuple.component.IuiComponent;
@@ -13,7 +14,7 @@ import edu.uams.dbmi.rts.tuple.component.IuiComponent;
  * @author Josh Hanna
  *
  */
-public abstract class RtsTuple {
+public abstract class RtsTuple extends RtsDeclaration {
 	
 	/*
 	 * IuiComponent contains IUI of Tuple itself

@@ -144,9 +144,9 @@ public class RtsTemplateInstructionListPseudoCompiler {
 	}
 
 	private void setupTupleCompletion(Matcher m, boolean hasVariable, String line) {
-		String tupleTemplate = "";
+		String tupleTemplate = "", varName = null;
 		if (hasVariable) {
-			String varName = m.group(1);
+			varName = m.group(1);
 			tupleTemplate = line.substring(m.start(2));
 		} else {
 			tupleTemplate = line;
@@ -163,6 +163,27 @@ public class RtsTemplateInstructionListPseudoCompiler {
 		
 			List<String> tupleFields = RtsTupleTextParser.splitDelimitedQuotedAndEscapedText(tupleBlock, fieldDelim, quoteOpen, quoteClose, escape);
 			List<String> contentFields = RtsTupleTextParser.splitDelimitedQuotedAndEscapedText(contentBlock, fieldDelim, quoteOpen, quoteClose, escape);
+			
+			String compare = "[" + varName + "]";
+			int iContentField = 0;
+			for (String s : contentFields) {
+				if (s.equals(compare)) {
+					contentFields.set(iContentField, s);
+				}
+				iContentField++;
+			}
+			
+			if (varName != null) {
+				String variableCompletion = (tupleFields.get(0).equals("A")) ? contentFields.get(2) : contentFields.get(0);
+				if (variableCompletion.equals("[new-iui]")) {
+					RtsAssignIuiInstruction inst = new RtsAssignIuiInstruction(varName);
+					currentInstructionList.addInstruction(inst);
+				} else if (variableCompletion.startsWith("{") && variableCompletion.endsWith("}")) {
+					int fieldNum = Integer.parseInt(variableCompletion.substring(1, variableCompletion.length()-1));
+					RtsAssignFieldValueInstruction inst = new RtsAssignFieldValueInstruction(varName, fieldNum);
+					currentInstructionList.addInstruction(inst);
+				}
+			}
 			
 			RtsTupleCompletionInstruction inst = new RtsTupleCompletionInstruction(tupleFields, contentFields);
 			currentInstructionList.addInstruction(inst);
@@ -190,12 +211,12 @@ public class RtsTemplateInstructionListPseudoCompiler {
 			}
 		}
 		
-		if (iuiTxt != null) {
+		else if (iuiTxt != null) {
 			RtsAssignIuiInstruction inst = new RtsAssignIuiInstruction(varName);
 			currentInstructionList.addInstruction(inst);
 		}
 		
-		if (systime != null) {
+		else if (systime != null) {
 			RtsAssignTimestampInstruction inst = new RtsAssignTimestampInstruction(varName);
 			currentInstructionList.addInstruction(inst);
 		}

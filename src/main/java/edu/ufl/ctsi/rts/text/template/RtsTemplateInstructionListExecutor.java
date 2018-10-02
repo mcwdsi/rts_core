@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TimeZone;
 
-import edu.uams.dbmi.rts.tuple.RtsTuple;
+import edu.uams.dbmi.rts.RtsDeclaration;
 import edu.uams.dbmi.util.iso8601.Iso8601DateTime;
 import edu.uams.dbmi.util.iso8601.Iso8601DateTimeFormatter;
 
@@ -24,25 +24,32 @@ public class RtsTemplateInstructionListExecutor {
 		listOfInstructionLists = new ArrayList<RtsTemplateInstructionList>();
 	}
 	
-	public Set<RtsTuple> processRecord(ArrayList<String> fields) {
-		HashSet<RtsTuple> tupleSet = new HashSet<RtsTuple>();
+	public Set<RtsDeclaration> processRecord(ArrayList<String> fields) {
+		HashSet<RtsDeclaration> tupleSet = new HashSet<RtsDeclaration>();
 		
 		@SuppressWarnings("rawtypes")
 		HashMap<String, RtsTemplateVariable> localVariables = new HashMap<String, RtsTemplateVariable>();
+		localVariables.putAll(globalVariables);
 		
 		String systimeTxt = getNewIso8601SystimeString();
 		ArrayList<String> args = new ArrayList<String>();
 		args.add(systimeTxt);
+		args.addAll(fields);
+		System.out.println("num of fields " + fields.size());
 		for (RtsTemplateInstructionList instList : listOfInstructionLists) {
+			System.out.println("Processing instruction set:");
 			if (instList.shouldExecute(fields.get(instList.getConditionFieldNum()-1))) {
 				for (RtsTemplateInstruction instruction : instList) {
+					System.out.println("\tProcessing instruction " + instruction);
 					instruction.execute(args, localVariables);
-					if (instruction instanceof RtsVariableAssignmentInstruction) {
+					/*if (instruction instanceof RtsVariableAssignmentInstruction) {
 						RtsVariableAssignmentInstruction varInst = (RtsVariableAssignmentInstruction)instruction;
+						varInst.execute(args, localVariables);
 						localVariables.put(varInst.getVariableName(), varInst.getVariable());
-					} else if (instruction instanceof RtsTupleCompletionInstruction) {
+					} else */
+					if (instruction instanceof RtsTupleCompletionInstruction) {
 						RtsTupleCompletionInstruction tupInst = (RtsTupleCompletionInstruction)instruction;
-						tupleSet.add(executeTupleCompletionInstruction(tupInst));
+						tupleSet.add(tupInst.getTuple());
 					}
 				}
 			}
@@ -53,10 +60,6 @@ public class RtsTemplateInstructionListExecutor {
 		return tupleSet;
 	}
 	
-	private RtsTuple executeTupleCompletionInstruction(RtsTupleCompletionInstruction tupInst) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	protected String getNewIso8601SystimeString() {
 		Iso8601DateTime dt = new Iso8601DateTime((GregorianCalendar) Calendar.getInstance(TimeZone.getTimeZone("UTC")));

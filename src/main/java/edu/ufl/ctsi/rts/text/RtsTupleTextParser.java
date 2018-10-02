@@ -2,32 +2,15 @@ package edu.ufl.ctsi.rts.text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.net.URI;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.regex.Pattern;
 
-import edu.uams.dbmi.rts.cui.Cui;
-import edu.uams.dbmi.rts.iui.Iui;
-import edu.uams.dbmi.rts.metadata.RtsChangeReason;
-import edu.uams.dbmi.rts.metadata.RtsChangeType;
-import edu.uams.dbmi.rts.metadata.RtsErrorCode;
-import edu.uams.dbmi.rts.time.TemporalReference;
+import edu.uams.dbmi.rts.RtsDeclaration;
+import edu.uams.dbmi.rts.RtsTupleFactory;
 import edu.uams.dbmi.rts.time.TemporalRegion;
-import edu.uams.dbmi.rts.tuple.ATuple;
-import edu.uams.dbmi.rts.tuple.MetadataTuple;
-import edu.uams.dbmi.rts.tuple.PtoCTuple;
-import edu.uams.dbmi.rts.tuple.PtoDETuple;
-import edu.uams.dbmi.rts.tuple.PtoLackUTuple;
-import edu.uams.dbmi.rts.tuple.PtoPTuple;
-import edu.uams.dbmi.rts.tuple.PtoUTuple;
 import edu.uams.dbmi.rts.tuple.RtsTuple;
-import edu.uams.dbmi.rts.uui.Uui;
-import edu.uams.dbmi.util.iso8601.Iso8601DateParseException;
-import edu.uams.dbmi.util.iso8601.Iso8601DateTimeParser;
-import edu.uams.dbmi.util.iso8601.Iso8601TimeParseException;
 
 
 public class RtsTupleTextParser {
@@ -37,14 +20,13 @@ public class RtsTupleTextParser {
 	HashSet<RtsTuple> Tuples;
 	HashSet<TemporalRegion> temporalRegions;
 	
-	protected Iso8601DateTimeParser dt_parser;
+	protected RtsTupleFactory tFactory;	
 	
 	public RtsTupleTextParser(BufferedReader r) {
 		this.r = r;
 		Tuples = new HashSet<RtsTuple>();
 		temporalRegions = new HashSet<TemporalRegion>();
-		
-		dt_parser = new Iso8601DateTimeParser();
+		tFactory = new RtsTupleFactory();
 	}
 	
 	public void parseTuples() throws IOException, ParseException {
@@ -119,10 +101,10 @@ public class RtsTupleTextParser {
 	
 		if (blocks.size() != 2) System.err.println("INCORRECT NUMBER OF BLOCKS!!! " + blocks.size());
 		
-		String TupleBlock = blocks.get(0);
+		String tupleBlock = blocks.get(0);
 		String contentBlock = blocks.get(1);
 		
-		List<String> TupleFields = splitDelimitedQuotedAndEscapedText(TupleBlock, 
+		List<String> tupleFields = splitDelimitedQuotedAndEscapedText(tupleBlock, 
 				RtsTupleTextWriter.FIELD_DELIM,
 				RtsTupleTextWriter.QUOTE_OPEN,
 				RtsTupleTextWriter.QUOTE_CLOSE,
@@ -134,41 +116,19 @@ public class RtsTupleTextParser {
 				RtsTupleTextWriter.QUOTE_CLOSE,
 				RtsTupleTextWriter.ESCAPE);
 		
-		String tupleType = TupleFields.get(0);
-		RtsTuple Tuple = null;
-		TemporalRegion temporalRegion = null;
-		if (tupleType.equals("A")) {
-			Tuple = new ATuple();		
-		} else if (tupleType.equals("U")) {
-			Tuple = new PtoUTuple();
-		} else if (tupleType.equals("P")) {
-			Tuple = new PtoPTuple();
-		} else if (tupleType.equals("L")) {
-			Tuple = new PtoLackUTuple();
-		} else if (tupleType.equals("C")) {
-			Tuple = new PtoCTuple();
-		} else if (tupleType.equals("E")) {
-			Tuple = new PtoDETuple();
-		} else if (tupleType.equals("D")) {
-			Tuple = new MetadataTuple();
-		} else if (tupleType.equals("T")) {
-			temporalRegion = createTemporalRegion(contentFields);
-		} else {
-			throw new RuntimeException("Unrecognized tuple type: " + tupleType);
-		}
+		RtsDeclaration Tuple = tFactory.buildRtsTupleOrTemporalRegion(tupleFields, contentFields);
 		
-		if (Tuple != null) {
-			Tuple.setTupleIui(Iui.createFromString(TupleFields.get(1)));
-			Tuple.setAuthorIui(Iui.createFromString(contentFields.get(0)));
-			populateTuple(Tuple, contentFields);
-			Tuples.add(Tuple);
-		}
+	
 		
-		if (temporalRegion != null) {
-			temporalRegions.add(temporalRegion);
+		if (Tuple instanceof RtsTuple) {
+			RtsTuple t = (RtsTuple)Tuple;
+			Tuples.add(t);
+		} else if (Tuple instanceof TemporalRegion) {
+			TemporalRegion tr = (TemporalRegion)Tuple;
+			temporalRegions.add(tr);
 		}
 	}
-
+ 
 	public static List<String> splitDelimitedQuotedAndEscapedText(String text, char delim, char openQuote, 
 			char closeQuote, char escape) throws ParseException {
 		ArrayList<String> fragments = new ArrayList<String>(text.length()/2);
@@ -208,240 +168,5 @@ public class RtsTupleTextParser {
 		}
 		fragments.add(text.substring(begin));  //the last delimited piece is hanging out here to be collected
 		return fragments;
-	}
-	
-	protected void populateTuple(RtsTuple t, List<String> contentFields) {
-		if (t instanceof ATuple) {
-			populateATuple((ATuple)t, contentFields);
-		} else if (t instanceof PtoUTuple) {
-			populatePtoUTuple((PtoUTuple)t, contentFields);
-		} else if (t instanceof PtoPTuple) {
-			populatePtoPTuple((PtoPTuple)t, contentFields);
-		} else if (t instanceof PtoLackUTuple) {
-			populatePtoLackUTuple((PtoLackUTuple)t, contentFields);
-		} else if (t instanceof PtoCTuple) {
-			populatePtoCTuple((PtoCTuple)t, contentFields);
-		} else if (t instanceof PtoDETuple) {
-			populatePtoDETuple((PtoDETuple)t, contentFields);
-		} else if (t instanceof MetadataTuple) {
-			populateMetadataTuple((MetadataTuple)t, contentFields);
-		}
-	}
-
-	private void populateATuple(ATuple t, List<String> contentFields) {
-		// set the referent IUI - IUIp
-		t.setReferentIui(Iui.createFromString(contentFields.get(2)));
-		try {
-			//set the authoring timestamp - ta
-			t.setAuthoringTimestamp(dt_parser.parse(contentFields.get(1)));
-		} catch (Iso8601DateParseException e) {
-			e.printStackTrace();
-		} catch (Iso8601TimeParseException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void populatePtoUTuple(PtoUTuple t, List<String> contentFields) {
-		
-		//contentFields.get(1) is ta
-		TemporalReference tr = new TemporalReference(contentFields.get(1), contentFields.get(1).contains("Z"));
-		t.setAuthoringTimeReference(tr);
-		
-		//contentFields.get(2) is r
-		t.setRelationshipURI(URI.create(contentFields.get(2)));
-		
-		//contentFields.get(3) is IUIo for r
-		t.setRelationshipOntologyIui(Iui.createFromString(contentFields.get(3)));
-		
-		//contentFields.get(4) is IUIp
-		t.setReferentIui(Iui.createFromString(contentFields.get(4)));
-		
-		//contentFields.get(5) is UUI 
-		t.setUniversalUui(new Uui(contentFields.get(5)));
-		
-		//contentFields.get(6) is IUIo for UUI
-		t.setUniversalOntologyIui(Iui.createFromString(contentFields.get(6)));
-		
-		//contentFields.get(7) is tr
-		t.setTemporalReference(new TemporalReference(contentFields.get(7), contentFields.get(7).contains("Z")));
-
-	}
-
-	private void populatePtoPTuple(PtoPTuple t, List<String> contentFields) {
-		
-		//contentFields.get(1) is ta
-		TemporalReference tr = new TemporalReference(contentFields.get(1), contentFields.get(1).contains("Z"));
-		t.setAuthoringTimeReference(tr);
-		
-		//contentFields.get(2) is r
-		t.setRelationshipURI(URI.create(contentFields.get(2)));
-		
-		//contentFields.get(3) is IUIo for r
-		t.setRelationshipOntologyIui(Iui.createFromString(contentFields.get(3)));
-		
-		//contentFields.get(4) is P
-		String[] prefs = contentFields.get(4).split(Pattern.quote(""+RtsTupleTextWriter.SUBFIELD_DELIM));
-		for (String pref : prefs) {
-			String[] refInfo = pref.split(Pattern.quote("="));
-			if (refInfo[0].equals("iui")) {
-				Iui iui = Iui.createFromString(refInfo[1]);
-				t.addParticular(iui);
-			} else if (refInfo[0].equals("tref")) {
-				TemporalReference tref = new TemporalReference(refInfo[1], refInfo[1].contains("Z"));
-				t.addParticular(tref);
-			} else {
-				throw new IllegalArgumentException("particular reference type must be 'iui' or 'tref'");
-			}
-		}
-					
-		//contentFields.get(5) is tr
-		t.setTemporalReference(new TemporalReference(contentFields.get(5), contentFields.get(5).contains("Z")));
-
-	}
-
-	private void populatePtoLackUTuple(PtoLackUTuple t, List<String> contentFields) {
-		
-		//contentFields.get(1) is ta
-		TemporalReference tr = new TemporalReference(contentFields.get(1), contentFields.get(1).contains("Z"));
-		t.setAuthoringTimeReference(tr);
-		
-		//contentFields.get(2) is r
-		t.setRelationshipURI(URI.create(contentFields.get(2)));
-		
-		//contentFields.get(3) is IUIo for r
-		t.setRelationshipOntologyIui(Iui.createFromString(contentFields.get(3)));
-		
-		//contentFields.get(4) is IUIp
-		t.setReferentIui(Iui.createFromString(contentFields.get(4)));
-		
-		//contentFields.get(5) is UUI 
-		t.setUniversalUui(new Uui(contentFields.get(5)));
-		
-		//contentFields.get(6) is IUIo for UUI
-		t.setUniversalOntologyIui(Iui.createFromString(contentFields.get(6)));
-		
-		//contentFields.get(7) is tr
-		t.setTemporalReference(new TemporalReference(contentFields.get(7), contentFields.get(7).contains("Z")));
-		
-	}
-
-	private void populatePtoCTuple(PtoCTuple t, List<String> contentFields) {
-		
-		//contentFields.get(1) is ta
-		TemporalReference tr = new TemporalReference(contentFields.get(1), contentFields.get(1).contains("Z"));
-		t.setAuthoringTimeReference(tr);
-		
-		//contentFields.get(2) is IUIc
-		t.setConceptSystemIui(Iui.createFromString(contentFields.get(2)));
-		
-		//contentFields.get(3) is IUIp
-		t.setReferentIui(Iui.createFromString(contentFields.get(3)));
-		
-		//contentFields.get(4) is UUI 
-		t.setConceptCui(new Cui(contentFields.get(4)));
-		
-		//contentFields.get(5) is tr
-		t.setTemporalReference(new TemporalReference(contentFields.get(5), contentFields.get(5).contains("Z")));
-	}
-
-	private void populatePtoDETuple(PtoDETuple t, List<String> contentFields) {
-		
-		//contentFields.get(1) is ta
-		TemporalReference tr = new TemporalReference(contentFields.get(1), contentFields.get(1).contains("Z"));
-		t.setAuthoringTimeReference(tr);
-		
-		//contentFields.get(2) is r
-		t.setRelationshipURI(URI.create(contentFields.get(2)));
-		
-		//contentFields.get(3) is IUIo for r
-		t.setRelationshipOntologyIui(Iui.createFromString(contentFields.get(3)));
-		
-		//contentFields.get(4) is IUIp
-		String[] refInfo = contentFields.get(4).split(Pattern.quote("="));
-		if (refInfo[0].equals("iui")) {
-			Iui iui = Iui.createFromString(refInfo[1]);
-			t.setReferent(iui);
-		} else if (refInfo[0].equals("tref")) {
-			TemporalReference tref = new TemporalReference(refInfo[1], refInfo[1].contains("Z"));
-			t.setReferent(tref);
-		} else {
-			throw new IllegalArgumentException("particular reference type must be 'iui' or 'tref'");
-		}
-		
-		//contentFields.get(5) is datatype UUI 
-		t.setDatatypeUui(new Uui(contentFields.get(5)));
-		
-		//contentFields.get(6) is IUIo for datatype UUI
-		t.setDatatypeOntologyIui(Iui.createFromString(contentFields.get(6)));
-		
-		//contentFields.get(7) is naming system IUI
-		t.setNamingSystem(Iui.createFromString(contentFields.get(7)));
-		
-		//contentFields.get(8) is data
-		t.setData(contentFields.get(8).getBytes());
-		
-	}
-
-	private void populateMetadataTuple(MetadataTuple t, List<String> contentFields) {
-		// TODO Auto-generated method stub
-		
-		//contentFields.get(1) is td
-		try {
-			t.setAuthoringTimestamp(dt_parser.parse(contentFields.get(1)));
-		} catch (Iso8601DateParseException | Iso8601TimeParseException e) {
-			e.printStackTrace();
-		}
-		
-		//contentFields.get(2) is Tuple IUI
-		t.setReferent(Iui.createFromString(contentFields.get(2)));
-		
-		//contentFields.get(3) is change type
-		RtsChangeType ct = RtsChangeType.valueOf(contentFields.get(3));
-		t.setChangeType(ct);
-		
-		//contentFields.get(4) is change reason
-		RtsChangeReason cr = RtsChangeReason.valueOf(contentFields.get(4));
-		t.setChangeReason(cr);
-		
-		//contentFields.get(5) is error code
-		RtsErrorCode ec = RtsErrorCode.valueOf(contentFields.get(5));
-		t.setErrorCode(ec);
-		
-		//contentFields.get(6) is list of replacement Tuples
-		String replTupleField = contentFields.get(6);
-		if (replTupleField.length() > 0) {
-			String[] replTupleIuis = replTupleField.split(Pattern.quote(""+RtsTupleTextWriter.SUBFIELD_DELIM));
-			HashSet<Iui> replIuis = new HashSet<Iui>();
-			for (String replTupleIui : replTupleIuis) {
-				Iui replIui = Iui.createFromString(replTupleIui);
-				replIuis.add(replIui);
-			}
-			if (replIuis.size() > 0) t.setReplacementTupleIuis(replIuis);
-		}
-	}
-	
-	private TemporalRegion createTemporalRegion(List<String> contentFields) {
-		/* 2 - last thing in content fields is IUI of naming system
-		 * 	This must be: 
-		 *     1. D4AF5C9A-47BA-4BF4-9BAE-F13A8ED6455E if it's an ISO8601 date/time, and possibly even 
-		 *     		any Gregorian Calendar system.
-		 *     2. DB2282A4-631F-4D2C-940F-A220C496F6BE if it's a generic temporal reference that refers to 
-		 *     	    some time interval either whose boundaries are not known or that spans but does not 
-		 *          equate to intervals named in ISO8601 or the Gregorian more generally.
-		 *     3. Some other IUI that refers to some calendaring or other naming system for temporal
-		 *          regions.  Could be Hebrew calendar, Julian calendar, for example.
-		 */
-		String nsIuiTxt = contentFields.get(2);
-		Iui nsIui = Iui.createFromString(nsIuiTxt);	
-		
-		// 0 - first thing in content fields is the temporal reference for the region
-		String tRefTxt = contentFields.get(0);
-		TemporalReference tref = new TemporalReference(tRefTxt, nsIui.equals(TemporalRegion.ISO_IUI));
-		
-		// 1 - next thing in content fields is UUI -- almost always will BFO IRI -- for type of region
-		String typeTxt = contentFields.get(1);
-		Uui typeUui = new Uui(typeTxt);
-				
-		return new TemporalRegion(tref, typeUui, nsIui);
 	}
 }
