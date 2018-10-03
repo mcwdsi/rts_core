@@ -3,11 +3,12 @@ package edu.ufl.ctsi.rts.text.template;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import edu.uams.dbmi.rts.RtsDeclaration;
 import edu.uams.dbmi.rts.RtsTupleFactory;
 import edu.uams.dbmi.rts.iui.Iui;
-import edu.uams.dbmi.rts.tuple.RtsTuple;
+
 
 public class RtsTupleCompletionInstruction extends RtsTemplateInstruction {
 
@@ -17,12 +18,15 @@ public class RtsTupleCompletionInstruction extends RtsTemplateInstruction {
 	RtsDeclaration tuple;
 	RtsTupleFactory tFactory;
 	
-	public RtsTupleCompletionInstruction(List<String> tupleBlockFields, List<String> contentBlockFields) {
+	char subfieldDelim;
+	
+	public RtsTupleCompletionInstruction(List<String> tupleBlockFields, List<String> contentBlockFields, char subfieldDelim) {
 		this.tupleBlockFields = new ArrayList<String>();
 		this.tupleBlockFields.addAll(tupleBlockFields);
 		this.contentBlockFields = new ArrayList<String>();
 		this.contentBlockFields.addAll(contentBlockFields);
 		tFactory = new RtsTupleFactory();
+		this.subfieldDelim = subfieldDelim;
 	}
 	
 	@Override
@@ -54,11 +58,34 @@ public class RtsTupleCompletionInstruction extends RtsTemplateInstruction {
 				if (command.equals("new-iui")) {
 					contentBlock.add(Iui.createRandomIui().toString());
 				} else if (variables.containsKey(command)) {
-					System.out.println("\t\t" + command + "\t" + variables.get(command).getValue());
-					contentBlock.add(variables.get(command).getValue().toString());
+					System.out.println("\t\tCommand is variable: " + command + "\t" + variables.get(command).getValue());
+					contentBlock.add(variables.get(command).getValue().toString()); 
 				} else {
 					System.err.println("Unknown command or variable: " + command);
 				}
+			} else if (s.indexOf(subfieldDelim) > -1) {
+				String[] subfields = s.split(Pattern.quote(Character.toString(subfieldDelim)));
+				
+				System.out.println("\t\tCommand has subfields: " + s + "\t" + subfields[0] + "\t" + subfields[1]);
+						/*+ "\t" +
+						variables.get(subfields[0].trim()).getValue() + "\t" +
+						variables.get(subfields[1].trim()).getValue());*/
+				String substitution = "";
+				for (String sub : subfields) {
+					System.out.println("\t\t\t" + sub);
+					if (substitution.length() > 0) substitution += Character.toString(subfieldDelim);
+					String[] refInfo = sub.split(Pattern.quote("="));
+					String command = refInfo[1].substring(1, refInfo[1].length()-1).trim();
+					System.out.println(command);
+					
+					String varValue = variables.get(command).getValue().toString();
+					substitution += refInfo[0].trim() + "=" + varValue;
+				}
+				
+				//String substitution = variables.get(subfields[0].trim()).getValue() + Character.toString(subfieldDelim) + 
+				//		variables.get(subfields[1].trim()).getValue();
+				System.out.println("Substitution = " + substitution);
+				contentBlock.add(substitution); 
 			} else {
 				contentBlock.add(s);
 			}

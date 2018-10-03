@@ -182,10 +182,13 @@ public class RtsTemplateInstructionListPseudoCompiler {
 					int fieldNum = Integer.parseInt(variableCompletion.substring(1, variableCompletion.length()-1));
 					RtsAssignFieldValueInstruction inst = new RtsAssignFieldValueInstruction(varName, fieldNum);
 					currentInstructionList.addInstruction(inst);
+				} else {
+					System.err.println("Unknown variableCompletion pattern " + variableCompletion + " (" + line + ")");
+					
 				}
 			}
 			
-			RtsTupleCompletionInstruction inst = new RtsTupleCompletionInstruction(tupleFields, contentFields);
+			RtsTupleCompletionInstruction inst = new RtsTupleCompletionInstruction(tupleFields, contentFields, subfieldDelim);
 			currentInstructionList.addInstruction(inst);
 		} catch (ParseException pe) {
 			pe.printStackTrace();

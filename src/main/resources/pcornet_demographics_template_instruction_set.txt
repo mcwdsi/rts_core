@@ -57,7 +57,7 @@ IUIt-3 = [new-iui]
 IUIp-4 = A|[IUIt-3]~[IUIp-1]|[timestamp-1]|[new-iui]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-3]|I|CR|Null|
  	IUIt-6 = [new-iui]
-	IUIt-6 = U|[IUIt-6]~[IUIp-1]|[timestamp-2]|instance-of|BFO|[IUIp-4]|<http://purl.obolibrary.org/obo/PATO_0001340>|[PATO]|[tr-2]
+	U|[IUIt-6]~[IUIp-1]|[timestamp-2]|instance-of|BFO|[IUIp-4]|<http://purl.obolibrary.org/obo/PATO_0001340>|[PATO]|[tr-2]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-6]|I|CR|Null|
 endif
 
@@ -67,10 +67,10 @@ IUIt-8 = [new-iui]
 IUIt-9 = [new-iui]
 IUIt-10 = [new-iui]
 tr-5 = T~{2}|<http://purl.obolibrary.org/obo/BFO_0000038>|d4af5c9a-47ba-4bf4-9bae-f13a8ed6455e
-P|[IUIt-7]~[IUIp-1]|[timestamp-2]|<http://purl.obolibrary.org/obo/RO_0002217>|[RO]|[IUIp-1, IUIp-2]|[tr-4]
-P|[IUIt-8]~[IUIp-1]|[timestamp-2]|<http://purl.obolibrary.org/obo/RO_0000053>|[RO]|[IUIp-1, IUIp-3]|[tr-2]
-P|[IUIt-9]~[IUIp-1]|[timestamp-2]|<http://purl.obolibrary.org/obo/BFO_0000155>|[BFO]|[IUIp-2, tr-4]|[tmax]
-P|[IUIt-10]~[IUIp-1]|[timestamp-2]|during|RO|[tr-1, tr-5]|[tmax]
+P|[IUIt-7]~[IUIp-1]|[timestamp-2]|<http://purl.obolibrary.org/obo/RO_0002217>|[RO]|iui=[IUIp-1], iui=[IUIp-2]|[tr-4]
+P|[IUIt-8]~[IUIp-1]|[timestamp-2]|<http://purl.obolibrary.org/obo/RO_0000053>|[RO]|iui=[IUIp-1], iui=[IUIp-3]|[tr-2]
+P|[IUIt-9]~[IUIp-1]|[timestamp-2]|<http://purl.obolibrary.org/obo/BFO_0000155>|[BFO]|iui=[IUIp-2], tref=[tr-4]|[tmax]
+P|[IUIt-10]~[IUIp-1]|[timestamp-2]|during|[RO]|tref=[tr-1], tref=[tr-5]|[tmax]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-7]|I|CR|Null|
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-8]|I|CR|Null|
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-9]|I|CR|Null|
