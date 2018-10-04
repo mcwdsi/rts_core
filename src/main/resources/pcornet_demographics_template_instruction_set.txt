@@ -31,6 +31,9 @@ tr-4 = T~[new-iui]|<http://purl.obolibrary.org/obo/BFO_0000148>|d4af5c9a-47ba-4b
 IUIt-4 = U|[new-iui]~[IUIp-1]|[timestamp-2]|instance-of|[BFO]|[IUIp-2]|<http://purl.obolibrary.org/obo/NCBITaxon_9606>|[NCBI]|[tr-1]
 IUIt-5 = U|[new-iui]~[IUIp-1]|[timestamp-2]|instance-of|[BFO]|[IUIp-3]|<http://purl.obolibrary.org/obo/UBERON_0035946>|[UBERON]|[tmax]
 
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-4]|I|CR|Null|
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-5]|I|CR|Null|
+
 if ({4} =="M") 
 IUIt-3 = [new-iui]
 IUIp-4 = A|[IUIt-3]~[IUIp-1]|[timestamp-1]|[new-iui]
