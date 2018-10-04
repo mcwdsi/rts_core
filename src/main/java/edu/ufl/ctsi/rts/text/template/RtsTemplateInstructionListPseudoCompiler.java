@@ -164,27 +164,56 @@ public class RtsTemplateInstructionListPseudoCompiler {
 			List<String> tupleFields = RtsTupleTextParser.splitDelimitedQuotedAndEscapedText(tupleBlock, fieldDelim, quoteOpen, quoteClose, escape);
 			List<String> contentFields = RtsTupleTextParser.splitDelimitedQuotedAndEscapedText(contentBlock, fieldDelim, quoteOpen, quoteClose, escape);
 			
-			String compare = "[" + varName + "]";
-			int iContentField = 0;
-			for (String s : contentFields) {
-				if (s.equals(compare)) {
-					contentFields.set(iContentField, s);
-				}
-				iContentField++;
-			}
-			
+			/*
+			 * If the variable name is not null, then we have to break out the line into two commands, a variable assignment
+			 * 		command and a subsequent tuple completion command.
+			 * 
+			 * If a variable assignment command, then it is either assign a new iui, or assign a field value.
+			 * 
+			 * First step, then, is to iterate through all the tupleFields and contentFields looking for either
+			 * 	[new-iui] or {[0-9]+}.  
+			 */
 			if (varName != null) {
-				String variableCompletion = (tupleFields.get(0).equals("A")) ? contentFields.get(2) : contentFields.get(0);
-				if (variableCompletion.equals("[new-iui]")) {
-					RtsAssignIuiInstruction inst = new RtsAssignIuiInstruction(varName);
-					currentInstructionList.addInstruction(inst);
-				} else if (variableCompletion.startsWith("{") && variableCompletion.endsWith("}")) {
-					int fieldNum = Integer.parseInt(variableCompletion.substring(1, variableCompletion.length()-1));
-					RtsAssignFieldValueInstruction inst = new RtsAssignFieldValueInstruction(varName, fieldNum);
-					currentInstructionList.addInstruction(inst);
-				} else {
-					System.err.println("Unknown variableCompletion pattern " + variableCompletion + " (" + line + ")");
-					
+			
+				String compare = "[" + varName + "]";
+				int iContentField = 0, iTupleField = 0;
+				boolean found = false;
+				for (String s: tupleFields) {
+					if (s.equals("[new-iui]")) {
+						if (found) throw new IllegalArgumentException("Variable value may be set only once.");
+						tupleFields.set(iTupleField, "[" + varName + "]");
+						found = true;
+						RtsAssignIuiInstruction inst = new RtsAssignIuiInstruction(varName);
+						currentInstructionList.addInstruction(inst);
+					} else if (s.startsWith("{") && s.endsWith("}")) {
+						if (found) throw new IllegalArgumentException("Variable value may be set only once.");
+						String numTxt = s.substring(1, s.length()-1);
+						int fieldNum = Integer.parseInt(numTxt);
+						found = true;
+						RtsAssignFieldValueInstruction inst = new RtsAssignFieldValueInstruction(varName, fieldNum);
+						currentInstructionList.addInstruction(inst);
+					}
+					iTupleField++;
+				}
+			
+				for (String s : contentFields) {
+					if (s.equals("[new-iui]")) {
+						if (found) throw new IllegalArgumentException("Variable value may be set only once.");
+						contentFields.set(iContentField, "[" + varName + "]");
+						found = true;
+						RtsAssignIuiInstruction inst = new RtsAssignIuiInstruction(varName);
+						currentInstructionList.addInstruction(inst);
+					} else if (s.startsWith("{") && s.endsWith("}")) {
+						if (found) throw new IllegalArgumentException("Variable value may be set only once.");
+						String numTxt = s.substring(1, s.length()-1);
+						int fieldNum = Integer.parseInt(numTxt);
+						found = true;
+						RtsAssignFieldValueInstruction inst = new RtsAssignFieldValueInstruction(varName, fieldNum);
+						currentInstructionList.addInstruction(inst);
+					}
+					iContentField++;	
+			
+
 				}
 			}
 			

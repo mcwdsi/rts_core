@@ -86,6 +86,9 @@ public class RtsTupleCompletionInstruction extends RtsTemplateInstruction {
 				//		variables.get(subfields[1].trim()).getValue();
 				System.out.println("Substitution = " + substitution);
 				contentBlock.add(substitution); 
+			} else if (s.startsWith("{") && s.endsWith("}")) {
+				int fieldNum = Integer.parseInt(s.substring(1, s.length()-1));
+				contentBlock.add(args.get(fieldNum));
 			} else {
 				contentBlock.add(s);
 			}

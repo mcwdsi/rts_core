@@ -1,10 +1,17 @@
 package edu.ufl.ctsi.rts.text.template.test;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Set;
 import java.util.regex.Pattern;
 
+import edu.uams.dbmi.rts.RtsDeclaration;
 import edu.uams.dbmi.rts.iui.Iui;
+import edu.uams.dbmi.rts.time.TemporalRegion;
+import edu.uams.dbmi.rts.tuple.RtsTuple;
+import edu.ufl.ctsi.rts.text.RtsTupleTextWriter;
 import edu.ufl.ctsi.rts.text.template.RtsTemplateInstructionListExecutor;
 import edu.ufl.ctsi.rts.text.template.RtsTemplateInstructionListPseudoCompiler;
 import edu.ufl.ctsi.rts.text.template.RtsTemplateVariable;
@@ -73,7 +80,25 @@ public class RtsTupleTemplateInstructionSetTest {
 			c.initialize();
 			RtsTemplateInstructionListExecutor e = c.getInstructionListExecutor();
 			e.setGlobalVariables(globals);
-			e.processRecord(fields);
+			Set<RtsDeclaration> declarationSet = e.processRecord(fields);
+			
+			FileWriter fw = new FileWriter("/Users/hoganwr/Documents/test-tuple-generation.out");
+			RtsTupleTextWriter w = new RtsTupleTextWriter(fw);
+			
+			Iterator<RtsDeclaration> i = declarationSet.iterator();
+			while (i.hasNext()) {
+				RtsDeclaration d = i.next();
+				if (d instanceof RtsTuple) {
+					RtsTuple t = (RtsTuple)d;
+					w.writeTuple(t);
+				} else if (d instanceof TemporalRegion) {
+					TemporalRegion r = (TemporalRegion)d;
+					w.writeTemporalRegion(r);
+				}
+			}
+			
+			fw.close();
+		
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
