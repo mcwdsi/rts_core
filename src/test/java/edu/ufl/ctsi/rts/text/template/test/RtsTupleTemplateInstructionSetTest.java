@@ -4,7 +4,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Set;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import edu.uams.dbmi.rts.RtsDeclaration;
@@ -80,7 +80,7 @@ public class RtsTupleTemplateInstructionSetTest {
 			c.initialize();
 			RtsTemplateInstructionListExecutor e = c.getInstructionListExecutor();
 			e.setGlobalVariables(globals);
-			Set<RtsDeclaration> declarationSet = e.processRecord(fields);
+			List<RtsDeclaration> declarationSet = e.processRecord(fields);
 			
 			FileWriter fw = new FileWriter("/Users/hoganwr/Documents/test-tuple-generation.out");
 			RtsTupleTextWriter w = new RtsTupleTextWriter(fw);

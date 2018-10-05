@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 import java.util.TimeZone;
 
 import edu.uams.dbmi.rts.RtsDeclaration;
@@ -24,8 +23,8 @@ public class RtsTemplateInstructionListExecutor {
 		listOfInstructionLists = new ArrayList<RtsTemplateInstructionList>();
 	}
 	
-	public Set<RtsDeclaration> processRecord(ArrayList<String> fields) {
-		HashSet<RtsDeclaration> tupleSet = new HashSet<RtsDeclaration>();
+	public List<RtsDeclaration> processRecord(ArrayList<String> fields) {
+		ArrayList<RtsDeclaration> tupleSet = new ArrayList<RtsDeclaration>();
 		
 		@SuppressWarnings("rawtypes")
 		HashMap<String, RtsTemplateVariable> localVariables = new HashMap<String, RtsTemplateVariable>();
