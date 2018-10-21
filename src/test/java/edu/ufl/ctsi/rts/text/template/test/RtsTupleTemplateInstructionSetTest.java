@@ -1,10 +1,13 @@
 package edu.ufl.ctsi.rts.text.template.test;
 
+import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 import java.util.regex.Pattern;
 
 import edu.uams.dbmi.rts.RtsDeclaration;
@@ -20,6 +23,8 @@ public class RtsTupleTemplateInstructionSetTest {
 		
 	public static void main(String[] args) {
 		
+		
+		
 		String record = "123435,1999-05-21,,M,ST,M,N,05,N,ENG";
 		String[] fieldsArray = record.split(Pattern.quote(","), -1);
 		System.out.println(fieldsArray.length);
@@ -32,6 +37,8 @@ public class RtsTupleTemplateInstructionSetTest {
 		
 		@SuppressWarnings("rawtypes")
 		ArrayList<RtsTemplateVariable> globals = new ArrayList<RtsTemplateVariable>();
+		
+		/*
 		RtsTemplateVariable<Iui> var1 = new RtsTemplateVariable<Iui>("IUIp-1");
 		var1.setValue(Iui.createFromString("2E9D69DC-4ABA-4E99-B93C-30582825CE09"));
 		globals.add(var1);
@@ -90,9 +97,31 @@ public class RtsTupleTemplateInstructionSetTest {
 		Iui characterEncodingsIui = Iui.createFromString("85F850AD-C348-4256-81F0-24DC45B63079");
 		var13.setValue(characterEncodingsIui);
 		globals.add(var13);
+		*/
 		
 		
 		try {
+			Properties globalsAsProps = loadGlobalVariables("./src/main/resources/global-variables-as-properties.txt");
+			@SuppressWarnings("rawtypes")
+			Iterator iVar = globalsAsProps.keySet().iterator();
+			while(iVar.hasNext()) {
+				String varName = (String)iVar.next();
+				String valueAsTxt = globalsAsProps.getProperty(varName);
+				try {
+					Iui valueAsIui = Iui.createFromString(valueAsTxt);
+					System.out.println("Setting Iui variable..." + varName + " = " + valueAsTxt);
+					RtsTemplateVariable<Iui> var = new RtsTemplateVariable<Iui>(varName);
+					var.setValue(valueAsIui);
+					globals.add(var);
+				} catch (Exception e) {
+					System.out.println("Setting string variable..." + varName + " = " + valueAsTxt + "\t(" + e + ")");
+					RtsTemplateVariable<String> var = new RtsTemplateVariable<String>(varName);
+					var.setValue(valueAsTxt);
+					globals.add(var);
+				}
+				//RtsTemplate
+			}
+			
 			c.initialize();
 			RtsTemplateInstructionListExecutor e = c.getInstructionListExecutor();
 			e.setGlobalVariables(globals);
@@ -119,5 +148,12 @@ public class RtsTupleTemplateInstructionSetTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public static Properties loadGlobalVariables(String absPathAndFile) throws IOException {
+		File f = new File(absPathAndFile);
+		Properties p = new Properties();
+		p.load(new FileReader(f));
+		return p;
 	}
 }

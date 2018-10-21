@@ -175,7 +175,7 @@ public class RtsTemplateInstructionListPseudoCompiler {
 			 */
 			if (varName != null) {
 			
-				String compare = "[" + varName + "]";
+				// String compare = "[" + varName + "]";
 				int iContentField = 0, iTupleField = 0;
 				boolean found = false;
 				for (String s: tupleFields) {
