@@ -89,7 +89,18 @@ public class RtsTupleCompletionInstruction extends RtsTemplateInstruction {
 			} else if (s.startsWith("{") && s.endsWith("}")) {
 				int fieldNum = Integer.parseInt(s.substring(1, s.length()-1));
 				contentBlock.add(args.get(fieldNum));
-			} else {
+			} else if (s.indexOf("=") > -1) {
+				String[] refInfo = s.split(Pattern.quote(Character.toString('=')));
+				System.out.println("\t\tCommand has '=': " + s + "\t" + refInfo[0] + "\t" + refInfo[1]);
+				String command = refInfo[1].substring(1, refInfo[1].length()-1).trim();
+				System.out.println(command);
+				
+				String varValue = variables.get(command).getValue().toString();
+				String substitution = refInfo[0].trim() + "=" + varValue;
+				System.out.println("Substitution = " + substitution);
+				contentBlock.add(substitution);
+			}
+			else {
 				contentBlock.add(s);
 			}
 		}

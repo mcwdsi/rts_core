@@ -156,7 +156,7 @@ public class RtsTemplateInstructionListPseudoCompiler {
 			List<String> blocks = RtsTupleTextParser.splitDelimitedQuotedAndEscapedText(tupleTemplate, blockDelim, quoteOpen, quoteClose, escape);
 				
 	
-			if (blocks.size() != 2) System.err.println("INCORRECT NUMBER OF BLOCKS!!! " + blocks.size());
+			if (blocks.size() != 2) System.err.println("INCORRECT NUMBER OF BLOCKS!!! " + blocks.size() + "\n\t" + tupleTemplate);
 		
 			String tupleBlock = blocks.get(0);
 			String contentBlock = blocks.get(1);

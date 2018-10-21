@@ -76,6 +76,22 @@ public class RtsTupleTemplateInstructionSetTest {
 		var10.setValue(Iui.createFromString("c8bfd0e2-9cce-4961-80f4-1290a7767b7c"));
 		globals.add(var10);
 		
+		//B2E9D9C3-A4E5-4FD4-8394-9631B0715DE0
+		RtsTemplateVariable<Iui> var12 = new RtsTemplateVariable<>("IAO");
+		var12.setValue(Iui.createFromString("B2E9D9C3-A4E5-4FD4-8394-9631B0715DE0"));
+		globals.add(var12);
+		
+		//6C151D9A-6694-4EFD-840F-BC7CBE90DB5E
+		RtsTemplateVariable<Iui> var11 = new RtsTemplateVariable<>("PNO");
+		var11.setValue(Iui.createFromString("6C151D9A-6694-4EFD-840F-BC7CBE90DB5E"));
+		globals.add(var11);
+		
+		RtsTemplateVariable<Iui> var13 = new RtsTemplateVariable<>("CHARACTER-ENCODINGS-O");
+		Iui characterEncodingsIui = Iui.createFromString("85F850AD-C348-4256-81F0-24DC45B63079");
+		var13.setValue(characterEncodingsIui);
+		globals.add(var13);
+		
+		
 		try {
 			c.initialize();
 			RtsTemplateInstructionListExecutor e = c.getInstructionListExecutor();

@@ -8,6 +8,8 @@ IUIp-16 = $3
  #ISO8601 timestamp to associate with time of template insertion  
 timestamp-2 = $3	   
 
+# SECTION FOR SEX FIELD IN PCORnet CDM DEMOGRAPHIC TABLE
+
 # A templates, starting with assigning template IUIs.
 # new-iui is instruction to create a new IUI
 IUIt-1 = [new-iui]
@@ -28,8 +30,8 @@ T~[timestamp-2]|<http://purl.obolibrary.org/obo/BFO_0000148>|d4af5c9a-47ba-4bf4-
 #temporal instant at which person was born.  
 tr-4 = T~[new-iui]|<http://purl.obolibrary.org/obo/BFO_0000148>|d4af5c9a-47ba-4bf4-9bae-f13a8ed6455e
 
-IUIt-4 = U|[new-iui]~[IUIp-1]|[timestamp-2]|instance-of|[BFO]|[IUIp-2]|<http://purl.obolibrary.org/obo/NCBITaxon_9606>|[NCBI]|[tr-1]
-IUIt-5 = U|[new-iui]~[IUIp-1]|[timestamp-2]|instance-of|[BFO]|[IUIp-3]|<http://purl.obolibrary.org/obo/UBERON_0035946>|[UBERON]|[tmax]
+IUIt-4 = U|[new-iui]~[IUIp-1]|[timestamp-2]|<http://purl.obolibrary.org/obo/OBO_REL#_instance_of>|[BFO]|[IUIp-2]|<http://purl.obolibrary.org/obo/NCBITaxon_9606>|[NCBI]|[tr-1]
+IUIt-5 = U|[new-iui]~[IUIp-1]|[timestamp-2]|<http://purl.obolibrary.org/obo/OBO_REL#_instance_of>|[BFO]|[IUIp-3]|<http://purl.obolibrary.org/obo/UBERON_0035946>|[UBERON]|[tmax]
 
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-4]|I|CR|Null|
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-5]|I|CR|Null|
@@ -39,7 +41,7 @@ IUIt-3 = [new-iui]
 IUIp-4 = A|[IUIt-3]~[IUIp-1]|[timestamp-1]|[new-iui]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-3]|I|CR|Null|
  	IUIt-6 = [new-iui]
-	U|[IUIt-6]~[IUIp-1]|[timestamp-2]|instance-of|[BFO]|[IUIp-4]|<http://purl.obolibrary.org/obo/PATO_0000384>|[PATO]|[tr-2]
+	U|[IUIt-6]~[IUIp-1]|[timestamp-2]|<http://purl.obolibrary.org/obo/OBO_REL#_instance_of>|[BFO]|[IUIp-4]|<http://purl.obolibrary.org/obo/PATO_0000384>|[PATO]|[tr-2]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-6]|I|CR|Null|
 endif
 
@@ -48,7 +50,7 @@ IUIt-3 = [new-iui]
 IUIp-4 = A|[IUIt-3]~[IUIp-1]|[timestamp-1]|[new-iui]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-3]|I|CR|Null|
  	IUIt-6 = [new-iui]
-	U|[IUIt-6]~[IUIp-1]|[timestamp-2]|instance-of|[BFO]|[IUIp-4]|<http://purl.obolibrary.org/obo/PATO_0000383>|[PATO]|[tr-2]
+	U|[IUIt-6]~[IUIp-1]|[timestamp-2]|<http://purl.obolibrary.org/obo/OBO_REL#_instance_of>|[BFO]|[IUIp-4]|<http://purl.obolibrary.org/obo/PATO_0000383>|[PATO]|[tr-2]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-6]|I|CR|Null|
 endif
 
@@ -58,7 +60,7 @@ IUIt-3 = [new-iui]
 IUIp-4 = A|[IUIt-3]~[IUIp-1]|[timestamp-1]|[new-iui]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-3]|I|CR|Null|
  	IUIt-6 = [new-iui]
-	U|[IUIt-6]~[IUIp-1]|[timestamp-2]|instance-of|BFO|[IUIp-4]|<http://purl.obolibrary.org/obo/PATO_0001340>|[PATO]|[tr-2]
+	U|[IUIt-6]~[IUIp-1]|[timestamp-2]|<http://purl.obolibrary.org/obo/OBO_REL#_instance_of>|BFO|[IUIp-4]|<http://purl.obolibrary.org/obo/PATO_0001340>|[PATO]|[tr-2]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-6]|I|CR|Null|
 endif
 
@@ -76,3 +78,22 @@ D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-7]|I|CR|Null|
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-8]|I|CR|Null|
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-9]|I|CR|Null|
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-10]|I|CR|Null|
+
+# SECTION FOR PATID FIELD IN PCORnet CDM DEMOGRAPHIC TABLE
+
+# tr-6 is interval over which the patid exists
+tr-6 = T~[new-iui]|<http://purl.obolibrary.org/obo/BFO_0000038>|db2282a4-631f-4d2c-940f-a220c496f6be
+IUIt-11 = [new-iui]
+# assign an IUI to the patid
+IUIp-5 = A|[IUIt-11]~[IUIp-1]|[timestamp-1]|[new-iui]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|  
+# declare it to be an instance of PNO:identifier at tr-6
+IUIt-12 = U|[new-iui]~[IUIp-1]|[timestamp-2]|<http://purl.obolibrary.org/obo/OBO_REL#_instance_of>|[BFO]|[IUIp-5]|<http://purl.obolibrary.org/obo/IAO_0020000>|[PNO]|[tr-6]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-12]|I|CR|Null|  
+# the patid denotes the person (also denoted by IUI-2, here)
+IUIt-13 = P|[new-iui]~[IUIp-1]|[timestamp-2]|<http://purl.obolibrary.org/obo/IAO_0000219>|[IAO]|iui=[IUIp-5], iui=[IUIp-2]|[tr-6]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-13]|I|CR|Null|  
+# record the actual characters of the patid in a PtoDE template
+IUIt-14 = [new-iui]
+E|[IUIt-14]~[IUIp-1]|[timestamp-2]|<http://purl.obolibrary.org/obo/BFO_0000058>|[BFO]|iui=[IUIp-5]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|{1}
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-14]|I|CR|Null|  
