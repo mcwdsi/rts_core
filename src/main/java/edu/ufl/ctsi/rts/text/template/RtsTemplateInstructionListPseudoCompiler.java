@@ -217,7 +217,7 @@ public class RtsTemplateInstructionListPseudoCompiler {
 				}
 			}
 			
-			RtsTupleCompletionInstruction inst = new RtsTupleCompletionInstruction(tupleFields, contentFields, subfieldDelim);
+			RtsTupleCompletionInstruction inst = new RtsTupleCompletionInstruction(tupleFields, contentFields, subfieldDelim, quoteOpen, quoteClose);
 			currentInstructionList.addInstruction(inst);
 		} catch (ParseException pe) {
 			pe.printStackTrace();
