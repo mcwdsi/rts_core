@@ -1,5 +1,6 @@
 package edu.ufl.ctsi.rts.text.template;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -19,14 +20,18 @@ public class RtsTupleCompletionInstruction extends RtsTemplateInstruction {
 	RtsTupleFactory tFactory;
 	
 	char subfieldDelim;
+	char quoteOpen;
+	char quoteClose;
 	
-	public RtsTupleCompletionInstruction(List<String> tupleBlockFields, List<String> contentBlockFields, char subfieldDelim) {
+	public RtsTupleCompletionInstruction(List<String> tupleBlockFields, List<String> contentBlockFields, char subfieldDelim, char quoteOpen, char quoteClose) {
 		this.tupleBlockFields = new ArrayList<String>();
 		this.tupleBlockFields.addAll(tupleBlockFields);
 		this.contentBlockFields = new ArrayList<String>();
 		this.contentBlockFields.addAll(contentBlockFields);
 		tFactory = new RtsTupleFactory();
 		this.subfieldDelim = subfieldDelim;
+		this.quoteOpen = quoteOpen;
+		this.quoteClose = quoteClose;
 	}
 	
 	@Override
@@ -59,7 +64,18 @@ public class RtsTupleCompletionInstruction extends RtsTemplateInstruction {
 					contentBlock.add(Iui.createRandomIui().toString());
 				} else if (variables.containsKey(command)) {
 					System.out.println("\t\tCommand is variable: " + command + "\t" + variables.get(command).getValue());
-					contentBlock.add(variables.get(command).getValue().toString()); 
+					Object value = variables.get(command).getValue();
+					if (value instanceof URI) {
+						StringBuilder sb = new StringBuilder();
+						//sb.append(quoteOpen);
+						//System.out.println(quoteOpen + "\t" + quoteClose);
+						sb.append(value.toString());
+						//sb.append(quoteClose);
+						System.out.println("\t\t\t\tURI value with quotes is: " + sb.toString());
+						contentBlock.add(sb.toString());
+					} else {
+						contentBlock.add(variables.get(command).getValue().toString());
+					}
 				} else {
 					System.err.println("Unknown command or variable: " + command);
 				}

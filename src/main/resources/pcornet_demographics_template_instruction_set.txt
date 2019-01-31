@@ -8,13 +8,15 @@ IUIp-16 = $3
  #ISO8601 timestamp to associate with time of template insertion  
 timestamp-2 = $4	   
 
-# SECTION FOR SEX FIELD IN PCORnet CDM DEMOGRAPHIC TABLE
+# SECTION FOR BIRTH DATE IN PCORnet CDM DEMOGRAPHIC TABLE
 
 # A templates, starting with assigning template IUIs.
 # new-iui is instruction to create a new IUI
 IUIt-1 = [new-iui]
 IUIt-2 = [new-iui]
+# assign IUI to the person that this demographic row is about
 IUIp-2 = A|[IUIt-1]~[IUIp-1]|[timestamp-1]|[new-iui]  
+# assign IUI to the birth of the person
 IUIp-3 = A|[IUIt-2]~[IUIp-1]|[timestamp-1]|[new-iui]
 # for now, not storing D tuple’s IUI for later use
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-1]|I|CR|Null|   
@@ -22,26 +24,47 @@ D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-2]|I|CR|Null|
 
 #some temporal references we’ll need later
 #interval over which person has been instance of human being
-tr-1 = T~[new-iui]|<http://purl.obolibrary.org/obo/BFO_0000038>|db2282a4-631f-4d2c-940f-a220c496f6be
+tr-1 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
 #interval over which person has been bearer of his/her phenotypic sex
-tr-2 = T~[new-iui]|<http://purl.obolibrary.org/obo/BFO_0000038>|db2282a4-631f-4d2c-940f-a220c496f6be
+tr-2 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
 #temporal instant for time of assertion
-T~[timestamp-2]|<http://purl.obolibrary.org/obo/BFO_0000148>|d4af5c9a-47ba-4bf4-9bae-f13a8ed6455e
+T~[timestamp-2]|[temporal-instant]|d4af5c9a-47ba-4bf4-9bae-f13a8ed6455e
 #temporal instant at which person was born.  
-tr-4 = T~[new-iui]|<http://purl.obolibrary.org/obo/BFO_0000148>|d4af5c9a-47ba-4bf4-9bae-f13a8ed6455e
+tr-4 = T~[new-iui]|[temporal-instant]|d4af5c9a-47ba-4bf4-9bae-f13a8ed6455e
 
-IUIt-4 = U|[new-iui]~[IUIp-1]|[timestamp-2]|<http://purl.obolibrary.org/obo/OBO_REL#_instance_of>|[BFO]|[IUIp-2]|<http://purl.obolibrary.org/obo/NCBITaxon_9606>|[NCBI]|[tr-1]
-IUIt-5 = U|[new-iui]~[IUIp-1]|[timestamp-2]|<http://purl.obolibrary.org/obo/OBO_REL#_instance_of>|[BFO]|[IUIp-3]|<http://purl.obolibrary.org/obo/UBERON_0035946>|[UBERON]|[tmax]
+# person is an instance of human being
+IUIt-4 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[human]|[NCBI]|[tr-1]
+# person's birth is an instance of birth
+IUIt-5 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-3]|[birth]|[UBERON]|[tmax]
 
+IUIt-7= [new-iui]
+IUIt-9 = [new-iui]
+IUIt-10 = [new-iui]
+
+# tr-5 is day of birth.  We'll assert in subsequent PtoP templates that the instant of birth (tr-4) is during the day of birth (tr-5)
+tr-5 = T~{2}|[temporal-interval]|d4af5c9a-47ba-4bf4-9bae-f13a8ed6455e
+# person is participant in his birth
+P|[IUIt-7]~[IUIp-1]|[timestamp-2]|[actively-participtes-in]|[RO]|iui=[IUIp-2], iui=[IUIp-3]|[tr-4]
+# the birth occupies a temporal instant (tr-4)
+P|[IUIt-9]~[IUIp-1]|[timestamp-2]|[occupies-temporal-region]|[BFO]|iui=[IUIp-3], tref=[tr-4]|[tmax]
+# the birth is during the day of birth
+P|[IUIt-10]~[IUIp-1]|[timestamp-2]|[during]|[RO]|tref=[tr-4], tref=[tr-5]|[tmax]
+
+# metadata tuples 
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-4]|I|CR|Null|
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-5]|I|CR|Null|
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-7]|I|CR|Null|
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-9]|I|CR|Null|
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-10]|I|CR|Null|
+
+# SECTION FOR SEX IN PCORnet CDM DEMOGRAPHIC TABLE
 
 if ({4} =="M") 
 IUIt-3 = [new-iui]
 IUIp-4 = A|[IUIt-3]~[IUIp-1]|[timestamp-1]|[new-iui]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-3]|I|CR|Null|
  	IUIt-6 = [new-iui]
-	U|[IUIt-6]~[IUIp-1]|[timestamp-2]|<http://purl.obolibrary.org/obo/OBO_REL#_instance_of>|[BFO]|[IUIp-4]|<http://purl.obolibrary.org/obo/PATO_0000384>|[PATO]|[tr-2]
+	U|[IUIt-6]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-4]|[male-sex]|[PATO]|[tr-2]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-6]|I|CR|Null|
 endif
 
@@ -50,50 +73,80 @@ IUIt-3 = [new-iui]
 IUIp-4 = A|[IUIt-3]~[IUIp-1]|[timestamp-1]|[new-iui]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-3]|I|CR|Null|
  	IUIt-6 = [new-iui]
-	U|[IUIt-6]~[IUIp-1]|[timestamp-2]|<http://purl.obolibrary.org/obo/OBO_REL#_instance_of>|[BFO]|[IUIp-4]|<http://purl.obolibrary.org/obo/PATO_0000383>|[PATO]|[tr-2]
+	U|[IUIt-6]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-4]|[female-sex]|[PATO]|[tr-2]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-6]|I|CR|Null|
 endif
-
 
 if ({4}=="A")
 IUIt-3 = [new-iui]
 IUIp-4 = A|[IUIt-3]~[IUIp-1]|[timestamp-1]|[new-iui]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-3]|I|CR|Null|
  	IUIt-6 = [new-iui]
-	U|[IUIt-6]~[IUIp-1]|[timestamp-2]|<http://purl.obolibrary.org/obo/OBO_REL#_instance_of>|BFO|[IUIp-4]|<http://purl.obolibrary.org/obo/PATO_0001340>|[PATO]|[tr-2]
+	U|[IUIt-6]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-4]|[intersex]|[PATO]|[tr-2]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-6]|I|CR|Null|
 endif
 
-
-IUIt-7= [new-iui]
 IUIt-8 = [new-iui]
-IUIt-9 = [new-iui]
-IUIt-10 = [new-iui]
-tr-5 = T~{2}|<http://purl.obolibrary.org/obo/BFO_0000038>|d4af5c9a-47ba-4bf4-9bae-f13a8ed6455e
-P|[IUIt-7]~[IUIp-1]|[timestamp-2]|<http://purl.obolibrary.org/obo/RO_0002217>|[RO]|iui=[IUIp-2], iui=[IUIp-3]|[tr-4]
-P|[IUIt-8]~[IUIp-1]|[timestamp-2]|<http://purl.obolibrary.org/obo/RO_0000053>|[RO]|iui=[IUIp-2], iui=[IUIp-4]|[tr-2]
-P|[IUIt-9]~[IUIp-1]|[timestamp-2]|<http://purl.obolibrary.org/obo/BFO_0000155>|[BFO]|iui=[IUIp-3], tref=[tr-4]|[tmax]
-P|[IUIt-10]~[IUIp-1]|[timestamp-2]|during|[RO]|tref=[tr-1], tref=[tr-5]|[tmax]
-D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-7]|I|CR|Null|
+# person is bearer of his sex quality
+P|[IUIt-8]~[IUIp-1]|[timestamp-2]|[bearer-of]|[RO]|iui=[IUIp-2], iui=[IUIp-4]|[tr-2]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-8]|I|CR|Null|
-D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-9]|I|CR|Null|
-D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-10]|I|CR|Null|
+
 
 # SECTION FOR PATID FIELD IN PCORnet CDM DEMOGRAPHIC TABLE
 
 # tr-6 is interval over which the patid exists
-tr-6 = T~[new-iui]|<http://purl.obolibrary.org/obo/BFO_0000038>|db2282a4-631f-4d2c-940f-a220c496f6be
+tr-6 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
 IUIt-11 = [new-iui]
 # assign an IUI to the patid
 IUIp-5 = A|[IUIt-11]~[IUIp-1]|[timestamp-1]|[new-iui]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|  
 # declare it to be an instance of PNO:identifier at tr-6
-IUIt-12 = U|[new-iui]~[IUIp-1]|[timestamp-2]|<http://purl.obolibrary.org/obo/OBO_REL#_instance_of>|[BFO]|[IUIp-5]|<http://purl.obolibrary.org/obo/IAO_0020000>|[PNO]|[tr-6]
+IUIt-12 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-5]|<http://purl.obolibrary.org/obo/IAO_0020000>|[PNO]|[tr-6]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-12]|I|CR|Null|  
 # the patid denotes the person (also denoted by IUI-2, here)
 IUIt-13 = P|[new-iui]~[IUIp-1]|[timestamp-2]|<http://purl.obolibrary.org/obo/IAO_0000219>|[IAO]|iui=[IUIp-5], iui=[IUIp-2]|[tr-6]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-13]|I|CR|Null|  
 # record the actual characters of the patid in a PtoDE template
 IUIt-14 = [new-iui]
-E|[IUIt-14]~[IUIp-1]|[timestamp-2]|<http://purl.obolibrary.org/obo/BFO_0000058>|[BFO]|iui=[IUIp-5]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|{1}
+E|[IUIt-14]~[IUIp-1]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-5]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|{1}
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-14]|I|CR|Null|  
+
+# SECTION FOR HISPANIC FIELD IN PCORnet CDM DEMOGRAPHIC TABLE
+
+if ({7}=="Y")
+	IUIt-15 = [new-iui]
+	P|[IUIt-15]~[IUIp-1]|[timestamp-2]|[member-of]|[RO]|iui=[IUIp-2], iui=[HISPANIC]|[tr-4]
+	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-15]|I|CR|Null|  
+endif
+
+# SECTION FOR RACE FIELD IN PCORnet CDM DEMOGRAPHIC TABLE
+
+if ({8}=="01")
+	IUIt-16 = [new-iui]
+	P|[IUIt-16]~[IUIp-1]|[timestamp-2]|[member-of]|[RO]|iui=[IUIp-2], iui=[AMERICAN_INDIAN_BY_ANCESTRY]|[tr-4]
+	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-16]|I|CR|Null|  
+endif
+
+if ({8}=="02")
+	IUIt-16 = [new-iui]
+	P|[IUIt-16]~[IUIp-1]|[timestamp-2]|[member-of]|[RO]|iui=[IUIp-2], iui=[ASIAN_BY_ANCESTRY]|[tr-4]
+	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-16]|I|CR|Null|  
+endif
+
+if ({8}=="03")
+	IUIt-16 = [new-iui]
+	P|[IUIt-16]~[IUIp-1]|[timestamp-2]|[member-of]|[RO]|iui=[IUIp-2], iui=[BLACK_BY_ANCESTRY]|[tr-4]
+	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-16]|I|CR|Null|  
+endif
+
+if ({8}=="04")
+	IUIt-16 = [new-iui]
+	P|[IUIt-16]~[IUIp-1]|[timestamp-2]|[member-of]|[RO]|iui=[IUIp-2], iui=[HAWAIAN_BY_ANCESTRY]|[tr-4]
+	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-16]|I|CR|Null|  
+endif
+
+if ({8}=="05")
+	IUIt-16 = [new-iui]
+	P|[IUIt-16]~[IUIp-1]|[timestamp-2]|[member-of]|[RO]|iui=[IUIp-2], iui=[WHITE_BY_ANCESTRY]|[tr-4]
+	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-16]|I|CR|Null|  
+endif
