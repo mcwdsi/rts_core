@@ -6,7 +6,7 @@ timestamp-1 = $2
 #IUI of the user running this process
 IUIp-16 = $3		   
  #ISO8601 timestamp to associate with time of template insertion  
-timestamp-2 = $3	   
+timestamp-2 = $4	   
 
 # SECTION FOR SEX FIELD IN PCORnet CDM DEMOGRAPHIC TABLE
 
