@@ -55,7 +55,7 @@ public class RtsTupleTemplateInstructionSetTest {
 			LineNumberReader lnr = new LineNumberReader(fr);
 			
 			
-			FileWriter fw = new FileWriter("/Users/hoganwr/Documents/test-tuple-generation.out");
+			FileWriter fw = new FileWriter("./src/test/resources//test-tuple-generation.out");
 			RtsTupleTextWriter w = new RtsTupleTextWriter(fw);
 			
 			String record;
