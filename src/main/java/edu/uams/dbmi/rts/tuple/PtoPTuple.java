@@ -10,6 +10,7 @@ import edu.uams.dbmi.rts.time.TemporalReference;
 import edu.uams.dbmi.rts.tuple.component.ParticularComponent;
 import edu.uams.dbmi.rts.tuple.component.RelationshipComponent;
 import edu.uams.dbmi.rts.tuple.component.TemporalComponent;
+import edu.uams.dbmi.rts.tuple.component.RelationshipPolarity;
 
 /**
  * Tuple that relates to particulars together using a specified relationship
@@ -20,7 +21,8 @@ public class PtoPTuple extends RtsTuple {
 	
 	private RelationshipComponent relationshipComponent;
 	private TemporalComponent temporalComponent;
-	private ParticularComponent<ParticularReference> particularComponent; 
+	private ParticularComponent<ParticularReference> particularComponent;
+	private RelationshipPolarity polarity;
 	
 	public PtoPTuple(){
 		this.relationshipComponent = new RelationshipComponent();
@@ -65,6 +67,14 @@ public class PtoPTuple extends RtsTuple {
 	public void setAuthoringTimeReference(TemporalReference tr) {
 		this.authoringComponent.setAuthoringTimeReference(tr);
 	}
+
+	public RelationshipPolarity getRelationshipPolarity(){
+		return polarity;
+	}
+
+	public void setRelationshipPolarity(RelationshipPolarity polarity){
+		this.polarity = polarity;
+	}
 	
 	public URI getRelationshipURI(){
 		return this.relationshipComponent.getRelationshipURI();
@@ -72,6 +82,12 @@ public class PtoPTuple extends RtsTuple {
 	
 	public void setRelationshipURI(URI newURI){
 		this.relationshipComponent.setRelationshipURI(newURI);
+		this.polarity = RelationshipPolarity.AFFIRMATIVE;
+	}
+
+	public void setRelationshipURI(URI newURI, RelationshipPolarity polarity){
+		this.relationshipComponent.setRelationshipURI(newURI);
+		this.polarity = polarity;
 	}
 	
 	public Iui getRelationshipOntologyIui(){
@@ -149,6 +165,17 @@ public class PtoPTuple extends RtsTuple {
 		
 		builder.append(this.getReferent());
 		builder.append(", ");
+
+		if (this.polarity == RelationshipPolarity.AFFIRMATIVE){
+			builder.append(this.getRelationshipURI());
+			builder.append(", ");
+		} else {
+			builder.append(this.polarity.toString());
+			builder.append("(");
+			builder.append(this.getRelationshipURI());
+			builder.append(")");
+			builder.append(", ");
+		}
 
 		builder.append(this.getRelationshipURI());
 		builder.append(", ");

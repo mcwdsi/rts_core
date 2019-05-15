@@ -8,7 +8,9 @@ import edu.uams.dbmi.rts.tuple.component.ParticularComponent;
 import edu.uams.dbmi.rts.tuple.component.RelationshipComponent;
 import edu.uams.dbmi.rts.tuple.component.TemporalComponent;
 import edu.uams.dbmi.rts.tuple.component.UniversalComponent;
+import edu.uams.dbmi.rts.tuple.component.RelationshipPolarity;
 import edu.uams.dbmi.rts.uui.Uui;
+
 
 /**
  * Tuple that relates a particular (e.g. Josh Hanna) to a universal (e.g. Person)
@@ -21,6 +23,7 @@ public class PtoUTuple extends RtsTuple {
 	private UniversalComponent universalComponent;
 	private TemporalComponent temporalComponent;
 	private ParticularComponent<Iui> particularComponent;
+	private RelationshipPolarity polarity;
 	
 	public PtoUTuple(){
 		this.relationshipComponent = new RelationshipComponent();
@@ -65,6 +68,14 @@ public class PtoUTuple extends RtsTuple {
 	public void setAuthoringTimeReference(TemporalReference tr) {
 		this.authoringComponent.setAuthoringTimeReference(tr);
 	}
+
+	public RelationshipPolarity getRelationshipPolarity(){
+		return polarity;
+	}
+
+	public void setRelationshipPolarity(RelationshipPolarity polarity){
+		this.polarity = polarity;
+	}
 	
 	public URI getRelationshipURI(){
 		return this.relationshipComponent.getRelationshipURI();
@@ -72,6 +83,12 @@ public class PtoUTuple extends RtsTuple {
 	
 	public void setRelationshipURI(URI newURI){
 		this.relationshipComponent.setRelationshipURI(newURI);
+		this.polarity = RelationshipPolarity.AFFIRMATIVE;
+	}
+
+	public void setRelationshipURI(URI newURI, RelationshipPolarity polarity){
+		this.relationshipComponent.setRelationshipURI(newURI);
+		this.polarity = polarity;
 	}
 	
 	public Iui getRelationshipOntologyIui(){
@@ -148,6 +165,17 @@ public class PtoUTuple extends RtsTuple {
 		
 		builder.append(this.getReferentIui());
 		builder.append(", ");
+
+		if (this.polarity == RelationshipPolarity.AFFIRMATIVE){
+			builder.append(this.getRelationshipURI());
+			builder.append(", ");
+		} else {
+			builder.append(this.polarity.toString());
+			builder.append("(");
+			builder.append(this.getRelationshipURI());
+			builder.append(")");
+			builder.append(", ");
+		}
 		
 		builder.append(this.getRelationshipURI());
 		builder.append(", ");
