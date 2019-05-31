@@ -19,6 +19,7 @@ import edu.uams.dbmi.rts.tuple.PtoLackUTuple;
 import edu.uams.dbmi.rts.tuple.PtoPTuple;
 import edu.uams.dbmi.rts.tuple.PtoUTuple;
 import edu.uams.dbmi.rts.tuple.RtsTuple;
+import edu.uams.dbmi.rts.tuple.component.RelationshipPolarity;
 import edu.uams.dbmi.rts.time.TemporalReference;
 import edu.uams.dbmi.rts.time.TemporalRegion;
 import edu.uams.dbmi.rts.uui.Uui;
@@ -298,7 +299,13 @@ public class RtsTupleFactory {
 		t.setAuthoringTimeReference(tr);
 		
 		//contentFields.get(2) is r
-		t.setRelationshipURI(URI.create(contentFields.get(2)));
+		if (contentFields.get(2).startsWith("NOT(")) {
+			t.setRelationshipURI(URI.create(contentFields.get(2).substring(contentFields.get(2).indexOf("NOT(")+4, contentFields.get(2).indexOf(")"))));
+			t.setRelationshipPolarity(RelationshipPolarity.NEGATED);
+		} else {
+			t.setRelationshipURI(URI.create(contentFields.get(2)));
+			t.setRelationshipPolarity(RelationshipPolarity.AFFIRMATIVE);
+		}
 		
 		//contentFields.get(3) is IUIo for r
 		t.setRelationshipOntologyIui(Iui.createFromString(contentFields.get(3)));
@@ -324,15 +331,21 @@ public class RtsTupleFactory {
 		t.setAuthoringTimeReference(tr);
 		
 		//contentFields.get(2) is r
-		t.setRelationshipURI(URI.create(contentFields.get(2)));
+		if (contentFields.get(2).startsWith("NOT(")) {
+			t.setRelationshipURI(URI.create(contentFields.get(2).substring(contentFields.get(2).indexOf("NOT(")+4, contentFields.get(2).indexOf(")"))));
+			t.setRelationshipPolarity(RelationshipPolarity.NEGATED);
+		} else {
+			t.setRelationshipURI(URI.create(contentFields.get(2)));
+			t.setRelationshipPolarity(RelationshipPolarity.AFFIRMATIVE);
+		}
 		
 		//contentFields.get(3) is IUIo for r
 		t.setRelationshipOntologyIui(Iui.createFromString(contentFields.get(3)));
 		
 		//contentFields.get(4) is P
-		String[] prefs = contentFields.get(4).split(Pattern.quote(""+RtsTupleTextWriter.SUBFIELD_DELIM));
-		for (String pref : prefs) {
-			String[] refInfo = pref.split(Pattern.quote("="));
+		String[] pRefs = contentFields.get(4).split(Pattern.quote(""+RtsTupleTextWriter.SUBFIELD_DELIM));
+		for (String pRef : pRefs) {
+			String[] refInfo = pRef.split(Pattern.quote("="));
 			if (refInfo[0].equals("iui")) {
 				Iui iui = Iui.createFromString(refInfo[1]);
 				t.addParticular(iui);

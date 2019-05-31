@@ -28,6 +28,7 @@ public class PtoPTuple extends RtsTuple {
 		this.relationshipComponent = new RelationshipComponent();
 		this.temporalComponent = new TemporalComponent();
 		this.particularComponent = new ParticularComponent<ParticularReference>();
+		this.polarity = RelationshipPolarity.AFFIRMATIVE;
 	}
 	
 	public void setReferent(ParticularReference pr) {
@@ -82,7 +83,6 @@ public class PtoPTuple extends RtsTuple {
 	
 	public void setRelationshipURI(URI newURI){
 		this.relationshipComponent.setRelationshipURI(newURI);
-		this.polarity = RelationshipPolarity.AFFIRMATIVE;
 	}
 
 	public void setRelationshipURI(URI newURI, RelationshipPolarity polarity){
