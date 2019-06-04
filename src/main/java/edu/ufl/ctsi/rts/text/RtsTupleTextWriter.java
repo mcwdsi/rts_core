@@ -18,6 +18,7 @@ import edu.uams.dbmi.rts.tuple.PtoLackUTuple;
 import edu.uams.dbmi.rts.tuple.PtoPTuple;
 import edu.uams.dbmi.rts.tuple.PtoUTuple;
 import edu.uams.dbmi.rts.tuple.RtsTuple;
+import edu.uams.dbmi.rts.tuple.component.RelationshipPolarity;
 import edu.uams.dbmi.util.iso8601.Iso8601DateTimeFormatter;
 
 public class RtsTupleTextWriter {
@@ -172,6 +173,9 @@ public class RtsTupleTextWriter {
 		w.write(rttp.getAuthoringTimeReference().toString());
 		w.write(FIELD_DELIM);
 		w.write('<');
+		if (rttp.getRelationshipPolarity().equals(RelationshipPolarity.NEGATED)) {
+			w.write("-!-");
+		}
 		w.write(rttp.getRelationshipURI().toString());
 		w.write('>');
 		w.write(FIELD_DELIM);
@@ -204,6 +208,9 @@ public class RtsTupleTextWriter {
 		w.write(rttu.getAuthoringTimeReference().toString());
 		w.write(FIELD_DELIM);
 		w.write('<');
+		if (rttu.getRelationshipPolarity().equals(RelationshipPolarity.NEGATED)) {
+			w.write("-!-");
+		}
 		w.write(rttu.getRelationshipURI().toString());
 		w.write('>');
 		w.write(FIELD_DELIM);

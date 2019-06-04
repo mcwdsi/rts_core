@@ -299,8 +299,8 @@ public class RtsTupleFactory {
 		t.setAuthoringTimeReference(tr);
 		
 		//contentFields.get(2) is r
-		if (contentFields.get(2).startsWith("NOT(")) {
-			t.setRelationshipURI(URI.create(contentFields.get(2).substring(contentFields.get(2).indexOf("NOT(")+4, contentFields.get(2).indexOf(")"))));
+		if (contentFields.get(2).startsWith("-!-")) {
+			t.setRelationshipURI(URI.create(contentFields.get(2).substring(contentFields.get(2).indexOf("-!-")+3)));
 			t.setRelationshipPolarity(RelationshipPolarity.NEGATED);
 		} else {
 			t.setRelationshipURI(URI.create(contentFields.get(2)));
@@ -313,7 +313,7 @@ public class RtsTupleFactory {
 		//contentFields.get(4) is IUIp
 		t.setReferentIui(Iui.createFromString(contentFields.get(4)));
 		
-		//contentFields.get(5) is UUI 
+		//contentFields.get(5) is UUI
 		t.setUniversalUui(new Uui(contentFields.get(5)));
 		
 		//contentFields.get(6) is IUIo for UUI
@@ -331,8 +331,8 @@ public class RtsTupleFactory {
 		t.setAuthoringTimeReference(tr);
 		
 		//contentFields.get(2) is r
-		if (contentFields.get(2).startsWith("NOT(")) {
-			t.setRelationshipURI(URI.create(contentFields.get(2).substring(contentFields.get(2).indexOf("NOT(")+4, contentFields.get(2).indexOf(")"))));
+		if (contentFields.get(2).startsWith("-!-")) {
+			t.setRelationshipURI(URI.create(contentFields.get(2).substring(contentFields.get(2).indexOf("-!-")+3)));
 			t.setRelationshipPolarity(RelationshipPolarity.NEGATED);
 		} else {
 			t.setRelationshipURI(URI.create(contentFields.get(2)));

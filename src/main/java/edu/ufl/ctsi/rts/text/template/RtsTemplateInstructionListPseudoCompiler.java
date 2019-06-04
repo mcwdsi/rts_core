@@ -19,7 +19,7 @@ import edu.ufl.ctsi.rts.text.RtsTupleTextWriter;
 public class RtsTemplateInstructionListPseudoCompiler {
 	
 	public static String VARIABLE_ASSIGNMENT_PATTERN = "^([A-Za-z0-9-]+)[ \\t]*=[ \\t]*((\\$[0-9][0-9]*)|\\[(new-iui)\\]|\\[(sys-time)\\])[ \\t]*";
-	public static String CONDITIONAL_START_PATTERN = "^if[ \\t]*\\([ \\t]*\\{([0-9]+)\\}[ \\t]*==[ \\t]*((\"(.*?)\")|\\[([A-Za-z0-9-]+)\\])\\)[ \\t]*";
+	public static String CONDITIONAL_START_PATTERN = "^if[ \\t]*\\([ \\t]*\\%([0-9]+)[ \\t]*==[ \\t]*((\"(.*?)\")|\\[([A-Za-z0-9-]+)\\])\\)[ \\t]*";
 	public static String CONDITIONAL_END_PATTERN = "^[ \\t]*endif[ \\t]*$";
 	
 	public static String DETECT_TUPLE_COMPLETION_PATTERN = "^(([DUPEACL]\\|)|(T~))";
@@ -148,6 +148,7 @@ public class RtsTemplateInstructionListPseudoCompiler {
 		if (hasVariable) {
 			varName = m.group(1);
 			tupleTemplate = line.substring(m.start(2));
+			//System.out.println("tupleTemplate = " + tupleTemplate);
 		} else {
 			tupleTemplate = line;
 		}
@@ -185,9 +186,9 @@ public class RtsTemplateInstructionListPseudoCompiler {
 						found = true;
 						RtsAssignIuiInstruction inst = new RtsAssignIuiInstruction(varName);
 						currentInstructionList.addInstruction(inst);
-					} else if (s.startsWith("{") && s.endsWith("}")) {
+					} else if (s.startsWith("%")) {
 						if (found) throw new IllegalArgumentException("Variable value may be set only once.");
-						String numTxt = s.substring(1, s.length()-1);
+						String numTxt = s.substring(1);
 						int fieldNum = Integer.parseInt(numTxt);
 						found = true;
 						RtsAssignFieldValueInstruction inst = new RtsAssignFieldValueInstruction(varName, fieldNum);
@@ -203,9 +204,9 @@ public class RtsTemplateInstructionListPseudoCompiler {
 						found = true;
 						RtsAssignIuiInstruction inst = new RtsAssignIuiInstruction(varName);
 						currentInstructionList.addInstruction(inst);
-					} else if (s.startsWith("{") && s.endsWith("}")) {
+					} else if (s.startsWith("%")) {
 						if (found) throw new IllegalArgumentException("Variable value may be set only once.");
-						String numTxt = s.substring(1, s.length()-1);
+						String numTxt = s.substring(1);
 						int fieldNum = Integer.parseInt(numTxt);
 						found = true;
 						RtsAssignFieldValueInstruction inst = new RtsAssignFieldValueInstruction(varName, fieldNum);
