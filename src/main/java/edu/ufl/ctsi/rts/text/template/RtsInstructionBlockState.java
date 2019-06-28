@@ -14,6 +14,10 @@ public class RtsInstructionBlockState {
 		executed = true;
 	}
 
+	public void markAsNotExecuted() {
+		executed = false;
+	}
+
 	public boolean isExecuted() {
 		return executed;
 	}

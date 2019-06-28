@@ -16,4 +16,8 @@ public class RtsTemplateCondition {
 	public int getFieldNum() {
 		return fieldNum;
 	}
+
+	public String getFieldValue() {
+		return fieldVal;
+	}
 }

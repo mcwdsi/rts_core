@@ -74,6 +74,10 @@ public class RtsTemplateInstructionListPseudoCompiler {
 	
 	
 	public void initialize() throws IOException {
+		currentBlockState = new RtsInstructionBlockState(blockNumber);
+		instructionListExecutor.addInstructionBlockState(currentBlockState);
+
+
 		FileReader fr = new FileReader(fname);
 		LineNumberReader lnr = new LineNumberReader(fr);
 		
@@ -119,8 +123,6 @@ public class RtsTemplateInstructionListPseudoCompiler {
 		
 		lnr.close();
 		fr.close();
-
-		currentBlockState = new RtsInstructionBlockState(blockNumber);
 	}
 	
 	public RtsTemplateInstructionListExecutor getInstructionListExecutor() {
@@ -135,8 +137,9 @@ public class RtsTemplateInstructionListPseudoCompiler {
 			instructionListExecutor.addInstructionList(currentInstructionList);
 
 		currentInstructionList = new RtsTemplateInstructionList();	
-		blockNumber++;	
-		currentBlockState = new RtsInstructionBlockState(blockNumber);
+
+		//blockNumber++;	
+		//currentBlockState = new RtsInstructionBlockState(blockNumber);
 	}
 
 	private void handleConditionalStartPattern(Matcher m) {
@@ -145,6 +148,10 @@ public class RtsTemplateInstructionListPseudoCompiler {
 		
 		int fieldNum = Integer.parseInt(m.group(1));
 		String fieldVal = m.group(4);
+
+		blockNumber++;	
+		currentBlockState = new RtsInstructionBlockState(blockNumber);
+		instructionListExecutor.addInstructionBlockState(currentBlockState);
 		
 		RtsTemplateCondition condition = new RtsTemplateCondition(fieldNum, fieldVal);
 		currentInstructionList = new RtsTemplateInstructionList(condition, currentBlockState);

@@ -14,6 +14,7 @@ import edu.uams.dbmi.util.iso8601.Iso8601DateTimeFormatter;
 public class RtsTemplateInstructionListExecutor {
 	
 	ArrayList<RtsTemplateInstructionList> listOfInstructionLists;
+	ArrayList<RtsInstructionBlockState> listOfBlockStates;
 
 	@SuppressWarnings("rawtypes")
 	HashMap<String, RtsTemplateVariable> globalVariables;
@@ -21,11 +22,13 @@ public class RtsTemplateInstructionListExecutor {
 	
 	public RtsTemplateInstructionListExecutor() {
 		listOfInstructionLists = new ArrayList<RtsTemplateInstructionList>();
+		listOfBlockStates = new ArrayList<RtsInstructionBlockState>();
 	}
 	
 	public List<RtsDeclaration> processRecord(ArrayList<String> fields) {
 		ArrayList<RtsDeclaration> tupleSet = new ArrayList<RtsDeclaration>();
-		
+		resetBlockStates();
+
 		@SuppressWarnings("rawtypes")
 		HashMap<String, RtsTemplateVariable> localVariables = new HashMap<String, RtsTemplateVariable>();
 		localVariables.putAll(globalVariables);
@@ -37,7 +40,15 @@ public class RtsTemplateInstructionListExecutor {
 		System.out.println("num of fields " + fields.size());
 		for (RtsTemplateInstructionList instList : listOfInstructionLists) {
 			System.out.println("Processing instruction set:");
-			if (instList.shouldExecute(fields.get(instList.getConditionFieldNum()-1))) {
+			boolean shouldExecute = instList.shouldExecute(fields.get(instList.getConditionFieldNum()-1));
+			if (!shouldExecute) {
+				System.out.println("Not executing " + instList.getConditionFieldNum() + 
+					" = " + instList.getConditionFieldValue() + "  (" + fields + ")");
+				System.out.println("\t" + instList.getBlockState().isExecuted());
+			}
+			if (shouldExecute) {
+				System.out.println("Executing " + instList.getConditionFieldNum() + 
+					" = " + instList.getConditionFieldValue() + "  (" + fields + ")");
 				for (RtsTemplateInstruction instruction : instList) {
 					System.out.println("\tProcessing instruction " + instruction);
 					instruction.execute(args, localVariables);
@@ -70,6 +81,16 @@ public class RtsTemplateInstructionListExecutor {
 
 	public void addInstructionList(RtsTemplateInstructionList instructionList) {
 		listOfInstructionLists.add(instructionList);
+	}
+
+	public void addInstructionBlockState(RtsInstructionBlockState blockState) {
+		listOfBlockStates.add(blockState);
+	}
+
+	public void resetBlockStates() {
+		for (RtsInstructionBlockState state : listOfBlockStates) {
+			state.markAsNotExecuted();
+		}
 	}
 
 	@SuppressWarnings("rawtypes")

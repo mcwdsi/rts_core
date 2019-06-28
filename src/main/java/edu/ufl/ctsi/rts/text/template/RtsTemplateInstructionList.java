@@ -27,11 +27,14 @@ public class RtsTemplateInstructionList implements Iterable<RtsTemplateInstructi
 		instructions = new ArrayList<RtsTemplateInstruction>();
 		alwaysExecute = true;
 		condition = null;
+		blockState = null;
 	}
 	
 	public RtsTemplateInstructionList(RtsTemplateCondition condition, RtsInstructionBlockState blockState) {
 		instructions = new ArrayList<RtsTemplateInstruction>();
 		alwaysExecute = false;
+		if (condition == null) throw new IllegalArgumentException("condition may not be null");
+		if (blockState == null) throw new IllegalArgumentException("block state may not be null");
 		this.condition = condition;
 		this.blockState = blockState;
 	}
@@ -45,6 +48,7 @@ public class RtsTemplateInstructionList implements Iterable<RtsTemplateInstructi
 		instructions = new ArrayList<RtsTemplateInstruction>();
 		alwaysExecute = false;
 		this.condition = null;
+		if (blockState == null) throw new IllegalArgumentException("block state may not be null");
 		this.blockState = blockState;
 	}
 
@@ -56,7 +60,7 @@ public class RtsTemplateInstructionList implements Iterable<RtsTemplateInstructi
 	public boolean shouldExecute(String value) {
 		return alwaysExecute || 
 			(condition == null && !blockState.isExecuted()) ||
-			(condition.isMet(value) && !blockState.isExecuted());
+			(condition != null && condition.isMet(value) && !blockState.isExecuted());
 	}
 	
 	public int getConditionFieldNum() {
@@ -64,11 +68,20 @@ public class RtsTemplateInstructionList implements Iterable<RtsTemplateInstructi
 		else return condition.getFieldNum();
 	}
 
+	public String getConditionFieldValue() {
+		if (condition == null) return "";
+		else return condition.getFieldValue();
+	}
+
 	public int size() {
 		return instructions.size();
 	}
 
 	public void markBlockAsExecuted() {
-		blockState.markAsExecuted();
+		if (blockState != null) blockState.markAsExecuted();
+	}
+
+	public RtsInstructionBlockState getBlockState() {
+		return blockState;
 	}
 }

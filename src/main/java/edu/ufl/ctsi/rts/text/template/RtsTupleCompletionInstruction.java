@@ -92,6 +92,7 @@ public class RtsTupleCompletionInstruction extends RtsTemplateInstruction {
 					if (substitution.length() > 0) substitution += Character.toString(subfieldDelim);
 					String[] refInfo = sub.split(Pattern.quote("="));
 					String command = refInfo[1].substring(1, refInfo[1].length()-1).trim();
+					System.out.println("command = '" + command + "'");
 					
 					String varValue = variables.get(command).getValue().toString();
 					substitution += refInfo[0].trim() + "=" + varValue;
