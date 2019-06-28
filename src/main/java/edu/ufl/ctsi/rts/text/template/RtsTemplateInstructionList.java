@@ -13,6 +13,7 @@ public class RtsTemplateInstructionList implements Iterable<RtsTemplateInstructi
 	 * 		list of instructions should always be executed.
 	 */
 	RtsTemplateCondition condition;
+	RtsInstructionBlockState blockState;
 	
 	/*
 	 * The list (not set, because order matters) of instructions to execute.
@@ -28,15 +29,23 @@ public class RtsTemplateInstructionList implements Iterable<RtsTemplateInstructi
 		condition = null;
 	}
 	
-	public RtsTemplateInstructionList(RtsTemplateCondition condition) {
+	public RtsTemplateInstructionList(RtsTemplateCondition condition, RtsInstructionBlockState blockState) {
 		instructions = new ArrayList<RtsTemplateInstruction>();
 		alwaysExecute = false;
 		this.condition = condition;
+		this.blockState = blockState;
 	}
 	
 	public int addInstruction(RtsTemplateInstruction instruction) {
 		instructions.add(instruction);
 		return instructions.size();
+	}
+
+	public RtsTemplateInstructionList(RtsInstructionBlockState blockState) {
+		instructions = new ArrayList<RtsTemplateInstruction>();
+		alwaysExecute = false;
+		this.condition = null;
+		this.blockState = blockState;
 	}
 
 	@Override
@@ -45,7 +54,9 @@ public class RtsTemplateInstructionList implements Iterable<RtsTemplateInstructi
 	}	
 	
 	public boolean shouldExecute(String value) {
-		return alwaysExecute || condition.isMet(value);
+		return alwaysExecute || 
+			(condition == null && !blockState.isExecuted()) ||
+			(condition.isMet(value) && !blockState.isExecuted());
 	}
 	
 	public int getConditionFieldNum() {
@@ -57,4 +68,7 @@ public class RtsTemplateInstructionList implements Iterable<RtsTemplateInstructi
 		return instructions.size();
 	}
 
+	public void markBlockAsExecuted() {
+		blockState.markAsExecuted();
+	}
 }

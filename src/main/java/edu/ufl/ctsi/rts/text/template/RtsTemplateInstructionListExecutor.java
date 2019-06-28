@@ -51,6 +51,7 @@ public class RtsTemplateInstructionListExecutor {
 						tupleSet.add(tupInst.getTuple());
 					}
 				}
+				instList.markBlockAsExecuted();
 			}
 		}
 

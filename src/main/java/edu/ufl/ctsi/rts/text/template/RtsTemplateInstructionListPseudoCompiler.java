@@ -39,6 +39,9 @@ public class RtsTemplateInstructionListPseudoCompiler {
 	char escape = RtsTupleTextWriter.ESCAPE;
 	char quoteOpen = RtsTupleTextWriter.QUOTE_OPEN;
 	char quoteClose = RtsTupleTextWriter.QUOTE_CLOSE;
+
+	RtsInstructionBlockState currentBlockState;
+	int blockNumber = 0;
 	
 	String lineCommentIndicator = "#";
 	
@@ -116,6 +119,8 @@ public class RtsTemplateInstructionListPseudoCompiler {
 		
 		lnr.close();
 		fr.close();
+
+		currentBlockState = new RtsInstructionBlockState(blockNumber);
 	}
 	
 	public RtsTemplateInstructionListExecutor getInstructionListExecutor() {
@@ -129,7 +134,9 @@ public class RtsTemplateInstructionListPseudoCompiler {
 		if (currentInstructionList.size() > 0)
 			instructionListExecutor.addInstructionList(currentInstructionList);
 
-		currentInstructionList = new RtsTemplateInstructionList();		
+		currentInstructionList = new RtsTemplateInstructionList();	
+		blockNumber++;	
+		currentBlockState = new RtsInstructionBlockState(blockNumber);
 	}
 
 	private void handleConditionalStartPattern(Matcher m) {
@@ -140,7 +147,7 @@ public class RtsTemplateInstructionListPseudoCompiler {
 		String fieldVal = m.group(4);
 		
 		RtsTemplateCondition condition = new RtsTemplateCondition(fieldNum, fieldVal);
-		currentInstructionList = new RtsTemplateInstructionList(condition);
+		currentInstructionList = new RtsTemplateInstructionList(condition, currentBlockState);
 	}
 
 	private void setupTupleCompletion(Matcher m, boolean hasVariable, String line) {
