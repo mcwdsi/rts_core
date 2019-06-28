@@ -20,6 +20,8 @@ public class RtsTemplateInstructionListPseudoCompiler {
 	
 	public static String VARIABLE_ASSIGNMENT_PATTERN = "^([A-Za-z0-9-]+)[ \\t]*=[ \\t]*((\\$[0-9][0-9]*)|\\[(new-iui)\\]|\\[(sys-time)\\])[ \\t]*";
 	public static String CONDITIONAL_START_PATTERN = "^if[ \\t]*\\([ \\t]*\\%([0-9]+)[ \\t]*==[ \\t]*((\"(.*?)\")|\\[([A-Za-z0-9-]+)\\])\\)[ \\t]*";
+	public static String CONDITIONAL_ELSE_IF_PATTERN = "^else if[ \\t]*\\([ \\t]*\\%([0-9]+)[ \\t]*==[ \\t]*((\"(.*?)\")|\\[([A-Za-z0-9-]+)\\])\\)[ \\t]*";
+	public static String CONDITIONAL_ELSE_PATTERN = "^[ \\t]*else[ \\t]*$";
 	public static String CONDITIONAL_END_PATTERN = "^[ \\t]*endif[ \\t]*$";
 	
 	public static String DETECT_TUPLE_COMPLETION_PATTERN = "^(([DUPEACL]\\|)|(T~))";
@@ -27,7 +29,8 @@ public class RtsTemplateInstructionListPseudoCompiler {
 	
 
 	Pattern variableAssignmentPattern, conditionalStartPattern, conditionalEndPattern, 
-		detectTupleCompletionPattern, detectVariableAssignPlusTupleCompletionPattern;
+		detectTupleCompletionPattern, detectVariableAssignPlusTupleCompletionPattern,
+		conditionalElseIfPattern, conditionalElsePattern;
 	
 	String fname;
 	File file;
@@ -61,6 +64,8 @@ public class RtsTemplateInstructionListPseudoCompiler {
 		conditionalEndPattern = Pattern.compile(CONDITIONAL_END_PATTERN);
 		detectTupleCompletionPattern = Pattern.compile(DETECT_TUPLE_COMPLETION_PATTERN);
 		detectVariableAssignPlusTupleCompletionPattern = Pattern.compile(DETECT_VARIABLE_ASSIGNMENT_PLUS_TUPLE_COMPLETION);
+		conditionalElseIfPattern = Pattern.compile(CONDITIONAL_ELSE_IF_PATTERN);
+		conditionalElsePattern = Pattern.compile(CONDITIONAL_ELSE_PATTERN);
 		
 		globalVariables = new ArrayList<RtsTemplateVariable>();
 		
@@ -82,6 +87,7 @@ public class RtsTemplateInstructionListPseudoCompiler {
 		LineNumberReader lnr = new LineNumberReader(fr);
 		
 		String line;
+		boolean inElse = false;
 		while((line=lnr.readLine())!=null) {
 			line = line.trim();
 			if (line.equals("")) continue;
@@ -99,11 +105,20 @@ public class RtsTemplateInstructionListPseudoCompiler {
 				if (m2.matches()) {
 					System.out.println("Line " + lno + ": Conditional start");
 					handleConditionalStartPattern(m2);
+					if (inElse) {
+						System.err.println("Line " + lno + ": syntax error. Cannot nest if statements.");
+						continue;
+					}
+					inElse = true;
 				} else {
 					Matcher m3 = conditionalEndPattern.matcher(line);
 					if (m3.matches()) {
 						System.out.println("Line " + lno + ": Conditional end");
 						handleConditionalEndPattern(m3);
+						if (!inElse) {
+							System.err.println("Line " + lno + ": syntax error. endif does not match opening if.");
+						}
+						inElse = false;
 					} else {
 						Matcher m4 = detectTupleCompletionPattern.matcher(line);
 						if (m4.find()) {
@@ -113,7 +128,28 @@ public class RtsTemplateInstructionListPseudoCompiler {
 							if (m5.find()) {
 								setupTupleCompletion(m5, true, line);
 							} else {
-								System.err.println("Line " + lno + ": Syntax error. " + line);
+								Matcher m6 = conditionalElseIfPattern.matcher(line);
+								if (m6.find()) {
+									System.out.println("Found 'else if' pattern.");
+									if (inElse) {
+										handleConditionalElseIfPattern(m6);
+									} else {
+										System.err.println("Found 'else if' outside of if...endif block on line " + lno);
+									}
+									
+								} else {
+									Matcher m7 = conditionalElsePattern.matcher(line);
+									if (m7.find()) {
+										System.out.println("Found 'else' pattern.");
+										if (inElse) {
+											handleConditionalElsePattern(m7);
+										} else {
+											System.err.println("Found 'else' outside of if...endif block on line" + lno);
+										}
+									} else {
+										System.err.println("Line " + lno + ": Syntax error. " + line);
+									}
+								}
 							}
 						}
 					}
@@ -132,7 +168,7 @@ public class RtsTemplateInstructionListPseudoCompiler {
 		return instructionListExecutor;
 	}
 
-	private void handleConditionalEndPattern(Matcher m3) {
+	private void handleConditionalEndPattern(Matcher m) {
 		if (currentInstructionList.size() > 0)
 			instructionListExecutor.addInstructionList(currentInstructionList);
 
@@ -140,6 +176,36 @@ public class RtsTemplateInstructionListPseudoCompiler {
 
 		//blockNumber++;	
 		//currentBlockState = new RtsInstructionBlockState(blockNumber);
+	}
+
+	/*
+	*	If it's an else if, we keep the same block state, but start a new 
+	*		instruction set with that state
+	*
+	*/
+	private void handleConditionalElseIfPattern(Matcher m) {
+		if (currentInstructionList.size() > 0)
+			instructionListExecutor.addInstructionList(currentInstructionList);
+	
+		int fieldNum = Integer.parseInt(m.group(1));
+		String fieldVal = m.group(4);
+
+		RtsTemplateCondition condition = new RtsTemplateCondition(fieldNum, fieldVal);
+		currentInstructionList = new RtsTemplateInstructionList(condition, currentBlockState);
+	}
+
+	/*
+	*	If it's an else, then there's no field number / value.
+	*
+	*	Also, we keep the same block state, but start a new 
+	*		instruction set with that state
+	*
+	*/
+	private void handleConditionalElsePattern(Matcher m) {
+		if (currentInstructionList.size() > 0)
+			instructionListExecutor.addInstructionList(currentInstructionList);
+		
+		currentInstructionList = new RtsTemplateInstructionList(currentBlockState);
 	}
 
 	private void handleConditionalStartPattern(Matcher m) {

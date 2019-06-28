@@ -1,6 +1,7 @@
 package edu.ufl.ctsi.rts.text.template;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Iterator;
 
 public class RtsTemplateInstructionList implements Iterable<RtsTemplateInstruction> {
@@ -57,14 +58,15 @@ public class RtsTemplateInstructionList implements Iterable<RtsTemplateInstructi
 		return instructions.iterator();
 	}	
 	
-	public boolean shouldExecute(String value) {
+	public boolean shouldExecute(List<String> fields) {
+		String value = (condition != null) ? fields.get(condition.getFieldNum()-1) : "";
 		return alwaysExecute || 
 			(condition == null && !blockState.isExecuted()) ||
 			(condition != null && condition.isMet(value) && !blockState.isExecuted());
 	}
 	
 	public int getConditionFieldNum() {
-		if (condition == null) return 1;
+		if (condition == null) return -99;
 		else return condition.getFieldNum();
 	}
 

@@ -40,7 +40,7 @@ public class RtsTemplateInstructionListExecutor {
 		System.out.println("num of fields " + fields.size());
 		for (RtsTemplateInstructionList instList : listOfInstructionLists) {
 			System.out.println("Processing instruction set:");
-			boolean shouldExecute = instList.shouldExecute(fields.get(instList.getConditionFieldNum()-1));
+			boolean shouldExecute = instList.shouldExecute(fields);
 			if (!shouldExecute) {
 				System.out.println("Not executing " + instList.getConditionFieldNum() + 
 					" = " + instList.getConditionFieldValue() + "  (" + fields + ")");

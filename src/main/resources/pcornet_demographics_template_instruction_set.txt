@@ -66,27 +66,24 @@ D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-3]|I|CR|Null|
  	IUIt-6 = [new-iui]
 	U|[IUIt-6]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-4]|[male-sex]|[PATO]|[tr-2]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-6]|I|CR|Null|
-endif
 
-if (%4 == "F")
+else if (%4 == "F")
 IUIt-3 = [new-iui]
 IUIp-4 = A|[IUIt-3]~[IUIp-1]|[timestamp-1]|[new-iui]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-3]|I|CR|Null|
  	IUIt-6 = [new-iui]
 	U|[IUIt-6]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-4]|[female-sex]|[PATO]|[tr-2]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-6]|I|CR|Null|
-endif
 
-if (%4=="A")
+else if (%4=="A")
 IUIt-3 = [new-iui]
 IUIp-4 = A|[IUIt-3]~[IUIp-1]|[timestamp-1]|[new-iui]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-3]|I|CR|Null|
  	IUIt-6 = [new-iui]
 	U|[IUIt-6]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-4]|[intersex]|[PATO]|[tr-2]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-6]|I|CR|Null|
-endif
 
-if (%4 == "OT") 
+else if (%4 == "OT") 
 IUIt-3 = [new-iui]
 IUIp-4 = A|[IUIt-3]~[IUIp-1]|[timestamp-1]|[new-iui]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-3]|I|CR|Null|
@@ -96,6 +93,13 @@ D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-6]|I|CR|Null|
 IUIt-17 = [new-iui]
 U|[IUIt-17]~[IUIp-1]|[timestamp-2]|<-!-http://purl.obolibrary.org/obo/OBO_REL#_instance_of>|[BFO]|[IUIp-4]|[female-sex]|[PATO]|[tr-2]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-17]|I|CR|Null|
+
+else if (%4=="") 
+#comment
+
+
+else 
+#comment
 endif
 
 IUIt-8 = [new-iui]
