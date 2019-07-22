@@ -22,14 +22,17 @@ package edu.uams.dbmi.rts.metadata;
  *
  */
 public enum RtsChangeReason {
+	
 	/**
 	 * Change in belief/understanding
 	 */
 	CB("Change in belief/understanding"),
+	
 	/**
 	 * Change in reality
 	 */
 	CE("Change in reality"),
+	
 	/**
 	 * Change in relevance
 	 */

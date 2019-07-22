@@ -1,20 +1,24 @@
 #configuration / arguments input into the process
 #IUI of the database from which the source data derives
 IUIp-1 = $1             
- #ISO8601 timestamp to associate with time of IUI assignment               
+
+#ISO8601 timestamp to associate with time of IUI assignment               
 timestamp-1 = $2	     
+
 #IUI of the user running this process
 IUIp-16 = $3		   
- #ISO8601 timestamp to associate with time of template insertion  
+
+#ISO8601 timestamp to associate with time of template insertion  
 timestamp-2 = $4	   
 
 # SECTION FOR BIRTH DATE IN PCORnet CDM DEMOGRAPHIC TABLE
 
-# A templates, starting with assigning template IUIs.
+# Assignment templates, which begin by assigning template IUIs.
 # new-iui is instruction to create a new IUI
 IUIt-1 = [new-iui]
 IUIt-2 = [new-iui]
 # assign IUI to the person that this demographic row is about
+@IM PATID
 IUIp-2 = A|[IUIt-1]~[IUIp-1]|[timestamp-1]|[new-iui]  
 # assign IUI to the birth of the person
 IUIp-3 = A|[IUIt-2]~[IUIp-1]|[timestamp-1]|[new-iui]

@@ -27,10 +27,12 @@ public class RtsTemplateInstructionListPseudoCompiler {
 	public static String DETECT_TUPLE_COMPLETION_PATTERN = "^(([DUPEACL]\\|)|(T~))";
 	public static String DETECT_VARIABLE_ASSIGNMENT_PLUS_TUPLE_COMPLETION = "^([A-Za-z0-9-]+)[ \\t]*=[ \\t]*([DUPEACLT])";
 	
+	public static String ANNOTATION_PATTERN = "^@(LV|CV|IM|RP|UP|JA|UA|DV)[ \\t]*([A-Za-z0-9-]+)";
+	
 
 	Pattern variableAssignmentPattern, conditionalStartPattern, conditionalEndPattern, 
 		detectTupleCompletionPattern, detectVariableAssignPlusTupleCompletionPattern,
-		conditionalElseIfPattern, conditionalElsePattern;
+		conditionalElseIfPattern, conditionalElsePattern, annotationPattern;
 	
 	String fname;
 	File file;
@@ -66,6 +68,7 @@ public class RtsTemplateInstructionListPseudoCompiler {
 		detectVariableAssignPlusTupleCompletionPattern = Pattern.compile(DETECT_VARIABLE_ASSIGNMENT_PLUS_TUPLE_COMPLETION);
 		conditionalElseIfPattern = Pattern.compile(CONDITIONAL_ELSE_IF_PATTERN);
 		conditionalElsePattern = Pattern.compile(CONDITIONAL_ELSE_PATTERN);
+		annotationPattern = Pattern.compile(ANNOTATION_PATTERN);
 		
 		globalVariables = new ArrayList<RtsTemplateVariable>();
 		
@@ -136,7 +139,6 @@ public class RtsTemplateInstructionListPseudoCompiler {
 									} else {
 										System.err.println("Found 'else if' outside of if...endif block on line " + lno);
 									}
-									
 								} else {
 									Matcher m7 = conditionalElsePattern.matcher(line);
 									if (m7.find()) {
@@ -147,7 +149,13 @@ public class RtsTemplateInstructionListPseudoCompiler {
 											System.err.println("Found 'else' outside of if...endif block on line" + lno);
 										}
 									} else {
-										System.err.println("Line " + lno + ": Syntax error. " + line);
+										Matcher m8 = annotationPattern.matcher(line);
+										if (m8.find()) {
+											System.out.println("Found annotation pattern");
+											System.out.println("\t\t" + m8.group(1) + "\t\t" + m8.group(2));
+										} else {
+											System.err.println("Line " + lno + ": Syntax error. " + line);
+										}
 									}
 								}
 							}
