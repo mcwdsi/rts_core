@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
 
-public class RtsTemplateInstructionList implements Iterable<RtsTemplateInstruction> {
+public class RtsTemplateInstructionList implements Iterable<RtsAbstractInstruction> {
 	
 	public boolean alwaysExecute;
 	
@@ -22,10 +22,18 @@ public class RtsTemplateInstructionList implements Iterable<RtsTemplateInstructi
 	ArrayList<RtsTemplateInstruction> instructions;	
 	
 	/*
+	 * Separate list for annotation instructions, which will be executed only
+	 *   after all the other instructions have been executed successfully.
+	 */
+	ArrayList<RtsAnnotationInstruction> annotationInstructions;
+	
+	
+	/*
 	 * 
 	 */
 	public RtsTemplateInstructionList() {
 		instructions = new ArrayList<RtsTemplateInstruction>();
+		annotationInstructions = new ArrayList<RtsAnnotationInstruction>();
 		alwaysExecute = true;
 		condition = null;
 		blockState = null;
@@ -33,6 +41,7 @@ public class RtsTemplateInstructionList implements Iterable<RtsTemplateInstructi
 	
 	public RtsTemplateInstructionList(RtsTemplateCondition condition, RtsInstructionBlockState blockState) {
 		instructions = new ArrayList<RtsTemplateInstruction>();
+		annotationInstructions = new ArrayList<RtsAnnotationInstruction>();
 		alwaysExecute = false;
 		if (condition == null) throw new IllegalArgumentException("condition may not be null");
 		if (blockState == null) throw new IllegalArgumentException("block state may not be null");
@@ -54,8 +63,13 @@ public class RtsTemplateInstructionList implements Iterable<RtsTemplateInstructi
 	}
 
 	@Override
-	public Iterator<RtsTemplateInstruction> iterator() {
-		return instructions.iterator();
+	public Iterator<RtsAbstractInstruction> iterator() {
+		ArrayList<RtsAbstractInstruction> allInst = new ArrayList<RtsAbstractInstruction>();
+		allInst.addAll(instructions);
+		//System.err.println(allInst.size());
+		allInst.addAll(annotationInstructions);
+		//System.err.println(allInst.size());
+		return allInst.iterator();
 	}	
 	
 	public boolean shouldExecute(List<String> fields) {
@@ -85,5 +99,10 @@ public class RtsTemplateInstructionList implements Iterable<RtsTemplateInstructi
 
 	public RtsInstructionBlockState getBlockState() {
 		return blockState;
+	}
+
+	public void addInstruction(RtsAnnotationInstruction inst) {
+		System.err.println("ADDED ANNOTATION INSTRUCTION TO INSTRUCTION SET!");
+		annotationInstructions.add(inst);
 	}
 }

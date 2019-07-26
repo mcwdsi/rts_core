@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 import edu.uams.dbmi.rts.iui.Iui;
 import edu.ufl.ctsi.rts.text.RtsTupleTextParser;
 import edu.ufl.ctsi.rts.text.RtsTupleTextWriter;
+import edu.ufl.ctsi.rts.text.template.dataevent.DataEventType;
 
 
 
@@ -152,7 +153,7 @@ public class RtsTemplateInstructionListPseudoCompiler {
 										Matcher m8 = annotationPattern.matcher(line);
 										if (m8.find()) {
 											System.out.println("Found annotation pattern");
-											System.out.println("\t\t" + m8.group(1) + "\t\t" + m8.group(2));
+											handleAnnotationInstruction(m8);
 										} else {
 											System.err.println("Line " + lno + ": Syntax error. " + line);
 										}
@@ -342,6 +343,15 @@ public class RtsTemplateInstructionListPseudoCompiler {
 			currentInstructionList.addInstruction(inst);
 		}
 		
+	}
+	
+	private void handleAnnotationInstruction(Matcher m) {
+		System.out.println("\t\t" + m.group(1) + "\t\t" + m.group(2));
+		DataEventType det = DataEventType.valueOf(m.group(1).trim());
+		String varName = m.group(2);
+		
+		RtsAnnotationInstruction inst = new RtsAnnotationInstruction(det, varName);
+		currentInstructionList.addInstruction(inst);
 	}
 	
 	

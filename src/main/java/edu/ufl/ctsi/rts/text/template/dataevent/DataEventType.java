@@ -1,7 +1,7 @@
 package edu.ufl.ctsi.rts.text.template.dataevent;
 
 public enum DataEventType {
-	IMPLICIT("IM"),
+	/*IMPLICIT("IM"),
 	CODED_VALUE("CV"),
 	LITERAL_VALUE("LV"),
 	JUSTIFIED_ABSENCE("JA"),
@@ -9,14 +9,24 @@ public enum DataEventType {
 	REDUNDANT_PRESENCE("RP"),
 	UNJUSTIFIED_PRESENCE("UP"),
 	DISALLOWED_VALUE("DV");
+	*/
 	
-	String code;
+	IM("implicit"),
+	CV("coded value"),
+	LV("literal value"),
+	JA("justified absence"),
+	UA("unjustified absence"),
+	RP("redundant presence"),
+	UP("unjustified presence"),
+	DV("disallowed value");
 	
-	DataEventType(String code) {
-		this.code = code;
+	String description;
+	
+	DataEventType(String description) {
+		this.description = description;
 	}
 	
 	public String toString() {
-		return code;
+		return description;
 	}
 }

@@ -21,10 +21,21 @@ import edu.ufl.ctsi.rts.text.RtsTupleTextWriter;
 import edu.ufl.ctsi.rts.text.template.RtsTemplateInstructionListExecutor;
 import edu.ufl.ctsi.rts.text.template.RtsTemplateInstructionListPseudoCompiler;
 import edu.ufl.ctsi.rts.text.template.RtsTemplateVariable;
+import edu.ufl.ctsi.rts.text.template.dataevent.DataEvent;
+import edu.ufl.ctsi.rts.text.template.dataevent.DataEventFilter;
+import edu.ufl.ctsi.rts.text.template.dataevent.DataEventMessageBoard;
+import edu.ufl.ctsi.rts.text.template.dataevent.DataEventSubscriber;
+import edu.ufl.ctsi.rts.text.template.dataevent.DataEventType;
+import edu.ufl.ctsi.rts.text.template.dataevent.DataEventTypeCounterSubscriber;
 
-public class RtsTupleTemplateInstructionSetTest {
+public class RtsTupleTemplateInstructionSetTest implements DataEventSubscriber {
 		
 	public static void main(String[] args) {
+		
+		DataEventMessageBoard.start();
+		
+		DataEventTypeCounterSubscriber sub = new DataEventTypeCounterSubscriber(DataEventType.IM);
+		DataEventMessageBoard.subscribe(sub, new DataEventFilter(sub.getDataEventType()));
 		
 		RtsTemplateInstructionListPseudoCompiler c 
 				= new RtsTemplateInstructionListPseudoCompiler("./src/main/resources/" + 
@@ -91,6 +102,8 @@ public class RtsTupleTemplateInstructionSetTest {
 			// TODO Auto-generated catch block
 			ioe.printStackTrace();
 		}
+		
+		System.out.println("There were " + sub.getCount() + " " + sub.getDataEventType() + " data events.");
 	}
 	
 	public static Properties loadGlobalVariables(String absPathAndFile) throws IOException {
@@ -129,6 +142,13 @@ public class RtsTupleTemplateInstructionSetTest {
 			//RtsTemplate
 		}
 
+	}
+
+	@Override
+	public void notify(DataEvent e) {
+		System.out.println("Received notification of data event: " + e.getDataEventType() + ", " + 
+				e.getFieldName() + ", " + e.getFieldValue() + ", " + e.getRecordNumber());
+		
 	}
 	
 }
