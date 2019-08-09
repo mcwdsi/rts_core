@@ -17,9 +17,13 @@ public class RtsAnnotationInstruction extends RtsAbstractInstruction {
 	}
 	
 	@Override
-	public boolean execute(ArrayList<String> args, Map<String, RtsTemplateVariable> variables) {
+	public boolean execute(ArrayList<String> args, @SuppressWarnings("rawtypes") Map<String, RtsTemplateVariable> variables) {
 		
-		DataEvent de = new DataEvent(fieldName, null, type, 0); //TODO - need to send through the field number and record number somehow
+		RtsTemplateVariable recNum = variables.get("RECORD_NUMBER");
+		Object o = recNum.getValue();
+		int recordNumber = ((Integer)o).intValue();
+		
+		DataEvent de = new DataEvent(fieldName, null, type, recordNumber); //TODO - need to send through the field number and record number somehow
 		DataEventMessageBoard.publish(de);
 		
 		/*

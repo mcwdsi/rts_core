@@ -25,13 +25,16 @@ public class RtsTemplateInstructionListExecutor {
 		listOfBlockStates = new ArrayList<RtsInstructionBlockState>();
 	}
 	
-	public List<RtsDeclaration> processRecord(ArrayList<String> fields) {
+	public List<RtsDeclaration> processRecord(ArrayList<String> fields, int recordNumber) {
 		ArrayList<RtsDeclaration> tupleSet = new ArrayList<RtsDeclaration>();
 		resetBlockStates();
 
 		@SuppressWarnings("rawtypes")
 		HashMap<String, RtsTemplateVariable> localVariables = new HashMap<String, RtsTemplateVariable>();
 		localVariables.putAll(globalVariables);
+		RtsTemplateVariable<Integer> recVar = new RtsTemplateVariable<Integer>("RECORD_NUMBER");
+		recVar.setValue(new Integer(recordNumber));
+		localVariables.put(recVar.getName(), recVar);
 		
 		String systimeTxt = getNewIso8601SystimeString();
 		ArrayList<String> args = new ArrayList<String>();

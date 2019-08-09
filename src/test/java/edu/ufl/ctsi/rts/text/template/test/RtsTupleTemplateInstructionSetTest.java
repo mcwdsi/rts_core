@@ -21,6 +21,7 @@ import edu.ufl.ctsi.rts.text.RtsTupleTextWriter;
 import edu.ufl.ctsi.rts.text.template.RtsTemplateInstructionListExecutor;
 import edu.ufl.ctsi.rts.text.template.RtsTemplateInstructionListPseudoCompiler;
 import edu.ufl.ctsi.rts.text.template.RtsTemplateVariable;
+import edu.ufl.ctsi.rts.text.template.dataevent.AllDataEventStreamWriterSubscriber;
 import edu.ufl.ctsi.rts.text.template.dataevent.DataEvent;
 import edu.ufl.ctsi.rts.text.template.dataevent.DataEventFilter;
 import edu.ufl.ctsi.rts.text.template.dataevent.DataEventMessageBoard;
@@ -37,6 +38,7 @@ public class RtsTupleTemplateInstructionSetTest implements DataEventSubscriber {
 		DataEventTypeCounterSubscriber sub = new DataEventTypeCounterSubscriber(DataEventType.IM);
 		DataEventMessageBoard.subscribe(sub, new DataEventFilter(sub.getDataEventType()));
 		
+				
 		RtsTemplateInstructionListPseudoCompiler c 
 				= new RtsTemplateInstructionListPseudoCompiler("./src/main/resources/" + 
 					"pcornet_demographics_template_instruction_set.txt");
@@ -66,20 +68,22 @@ public class RtsTupleTemplateInstructionSetTest implements DataEventSubscriber {
 			FileReader fr = new FileReader("./src/main/resources/dummy-demographics-records.txt");
 			LineNumberReader lnr = new LineNumberReader(fr);
 			
+			FileWriter fw1 = new FileWriter("./src/test/resources//test-data-events-generated.out");
+			AllDataEventStreamWriterSubscriber allEventsSub = new AllDataEventStreamWriterSubscriber(fw1);
+			DataEventMessageBoard.subscribe(allEventsSub, allEventsSub.getFilter());
 			
-			FileWriter fw = new FileWriter("./src/test/resources//test-tuple-generation.out");
-			RtsTupleTextWriter w = new RtsTupleTextWriter(fw);
+			FileWriter fw2 = new FileWriter("./src/test/resources//test-tuple-generation.out");
+			RtsTupleTextWriter w = new RtsTupleTextWriter(fw2);
 			
 			String record;
+			int iRecord = 1;
 			while((record=lnr.readLine())!=null) {
 				String[] fieldsArray = record.split(Pattern.quote(","), -1);
 				System.out.println(fieldsArray.length);
 				ArrayList<String> fields = new ArrayList<String>();
 				for (String s: fieldsArray) fields.add(s);
 				
-				List<RtsDeclaration> declarationSet = e.processRecord(fields);
-				
-				
+				List<RtsDeclaration> declarationSet = e.processRecord(fields, iRecord);
 				
 				Iterator<RtsDeclaration> i = declarationSet.iterator();
 				while (i.hasNext()) {
@@ -92,10 +96,12 @@ public class RtsTupleTemplateInstructionSetTest implements DataEventSubscriber {
 						w.writeTemporalRegion(r);
 					}
 				}
+				iRecord++;
 			}
 		
 			
-			fw.close();
+			fw1.close();
+			fw2.close();
 			fr.close();
 		
 		} catch (IOException ioe) {
