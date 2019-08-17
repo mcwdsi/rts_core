@@ -10,20 +10,23 @@ import edu.ufl.ctsi.rts.text.template.dataevent.DataEventType;
 public class RtsAnnotationInstruction extends RtsAbstractInstruction {
 	DataEventType type;
 	String fieldName;
+	int fieldOrderInTable;
 	
-	public RtsAnnotationInstruction(DataEventType type, String fieldName) {
+	public RtsAnnotationInstruction(DataEventType type, String fieldName, int fieldOrderInTable) {
 		this.type = type;
 		this.fieldName = fieldName;
+		this.fieldOrderInTable = fieldOrderInTable;
 	}
 	
 	@Override
 	public boolean execute(ArrayList<String> args, @SuppressWarnings("rawtypes") Map<String, RtsTemplateVariable> variables) {
 		
+		@SuppressWarnings("rawtypes")
 		RtsTemplateVariable recNum = variables.get("RECORD_NUMBER");
 		Object o = recNum.getValue();
 		int recordNumber = ((Integer)o).intValue();
 		
-		DataEvent de = new DataEvent(fieldName, null, type, recordNumber); //TODO - need to send through the field number and record number somehow
+		DataEvent de = new DataEvent(fieldName, args.get(fieldOrderInTable), type, recordNumber); //TODO - need to send through the field number and record number somehow
 		DataEventMessageBoard.publish(de);
 		
 		/*

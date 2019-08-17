@@ -2,11 +2,13 @@ package edu.ufl.ctsi.rts.text.template.test;
 
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.net.URI;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -17,6 +19,8 @@ import edu.uams.dbmi.rts.RtsDeclaration;
 import edu.uams.dbmi.rts.iui.Iui;
 import edu.uams.dbmi.rts.time.TemporalRegion;
 import edu.uams.dbmi.rts.tuple.RtsTuple;
+import edu.ufl.bmi.util.cdm.CommonDataModel;
+import edu.ufl.bmi.util.cdm.CommonDataModelReader;
 import edu.ufl.ctsi.rts.text.RtsTupleTextWriter;
 import edu.ufl.ctsi.rts.text.template.RtsTemplateInstructionListExecutor;
 import edu.ufl.ctsi.rts.text.template.RtsTemplateInstructionListPseudoCompiler;
@@ -38,10 +42,27 @@ public class RtsTupleTemplateInstructionSetTest implements DataEventSubscriber {
 		DataEventTypeCounterSubscriber sub = new DataEventTypeCounterSubscriber(DataEventType.IM);
 		DataEventMessageBoard.subscribe(sub, new DataEventFilter(sub.getDataEventType()));
 		
-				
+		FileReader fr;
+		CommonDataModel cdm = null;
+		CommonDataModelReader cdmReader;
+		try {
+			fr = new FileReader("./src/main/resources/pcornet_cdm_50_parseable_tab_delimited_text.txt");
+			cdmReader = new CommonDataModelReader(fr);
+			cdm = cdmReader.read();
+		} catch (FileNotFoundException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		RtsTemplateInstructionListPseudoCompiler c 
 				= new RtsTemplateInstructionListPseudoCompiler("./src/main/resources/" + 
-					"pcornet_demographics_template_instruction_set.txt");
+					"pcornet_demographics_template_instruction_set.txt", cdm, "DEMOGRAPHIC");
 	
 		@SuppressWarnings("rawtypes")
 		ArrayList<RtsTemplateVariable> globals = new ArrayList<RtsTemplateVariable>();
@@ -65,7 +86,7 @@ public class RtsTupleTemplateInstructionSetTest implements DataEventSubscriber {
 		e.setGlobalVariables(globals);
 		
 		try {
-			FileReader fr = new FileReader("./src/main/resources/dummy-demographics-records.txt");
+			fr = new FileReader("./src/main/resources/dummy-demographics-records.txt");
 			LineNumberReader lnr = new LineNumberReader(fr);
 			
 			FileWriter fw1 = new FileWriter("./src/test/resources//test-data-events-generated.out");

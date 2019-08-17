@@ -11,6 +11,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import edu.uams.dbmi.rts.iui.Iui;
+import edu.ufl.bmi.util.cdm.CommonDataModel;
+import edu.ufl.bmi.util.cdm.CommonDataModelField;
+import edu.ufl.bmi.util.cdm.CommonDataModelTable;
 import edu.ufl.ctsi.rts.text.RtsTupleTextParser;
 import edu.ufl.ctsi.rts.text.RtsTupleTextWriter;
 import edu.ufl.ctsi.rts.text.template.dataevent.DataEventType;
@@ -57,10 +60,15 @@ public class RtsTemplateInstructionListPseudoCompiler {
 	RtsTemplateInstructionList currentInstructionList;
 	RtsTemplateInstructionListExecutor instructionListExecutor;
 	
+	CommonDataModel cdm;
+	String tableName;
+	
 	@SuppressWarnings("rawtypes")
-	public RtsTemplateInstructionListPseudoCompiler(String fileName) {
+	public RtsTemplateInstructionListPseudoCompiler(String fileName, CommonDataModel cdm, String tableName) {
 		this.fname = fileName;
 		file = new File(fname);
+		this.cdm = cdm;
+		this.tableName = tableName;
 		
 		variableAssignmentPattern = Pattern.compile(VARIABLE_ASSIGNMENT_PATTERN);
 		conditionalStartPattern = Pattern.compile(CONDITIONAL_START_PATTERN);
@@ -74,7 +82,7 @@ public class RtsTemplateInstructionListPseudoCompiler {
 		globalVariables = new ArrayList<RtsTemplateVariable>();
 		
 		currentInstructionList = new RtsTemplateInstructionList();
-		instructionListExecutor = new RtsTemplateInstructionListExecutor();
+		instructionListExecutor = new RtsTemplateInstructionListExecutor(cdm);
 	}
 	
 	//TODO  Create methods / mechanism to set the delimiters to something else, perhaps
@@ -350,7 +358,10 @@ public class RtsTemplateInstructionListPseudoCompiler {
 		DataEventType det = DataEventType.valueOf(m.group(1).trim());
 		String varName = m.group(2);
 		
-		RtsAnnotationInstruction inst = new RtsAnnotationInstruction(det, varName);
+		CommonDataModelTable t = cdm.getTableByName(tableName);
+		CommonDataModelField f = t.getFieldByName(varName);
+		
+		RtsAnnotationInstruction inst = new RtsAnnotationInstruction(det, varName, f.getFieldOrderInTable());
 		currentInstructionList.addInstruction(inst);
 	}
 	

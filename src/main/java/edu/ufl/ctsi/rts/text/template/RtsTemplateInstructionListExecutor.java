@@ -10,19 +10,22 @@ import java.util.TimeZone;
 import edu.uams.dbmi.rts.RtsDeclaration;
 import edu.uams.dbmi.util.iso8601.Iso8601DateTime;
 import edu.uams.dbmi.util.iso8601.Iso8601DateTimeFormatter;
+import edu.ufl.bmi.util.cdm.CommonDataModel;
 
 public class RtsTemplateInstructionListExecutor {
 	
 	ArrayList<RtsTemplateInstructionList> listOfInstructionLists;
 	ArrayList<RtsInstructionBlockState> listOfBlockStates;
+	CommonDataModel cdm;
 
 	@SuppressWarnings("rawtypes")
 	HashMap<String, RtsTemplateVariable> globalVariables;
 	
 	
-	public RtsTemplateInstructionListExecutor() {
+	public RtsTemplateInstructionListExecutor(CommonDataModel cdm) {
 		listOfInstructionLists = new ArrayList<RtsTemplateInstructionList>();
 		listOfBlockStates = new ArrayList<RtsInstructionBlockState>();
+		this.cdm = cdm;
 	}
 	
 	public List<RtsDeclaration> processRecord(ArrayList<String> fields, int recordNumber) {
