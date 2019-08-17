@@ -56,6 +56,7 @@ public class RtsTemplateInstructionList implements Iterable<RtsAbstractInstructi
 
 	public RtsTemplateInstructionList(RtsInstructionBlockState blockState) {
 		instructions = new ArrayList<RtsTemplateInstruction>();
+		annotationInstructions = new ArrayList<RtsAnnotationInstruction>();
 		alwaysExecute = false;
 		this.condition = null;
 		if (blockState == null) throw new IllegalArgumentException("block state may not be null");
@@ -102,7 +103,7 @@ public class RtsTemplateInstructionList implements Iterable<RtsAbstractInstructi
 	}
 
 	public void addInstruction(RtsAnnotationInstruction inst) {
-		System.err.println("ADDED ANNOTATION INSTRUCTION TO INSTRUCTION SET!");
+		//System.err.println("ADDED ANNOTATION INSTRUCTION TO INSTRUCTION SET!");
 		annotationInstructions.add(inst);
 	}
 }
