@@ -62,13 +62,16 @@ public class RtsTupleCompletionInstruction extends RtsTemplateInstruction {
 				String command = s.substring(1, s.length()-1);
 				if (command.equals("new-iui")) {
 					contentBlock.add(Iui.createRandomIui().toString());
-				} else if (variables.containsKey(command)) {
-					System.out.println("\t\tCommand is variable: " + command + "\t" + variables.get(command).getValue());
+				} else if (variables.containsKey(command) || command.startsWith("!")) {
+					boolean negation = command.startsWith("!");
+					if (negation) command = command.substring(1);
+					System.out.println("\t\tCommand is variable: " + command + "\t" + variables.get(command).getValue() + " and negation is " + negation);
 					Object value = variables.get(command).getValue();
 					if (value instanceof URI) {
 						StringBuilder sb = new StringBuilder();
 						//sb.append(quoteOpen);
 						//System.out.println(quoteOpen + "\t" + quoteClose);
+						if (negation) sb.append("-!-");
 						sb.append(value.toString());
 						//sb.append(quoteClose);
 						System.out.println("\t\t\t\tURI value with quotes is: " + sb.toString());
