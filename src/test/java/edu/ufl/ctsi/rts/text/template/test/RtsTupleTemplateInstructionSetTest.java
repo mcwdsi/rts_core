@@ -31,6 +31,7 @@ import edu.ufl.ctsi.rts.text.template.dataevent.DataEventFilter;
 import edu.ufl.ctsi.rts.text.template.dataevent.DataEventMessageBoard;
 import edu.ufl.ctsi.rts.text.template.dataevent.DataEventSubscriber;
 import edu.ufl.ctsi.rts.text.template.dataevent.DataEventType;
+import edu.ufl.ctsi.rts.text.template.dataevent.DataEventTypeByFieldCounterSubscriber;
 import edu.ufl.ctsi.rts.text.template.dataevent.DataEventTypeCounterSubscriber;
 
 public class RtsTupleTemplateInstructionSetTest implements DataEventSubscriber {
@@ -39,8 +40,17 @@ public class RtsTupleTemplateInstructionSetTest implements DataEventSubscriber {
 		
 		DataEventMessageBoard.start();
 		
-		DataEventTypeCounterSubscriber sub = new DataEventTypeCounterSubscriber(DataEventType.IM);
-		DataEventMessageBoard.subscribe(sub, new DataEventFilter(sub.getDataEventType()));
+		DataEventTypeCounterSubscriber sub1 = new DataEventTypeCounterSubscriber(DataEventType.IM);
+		DataEventMessageBoard.subscribe(sub1, new DataEventFilter(sub1.getDataEventType()));
+		
+		DataEventTypeCounterSubscriber sub2 = new DataEventTypeCounterSubscriber(DataEventType.UA);
+		DataEventMessageBoard.subscribe(sub2, new DataEventFilter(sub2.getDataEventType()));
+		
+		DataEventTypeByFieldCounterSubscriber sub3 = new DataEventTypeByFieldCounterSubscriber(DataEventType.CV, "RACE");
+		DataEventMessageBoard.subscribe(sub3, new DataEventFilter(sub3.getDataEventType()));
+		
+		DataEventTypeCounterSubscriber sub4 = new DataEventTypeCounterSubscriber(DataEventType.CV);
+		DataEventMessageBoard.subscribe(sub4, new DataEventFilter(sub4.getDataEventType()));
 		
 		FileReader fr;
 		CommonDataModel cdm = null;
@@ -130,7 +140,10 @@ public class RtsTupleTemplateInstructionSetTest implements DataEventSubscriber {
 			ioe.printStackTrace();
 		}
 		
-		System.out.println("There were " + sub.getCount() + " " + sub.getDataEventType() + " data events.");
+		System.out.println("There were " + sub1.getCount() + " " + sub1.getDataEventType() + " data events.");
+		System.out.println("There were " + sub2.getCount() + " " + sub2.getDataEventType() + " data events.");
+		System.out.println("There were " + sub3.getCount() + " " + sub3.getDataEventType() + " data events for the field " + sub3.getFieldName());
+		System.out.println("There were " + sub4.getCount() + " " + sub4.getDataEventType() + " data events total.");
 	}
 	
 	public static Properties loadGlobalVariables(String absPathAndFile) throws IOException {

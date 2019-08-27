@@ -12,9 +12,8 @@ public class DataEventTypeCounterSubscriber implements DataEventSubscriber {
 	
 	@Override
 	public void notify(DataEvent e) {
-		// TODO Auto-generated method stub
-		System.err.println("GOT NOTIFICATION!!!!");
-		count++;
+		if (e.getDataEventType().equals(de))
+			count++;
 	}
 	
 	public int getCount() {

@@ -16,8 +16,13 @@ public abstract class AbstractDataEventFilter {
 		
 		if (o instanceof AbstractDataEventFilter) {
 			AbstractDataEventFilter de = (AbstractDataEventFilter)o;
-			eq = (eventType.equals(de.eventType) && fieldName.equals(de.fieldName)
-					&& fieldValue.equals(de.fieldValue));
+			/*
+			 * We check == before .equals in case they're null.  If they're not null, then we need to use .equals.
+			 * 
+			 * If either one is true, then true for that part of the conjunct.
+			 */
+			eq = (eventType.equals(de.eventType) && (fieldName == de.fieldName || fieldName.equals(de.fieldName))
+					&& (fieldValue == de.fieldValue || fieldValue.equals(de.fieldValue)));
 		}
 		return eq;
 	}
