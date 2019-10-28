@@ -12,7 +12,10 @@ timestamp-1 = $2
 IUIp-16 = $3		   
 
 #ISO8601 timestamp to associate with time of template insertion  
-timestamp-2 = $4	   
+timestamp-2 = $4	 
+
+#ISO8601 timestamp to associate with time by which DEMOGRAPHIC table existed in its entirety
+timestamp-3 = $5  
 
 # SECTION FOR BIRTH DATE IN PCORnet CDM DEMOGRAPHIC TABLE
 
@@ -123,25 +126,6 @@ P|[IUIt-8]~[IUIp-1]|[timestamp-2]|[bearer-of]|[RO]|iui=[IUIp-2], iui=[IUIp-4]|[t
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-8]|I|CR|Null|
 
 
-# SECTION FOR PATID FIELD IN PCORnet CDM DEMOGRAPHIC TABLE
-
-# tr-6 is interval over which the patid exists
-tr-6 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
-IUIt-11 = [new-iui]
-# assign an IUI to the patid
-IUIp-5 = A|[IUIt-11]~[IUIp-1]|[timestamp-1]|[new-iui]
-D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|  
-# declare it to be an instance of PNO:identifier at tr-6
-IUIt-12 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-5]|<http://purl.obolibrary.org/obo/IAO_0020000>|[PNO]|[tr-6]
-D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-12]|I|CR|Null|  
-# the patid denotes the person (also denoted by IUI-2, here)
-IUIt-13 = P|[new-iui]~[IUIp-1]|[timestamp-2]|<http://purl.obolibrary.org/obo/IAO_0000219>|[IAO]|iui=[IUIp-5], iui=[IUIp-2]|[tr-6]
-D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-13]|I|CR|Null|  
-# record the actual characters of the patid in a PtoDE template
-IUIt-14 = [new-iui]
-E|[IUIt-14]~[IUIp-1]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-5]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%1
-D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-14]|I|CR|Null|  
-
 # SECTION FOR HISPANIC FIELD IN PCORnet CDM DEMOGRAPHIC TABLE
 
 if (%7=="Y")
@@ -240,4 +224,202 @@ else
 # If we get here, then we have a value for Race that is not allowed.  So record a disallowed value (DV)
 @DV RACE
 
+
 endif
+
+
+# ---------------------------------------------------------------------------------------------------------------
+#
+#  now begins the "information side" of the analysis
+#
+# ---------------------------------------------------------------------------------------------------------------
+
+# assign IUI to the demographic record
+IUIt-100 = [new-iui]
+IUIp-100 = A|[IUIt-100]~[IUIp-1]|[timestamp-1]|[new-iui] 
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-100]|I|CR|Null|
+
+# temporal reference for life of record.  We assume that each field is part of the record for the life of the record.
+T~[timestamp-3]|[temporal-interval]|d4af5c9a-47ba-4bf4-9bae-f13a8ed6455e
+tr-101 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
+IUIt-150 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[during]|[RO]|tref=[timestamp-3], tref=[tr-101]|[tmax]
+
+#assign IUI to the PATID field of the demographic record
+# SECTION FOR PATID FIELD IN PCORnet CDM DEMOGRAPHIC TABLE
+
+# tr-6 is interval over which the patid exists
+tr-6 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
+IUIt-11 = [new-iui]
+# assign an IUI to the patid
+IUIp-5 = A|[IUIt-11]~[IUIp-1]|[timestamp-1]|[new-iui]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|  
+# declare it to be an instance of PNO:identifier at tr-6
+IUIt-12 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-5]|<http://purl.obolibrary.org/obo/IAO_0020000>|[PNO]|[tr-6]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-12]|I|CR|Null|  
+# record the actual characters of the patid in a PtoDE template
+IUIt-14 = [new-iui]
+E|[IUIt-14]~[IUIp-1]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-5]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%1
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-14]|I|CR|Null|  
+# the PATID is part of the record
+IUIt-151 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-5], iui=[IUIp-100]|[tr-101]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-151]|I|CR|Null|
+
+#assign IUI to the BIRTH_DATE field of the demographic record
+IUIt-102 = [new-iui]
+IUIp-102 = A|[IUIt-102]~[IUIp-1]|[timestamp-1]|[new-iui]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-102]|I|CR|Null|
+IUIt-152 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-102], iui=[IUIp-100]|[tr-101]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-152]|I|CR|Null|
+# declare it to be an instance of apollo_sv:date at tr-101
+IUIt-172 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-102]|[date]|[APOLLO_SV]|[tr-101]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-172]|I|CR|Null|  
+
+#assign IUI to the BIRTH_TIME field of the demographic record
+IUIt-103 = [new-iui]
+IUIp-103 = A|[IUIt-103]~[IUIp-1]|[timestamp-1]|[new-iui]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-103]|I|CR|Null|
+IUIt-153 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-103], iui=[IUIp-100]|[tr-101]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-153]|I|CR|Null|
+# declare it to be an instance of iao:data item at tr-101
+IUIt-173 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-103]|[data-item]|[IAO]|[tr-101]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-173]|I|CR|Null|
+
+#assign IUI to the SEX field of the demographic record
+IUIt-104 = [new-iui]
+IUIp-104 = A|[IUIt-104]~[IUIp-1]|[timestamp-1]|[new-iui]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-104]|I|CR|Null|
+IUIt-154 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-104], iui=[IUIp-100]|[tr-101]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-154]|I|CR|Null|
+IUIt-174 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-104]|[data-item]|[IAO]|[tr-101]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-174]|I|CR|Null|
+
+#assign IUI to the SEXUAL_ORIENTATION field of the demographic record
+IUIt-105 = [new-iui]
+IUIp-105 = A|[IUIt-105]~[IUIp-1]|[timestamp-1]|[new-iui]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-105]|I|CR|Null|
+IUIt-155 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-105], iui=[IUIp-100]|[tr-101]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-155]|I|CR|Null|
+IUIt-175 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-105]|[data-item]|[IAO]|[tr-101]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-175]|I|CR|Null|
+
+#assign IUI to the GENDER_IDENTITY field of the demographic record
+IUIt-106 = [new-iui]
+IUIp-106 = A|[IUIt-106]~[IUIp-1]|[timestamp-1]|[new-iui]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-106]|I|CR|Null|
+IUIt-156 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-106], iui=[IUIp-100]|[tr-101]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-156]|I|CR|Null|
+IUIt-176 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-106]|[data-item]|[IAO]|[tr-101]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-176]|I|CR|Null|
+
+#assign IUI to the HISPANIC field of the demographic record
+IUIt-107 = [new-iui]
+IUIp-107 = A|[IUIt-107]~[IUIp-1]|[timestamp-1]|[new-iui]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-107]|I|CR|Null|
+IUIt-157 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-107], iui=[IUIp-100]|[tr-101]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-157]|I|CR|Null|
+IUIt-177 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-107]|[data-item]|[IAO]|[tr-101]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-177]|I|CR|Null|
+
+#assign IUI to the RACE field of the demographic record
+IUIt-108 = [new-iui]
+IUIp-108 = A|[IUIt-108]~[IUIp-1]|[timestamp-1]|[new-iui]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-108]|I|CR|Null|
+IUIt-158 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-108], iui=[IUIp-100]|[tr-101]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-158]|I|CR|Null|
+IUIt-178 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-108]|[data-item]|[IAO]|[tr-101]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-178]|I|CR|Null|
+
+#assign IUI to the BIOBANK_FLAG field of the demographic record
+IUIt-109 = [new-iui]
+IUIp-109 = A|[IUIt-109]~[IUIp-1]|[timestamp-1]|[new-iui]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-109]|I|CR|Null|
+IUIt-159 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-109], iui=[IUIp-100]|[tr-101]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-159]|I|CR|Null|
+IUIt-179 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-109]|[data-item]|[IAO]|[tr-101]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-179]|I|CR|Null|
+
+#assign IUI to the PAT_PREF_LANGUAGE_SPOKEN field of the demographic record
+IUIt-110 = [new-iui]
+IUIp-110 = A|[IUIt-110]~[IUIp-1]|[timestamp-1]|[new-iui]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-110]|I|CR|Null|
+IUIt-160 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-110], iui=[IUIp-100]|[tr-101]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-160]|I|CR|Null|
+IUIt-180 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-110]|[data-item]|[IAO]|[tr-101]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-180]|I|CR|Null|
+
+#assign IUI to the RAW_SEX field of the demographic record
+IUIt-111 = [new-iui]
+IUIp-111 = A|[IUIt-111]~[IUIp-1]|[timestamp-1]|[new-iui]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-111]|I|CR|Null|
+IUIt-161 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-111], iui=[IUIp-100]|[tr-101]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-161]|I|CR|Null|
+IUIt-181 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-111]|[data-item]|[IAO]|[tr-101]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-181]|I|CR|Null|
+
+#assign IUI to the RAW_SEXUAL_ORIENTATION field of the demographic record
+IUIt-112 = [new-iui]
+IUIp-112 = A|[IUIt-112]~[IUIp-1]|[timestamp-1]|[new-iui]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-112]|I|CR|Null|
+IUIt-162 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-112], iui=[IUIp-100]|[tr-101]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-162]|I|CR|Null|
+IUIt-182 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-112]|[data-item]|[IAO]|[tr-101]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-182]|I|CR|Null|
+
+#assign IUI to the RAW_GENDER_IDENTITY field of the demographic record
+IUIt-113 = [new-iui]
+IUIp-113 = A|[IUIt-113]~[IUIp-1]|[timestamp-1]|[new-iui]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-113]|I|CR|Null|
+IUIt-163 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-113], iui=[IUIp-100]|[tr-101]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-163]|I|CR|Null|
+IUIt-183 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-113]|[data-item]|[IAO]|[tr-101]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-183]|I|CR|Null|
+
+#assign IUI to the RAW_HISPANIC field of the demographic record
+IUIt-114 = [new-iui]
+IUIp-114 = A|[IUIt-114]~[IUIp-1]|[timestamp-1]|[new-iui]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-114]|I|CR|Null|
+IUIt-164 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-114], iui=[IUIp-100]|[tr-101]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-164]|I|CR|Null|
+IUIt-184 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-114]|[data-item]|[IAO]|[tr-101]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-184]|I|CR|Null|
+
+#assign IUI to the RAW_RACE field of the demographic record
+IUIt-115 = [new-iui]
+IUIp-115 = A|[IUIt-114]~[IUIp-1]|[timestamp-1]|[new-iui]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-115]|I|CR|Null|
+IUIt-165 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-115], iui=[IUIp-100]|[tr-101]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-165]|I|CR|Null|
+IUIt-185 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-115]|[data-item]|[IAO]|[tr-101]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-185]|I|CR|Null|
+
+#assign IUI to the RAW_PAT_PREF_LANGUAGE_SPOKEN field of the demographic record
+IUIt-116 = [new-iui]
+IUIp-116 = A|[IUIt-115]~[IUIp-1]|[timestamp-1]|[new-iui]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-116]|I|CR|Null|
+IUIt-166 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-116], iui=[IUIp-100]|[tr-101]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-166]|I|CR|Null|
+IUIt-186 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-116]|[data-item]|[IAO]|[tr-101]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-186]|I|CR|Null|
+
+
+# ---------------------------------------------------------------------------------------------------------------
+#
+#  now begins connecting the "reality side" with the "information side" of the analysis
+#
+# ---------------------------------------------------------------------------------------------------------------
+
+# the record is about the person (denoted by IUI-2, here)
+IUIt-500 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[is-about]|[IAO]|iui=[IUIp-100], iui=[IUIp-2]|[tr-101]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-500]|I|CR|Null|
+
+# the patid denotes the person (also denoted by IUI-2, here)
+IUIt-13 = P|[new-iui]~[IUIp-1]|[timestamp-2]|<http://purl.obolibrary.org/obo/IAO_0000219>|[IAO]|iui=[IUIp-5], iui=[IUIp-2]|[tr-6]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-13]|I|CR|Null| 
+
+# the birth date field (IUIp-102) denotes the temporal interval during which birth occurred (tr-5)
+
+# the birth date field (IUIp-102) is about the person's birth (IUIp-3) 
+
+# the sex field is about the person's phenotypic sex quality (but it DOES NOT denote it, because millions of people have the same value)
+
+# the raw sex field is about the person's phenotypic sex quality (but does not denote it, because it does not uniquely identify it with an identifier)
