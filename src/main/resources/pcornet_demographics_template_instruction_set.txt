@@ -71,42 +71,42 @@ D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-10]|I|CR|Null|
 # SECTION FOR SEX IN PCORnet CDM DEMOGRAPHIC TABLE
 
 if (%4 =="M") 
-IUIt-3 = [new-iui]
-IUIp-4 = A|[IUIt-3]~[IUIp-1]|[timestamp-1]|[new-iui]
-D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-3]|I|CR|Null|
- 	IUIt-6 = [new-iui]
+	IUIt-3 = [new-iui]
+	IUIp-4 = A|[IUIt-3]~[IUIp-1]|[timestamp-1]|[new-iui]
+	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-3]|I|CR|Null|
+	IUIt-6 = [new-iui]
 	U|[IUIt-6]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-4]|[male-sex]|[PATO]|[tr-2]
-D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-6]|I|CR|Null|
+	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-6]|I|CR|Null|
 @CV SEX
 
 else if (%4 == "F")
-IUIt-3 = [new-iui]
-IUIp-4 = A|[IUIt-3]~[IUIp-1]|[timestamp-1]|[new-iui]
-D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-3]|I|CR|Null|
- 	IUIt-6 = [new-iui]
+	IUIt-3 = [new-iui]
+	IUIp-4 = A|[IUIt-3]~[IUIp-1]|[timestamp-1]|[new-iui]
+	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-3]|I|CR|Null|
+	IUIt-6 = [new-iui]
 	U|[IUIt-6]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-4]|[female-sex]|[PATO]|[tr-2]
-D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-6]|I|CR|Null|
+	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-6]|I|CR|Null|
 @CV SEX
 
 else if (%4=="A")
-IUIt-3 = [new-iui]
-IUIp-4 = A|[IUIt-3]~[IUIp-1]|[timestamp-1]|[new-iui]
-D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-3]|I|CR|Null|
- 	IUIt-6 = [new-iui]
+	IUIt-3 = [new-iui]
+	IUIp-4 = A|[IUIt-3]~[IUIp-1]|[timestamp-1]|[new-iui]
+	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-3]|I|CR|Null|
+	IUIt-6 = [new-iui]
 	U|[IUIt-6]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-4]|[intersex]|[PATO]|[tr-2]
-D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-6]|I|CR|Null|
+	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-6]|I|CR|Null|
 @CV SEX
 
 else if (%4 == "OT") 
-IUIt-3 = [new-iui]
-IUIp-4 = A|[IUIt-3]~[IUIp-1]|[timestamp-1]|[new-iui]
-D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-3]|I|CR|Null|
- 	IUIt-6 = [new-iui]
-U|[IUIt-6]~[IUIp-1]|[timestamp-2]|<-!-http://purl.obolibrary.org/obo/OBO_REL#_instance_of>|[BFO]|[IUIp-4]|[male-sex]|[PATO]|[tr-2]
-D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-6]|I|CR|Null|
-IUIt-17 = [new-iui]
-U|[IUIt-17]~[IUIp-1]|[timestamp-2]|<-!-http://purl.obolibrary.org/obo/OBO_REL#_instance_of>|[BFO]|[IUIp-4]|[female-sex]|[PATO]|[tr-2]
-D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-17]|I|CR|Null|
+	IUIt-3 = [new-iui]
+	IUIp-4 = A|[IUIt-3]~[IUIp-1]|[timestamp-1]|[new-iui]
+	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-3]|I|CR|Null|
+	IUIt-6 = [new-iui]
+	U|[IUIt-6]~[IUIp-1]|[timestamp-2]|<-!-http://purl.obolibrary.org/obo/OBO_REL#_instance_of>|[BFO]|[IUIp-4]|[male-sex]|[PATO]|[tr-2]
+	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-6]|I|CR|Null|
+	IUIt-17 = [new-iui]
+	U|[IUIt-17]~[IUIp-1]|[timestamp-2]|<-!-http://purl.obolibrary.org/obo/OBO_REL#_instance_of>|[BFO]|[IUIp-4]|[female-sex]|[PATO]|[tr-2]
+	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-17]|I|CR|Null|
 @CV SEX
 @UA SEX
 
@@ -273,6 +273,9 @@ D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-152]|I|CR|Null|
 # declare it to be an instance of apollo_sv:date at tr-101
 IUIt-172 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-102]|[date]|[APOLLO_SV]|[tr-101]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-172]|I|CR|Null|  
+#how to handle E template when field is blank?  Not put anything?  Declare it "null" somehow?  Also, we can trigger 
+#  logic when field is equal to value, but langauge doesn't allow us to condition on field not equal to null or <> ""
+
 
 #assign IUI to the BIRTH_TIME field of the demographic record
 IUIt-103 = [new-iui]
@@ -417,9 +420,19 @@ IUIt-13 = P|[new-iui]~[IUIp-1]|[timestamp-2]|<http://purl.obolibrary.org/obo/IAO
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-13]|I|CR|Null| 
 
 # the birth date field (IUIp-102) denotes the temporal interval during which birth occurred (tr-5)
+IUIt-501 =  P|[new-iui]~[IUIp-1]|[timestamp-2]|<http://purl.obolibrary.org/obo/IAO_0000219>|[PNO]|iui=[IUIp-102], tref=[tr-5]|[tr-101]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-501]|I|CR|Null|
 
 # the birth date field (IUIp-102) is about the person's birth (IUIp-3) 
+IUIt-502 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[is-about]|[IAO]|iui=[IUIp-102], iui=[IUIp-3]|[tr-101]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-502]|I|CR|Null|
 
-# the sex field is about the person's phenotypic sex quality (but it DOES NOT denote it, because millions of people have the same value)
+# the sex field (IUIp-104) is about the person's phenotypic sex quality (IUIp-4) (but it DOES NOT denote it, because millions of people have the same value)
+IUIt-503 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[is-about]|[IAO]|iui=[IUIp-104], iui=[IUIp-4]|[tr-101]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-503]|I|CR|Null|
 
-# the raw sex field is about the person's phenotypic sex quality (but does not denote it, because it does not uniquely identify it with an identifier)
+# the raw sex field (IUIp-111) is about the person's phenotypic sex quality (but does not denote it, because it does not uniquely identify it with an identifier)
+IUIt-504 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[is-about]|[IAO]|iui=[IUIp-111], iui=[IUIp-4]|[tr-101]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-504]|I|CR|Null|
+
+# we could use template IUIs to say that the race field is about the PtoP tuple that connects person to racial category.  Ditto for Hispanic.
