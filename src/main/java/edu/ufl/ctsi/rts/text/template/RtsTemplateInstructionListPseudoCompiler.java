@@ -23,8 +23,8 @@ import edu.ufl.ctsi.rts.text.template.dataevent.DataEventType;
 public class RtsTemplateInstructionListPseudoCompiler {
 	
 	public static String VARIABLE_ASSIGNMENT_PATTERN = "^([A-Za-z0-9-]+)[ \\t]*=[ \\t]*((\\$[0-9][0-9]*)|\\[(new-iui)\\]|\\[(sys-time)\\])[ \\t]*";
-	public static String CONDITIONAL_START_PATTERN = "^if[ \\t]*\\([ \\t]*\\%([0-9]+)[ \\t]*==[ \\t]*((\"(.*?)\")|\\[([A-Za-z0-9-]+)\\])\\)[ \\t]*";
-	public static String CONDITIONAL_ELSE_IF_PATTERN = "^else if[ \\t]*\\([ \\t]*\\%([0-9]+)[ \\t]*==[ \\t]*((\"(.*?)\")|\\[([A-Za-z0-9-]+)\\])\\)[ \\t]*";
+	public static String CONDITIONAL_START_PATTERN = "^if[ \\t]*\\([ \\t]*\\%([0-9]+)[ \\t]*(==|!=)[ \\t]*((\"(.*?)\")|\\[([A-Za-z0-9-]+)\\])\\)[ \\t]*";
+	public static String CONDITIONAL_ELSE_IF_PATTERN = "^else if[ \\t]*\\([ \\t]*\\%([0-9]+)[ \\t]*(==|!=)[ \\t]*((\"(.*?)\")|\\[([A-Za-z0-9-]+)\\])\\)[ \\t]*";
 	public static String CONDITIONAL_ELSE_PATTERN = "^[ \\t]*else[ \\t]*$";
 	public static String CONDITIONAL_END_PATTERN = "^[ \\t]*endif[ \\t]*$";
 	
@@ -116,6 +116,13 @@ public class RtsTemplateInstructionListPseudoCompiler {
 				Matcher m2 = conditionalStartPattern.matcher(line);
 				if (m2.matches()) {
 					System.out.println("Line " + lno + ": Conditional start");
+					System.out.println("Found conditional start pattern.");
+					System.out.println("\tGroup 1: " + m2.group(1));
+					System.out.println("\tGroup 2: " + m2.group(2));
+					System.out.println("\tGroup 3: " + m2.group(3));
+					System.out.println("\tGroup 4: " + m2.group(4));
+					System.out.println("\tGroup 5: " + m2.group(5));
+					//System.out.println("\tGroup 6: " + m2.group(6));
 					handleConditionalStartPattern(m2);
 					if (inElse) {
 						System.err.println("Line " + lno + ": syntax error. Cannot nest if statements.");
@@ -205,9 +212,10 @@ public class RtsTemplateInstructionListPseudoCompiler {
 			instructionListExecutor.addInstructionList(currentInstructionList);
 	
 		int fieldNum = Integer.parseInt(m.group(1));
-		String fieldVal = m.group(4);
+		String comparator = m.group(2);
+		String fieldVal = m.group(5);
 
-		RtsTemplateCondition condition = new RtsTemplateCondition(fieldNum, fieldVal);
+		RtsTemplateCondition condition = new RtsTemplateCondition(fieldNum, fieldVal, comparator);
 		currentInstructionList = new RtsTemplateInstructionList(condition, currentBlockState);
 	}
 
@@ -230,13 +238,14 @@ public class RtsTemplateInstructionListPseudoCompiler {
 			instructionListExecutor.addInstructionList(currentInstructionList);
 		
 		int fieldNum = Integer.parseInt(m.group(1));
-		String fieldVal = m.group(4);
+		String comparator = m.group(2);
+		String fieldVal = m.group(5);
 
 		blockNumber++;	
 		currentBlockState = new RtsInstructionBlockState(blockNumber);
 		instructionListExecutor.addInstructionBlockState(currentBlockState);
 		
-		RtsTemplateCondition condition = new RtsTemplateCondition(fieldNum, fieldVal);
+		RtsTemplateCondition condition = new RtsTemplateCondition(fieldNum, fieldVal, comparator);
 		currentInstructionList = new RtsTemplateInstructionList(condition, currentBlockState);
 	}
 
