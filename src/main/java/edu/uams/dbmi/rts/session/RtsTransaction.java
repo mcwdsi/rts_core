@@ -17,22 +17,22 @@ public class RtsTransaction {
 	}
 
 	/**
-	 * Add a template to the transaction
+	 * Add a tuple to the transaction
 	 * 
-	 * @param template
+	 * @param tuple
 	 */
-	public void addTemplate(RtsTuple template) {
-		cache.add(template);
+	public void addTuple(RtsTuple tuple) {
+		cache.add(tuple);
 	}
 	
 	/**
-	 * updates a template that already exists within the RTS with given metadata
+	 * updates a tuple that already exists within the RTS with given metadata
 	 * 
-	 * @param template
+	 * @param tuple
 	 * @param metadata
 	 */
-	public void updateTemplate(RtsTuple template, MetadataTuple metadata){
-		cache.add(template);
+	public void updateTuple(RtsTuple tuple, MetadataTuple metadata){
+		cache.add(tuple);
 		cache.add(metadata);
 		
 	}

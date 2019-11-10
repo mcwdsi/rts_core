@@ -1,7 +1,7 @@
 package edu.uams.dbmi.rts.tuple.component;
 
 /**
- * represents the data component used in Ten and PtoDR templates to store non-relationship
+ * represents the data component used in Ten and PtoDR tuples to store non-relationship
  * or metadata information
  * 
  * @author Josh Hanna
@@ -20,7 +20,7 @@ public class DataComponent {
 	/**
 	 * 
 	 * @return a byte array where the non-relationship and non-metadata information for 
-	 * the associated template
+	 * the associated tuple
 	 */
 	public byte[] getData(){
 		return data;
@@ -28,7 +28,7 @@ public class DataComponent {
 	
 	/**
 	 * saves a byte array representing some non-relationship and non-metadata information
-	 * for the associated template
+	 * for the associated tuple
 	 * @param bytes
 	 */
 	public void setData(byte[] bytes){

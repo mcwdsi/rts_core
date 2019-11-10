@@ -2,17 +2,17 @@ package edu.uams.dbmi.rts.tuple;
 
 
 public enum RtsTupleType {
-	ATEMPLATE(ATuple.class),
-	METADATATEMPLATE(MetadataTuple.class),
-	PTODETEMPLATE(PtoDETuple.class),
-	PTOLACKUTEMPLATE(PtoLackUTuple.class),
-	PTOPTEMPLATE(PtoPTuple.class),
-	PTOUTEMPLATE(PtoUTuple.class),
-	PTOCTEMPLATE(PtoCTuple.class),
+	ATUPLE(ATuple.class),
+	METADATATUPLE(MetadataTuple.class),
+	PTODETUPLE(PtoDETuple.class),
+	PTOLACKUTUPLE(PtoLackUTuple.class),
+	PTOPTUPLE(PtoPTuple.class),
+	PTOUTUPLE(PtoUTuple.class),
+	PTOCTUPLE(PtoCTuple.class),
 	@Deprecated
-	TENTEMPLATE(TenTemplate.class),
+	TENTUPLE(TenTemplate.class),
 	@Deprecated
-	TETEMPLATE(TenTemplate.class);
+	TETUPLE(TenTemplate.class);
 	
 	Class<?> type;
 	

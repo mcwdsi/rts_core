@@ -5,7 +5,7 @@ import edu.uams.dbmi.rts.time.TemporalReference;
 import edu.uams.dbmi.util.iso8601.Iso8601DateTime;
 
 /**
- * Represents the authoring metadata component that is a part of every referent tracking template
+ * Represents the authoring metadata component that is a part of every referent tracking tuple
  * 
  * @author Josh Hanna
  *
@@ -13,11 +13,11 @@ import edu.uams.dbmi.util.iso8601.Iso8601DateTime;
 public class AuthoringComponent {
 	
 	/*
-	 * Iui of entity that made assertion captured by template (Iui_a)
+	 * Iui of entity that made assertion captured by tuple (Iui_a)
 	 */
 	private Iui authorIui;
 	/*
-	 * Timestamp of when template was inserted into RTS (t_d)
+	 * Timestamp of when tuple was inserted into RTS (t_d)
 	 */
 	private Iso8601DateTime authoringTimestamp;
 	
@@ -25,20 +25,20 @@ public class AuthoringComponent {
 	private Iui authoringTimeIui;
 	/*
 	 * Reference to temporal region at which author (Iui_a) made
-	 * 	the assertion captured by template
+	 * 	the assertion captured by tuple
 	 */
 	private TemporalReference authoringTimeReference;
 	
 	/**
 	 * 
-	 * @return the Iui of the author of the associated template
+	 * @return the Iui of the author of the associated tuple
 	 */
 	public Iui getAuthorIui() {
 		return authorIui;
 	}
 
 	/**
-	 * sets the Iui of the author of the associated template
+	 * sets the Iui of the author of the associated tuple
 	 * @param authorIui
 	 */
 	public void setAuthorIui(Iui authorIui) {
@@ -47,14 +47,14 @@ public class AuthoringComponent {
 
 	/**
 	 * 
-	 * @return the DateTime of when the associated template was added to the system
+	 * @return the DateTime of when the associated tuple was added to the system
 	 */
 	public Iso8601DateTime getAuthoringTimestamp() {
 		return authoringTimestamp;
 	}
 
 	/**
-	 * sets the DateTime of when the associated template was added to the system
+	 * sets the DateTime of when the associated tuple was added to the system
 	 * @param authoringTimestamp
 	 */
 	public void setAuthoringTimestamp(Iso8601DateTime authoringTimestamp) {
@@ -62,7 +62,7 @@ public class AuthoringComponent {
 	}
 	
 	/**
-	 * gets the Iui of the temporal entity where the associated template was asserted
+	 * gets the Iui of the temporal entity where the associated tuple was asserted
 	 * @return
 	 */
 	@Deprecated
@@ -71,7 +71,7 @@ public class AuthoringComponent {
 	}
 
 	/**
-	 * sets the Iui of the temporal entity where the associated template was asserted
+	 * sets the Iui of the temporal entity where the associated tuple was asserted
 	 * @param authoringTimeIui
 	 */
 	@Deprecated

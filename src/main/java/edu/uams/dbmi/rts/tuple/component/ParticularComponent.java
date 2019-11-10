@@ -7,9 +7,9 @@ import java.util.List;
 import edu.uams.dbmi.rts.ParticularReference;
 
 /**
- * represents the particular(s) that the templates reference.  
+ * represents the particular(s) that the tuples reference.  
  * 
- * Should only be one particular in all cases except PtoP templates, 
+ * Should only be one particular in all cases except PtoP tuples, 
  * 	where there should be at least two particulars.
  * 
  * @author Josh Hanna

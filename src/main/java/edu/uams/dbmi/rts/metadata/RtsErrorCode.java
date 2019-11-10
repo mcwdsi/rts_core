@@ -15,7 +15,7 @@
 package edu.uams.dbmi.rts.metadata;
 
 /**
- * An enumerated list of values used in the EC parameter of metadata templates.
+ * An enumerated list of values used in the EC parameter of metadata tuples.
  * 
  * @author williamhogan
  * 

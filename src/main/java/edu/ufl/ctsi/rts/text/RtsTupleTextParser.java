@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import edu.uams.dbmi.rts.RtsDeclaration;
 import edu.uams.dbmi.rts.RtsTupleFactory;
@@ -13,7 +15,7 @@ import edu.uams.dbmi.rts.time.TemporalRegion;
 import edu.uams.dbmi.rts.tuple.RtsTuple;
 
 
-public class RtsTupleTextParser {
+public class RtsTupleTextParser implements Iterable<RtsTuple> {
 	
 	protected BufferedReader r;
 	
@@ -168,5 +170,14 @@ public class RtsTupleTextParser {
 		}
 		fragments.add(text.substring(begin));  //the last delimited piece is hanging out here to be collected
 		return fragments;
+	}
+
+	@Override
+	public Iterator<RtsTuple> iterator() {
+		return Tuples.iterator();
+	}
+	
+	public Set<TemporalRegion> getTemporalRegions() {
+		return temporalRegions;
 	}
 }

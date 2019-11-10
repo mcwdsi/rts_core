@@ -37,12 +37,12 @@ public class TupleQuery {
 		this.store = rtsStore;
 	}
 
-	public void addType(RtsTupleType templateType){
-		this.types.add(templateType);
+	public void addType(RtsTupleType tupleType){
+		this.types.add(tupleType);
 	}
 
-	public void removeType(RtsTupleType templateType){
-		this.types.remove(templateType);
+	public void removeType(RtsTupleType tupleType){
+		this.types.remove(tupleType);
 	}
 
 	public Iui getReferentIui() {
@@ -153,44 +153,44 @@ public class TupleQuery {
 		Set<RtsTuple> results = new HashSet<RtsTuple>();
 		
 		boolean parametersMatched = false;
-		if(this.parametersMatchATemplate()){
+		if(this.parametersMatchATuple()){
 			parametersMatched = true;
-			results.addAll(this.store.runQuery(this, RtsTupleType.ATEMPLATE));
+			results.addAll(this.store.runQuery(this, RtsTupleType.ATUPLE));
 		}
 
-		if(this.parametersMatchMetadataTemplate()){
+		if(this.parametersMatchMetadataTuple()){
 			parametersMatched = true;
-			results.addAll(this.store.runQuery(this, RtsTupleType.METADATATEMPLATE));
+			results.addAll(this.store.runQuery(this, RtsTupleType.METADATATUPLE));
 		}
 
-		if(this.parametersMatchPtoDRTemplate()){
+		if(this.parametersMatchPtoDRTuple()){
 			parametersMatched = true;
-			results.addAll(this.store.runQuery(this, RtsTupleType.PTODETEMPLATE));
+			results.addAll(this.store.runQuery(this, RtsTupleType.PTODETUPLE));
 		}
 
-		if(this.parametersMatchPtoLackUTemplate()){
+		if(this.parametersMatchPtoLackUTuple()){
 			parametersMatched = true;
-			results.addAll(this.store.runQuery(this, RtsTupleType.PTOLACKUTEMPLATE));
+			results.addAll(this.store.runQuery(this, RtsTupleType.PTOLACKUTUPLE));
 		}
 
-		if(this.parametersMatchPtoPTemplate()){
+		if(this.parametersMatchPtoPTuple()){
 			parametersMatched = true;
-			results.addAll(this.store.runQuery(this, RtsTupleType.PTOPTEMPLATE));
+			results.addAll(this.store.runQuery(this, RtsTupleType.PTOPTUPLE));
 		}
 
-		if(this.parametersMatchPtoUTemplate()){
+		if(this.parametersMatchPtoUTuple()){
 			parametersMatched = true;
-			results.addAll(this.store.runQuery(this, RtsTupleType.PTOUTEMPLATE));
+			results.addAll(this.store.runQuery(this, RtsTupleType.PTOUTUPLE));
 		}
 
-		if(this.parametersMatchTenTemplate()){
+		if(this.parametersMatchTenTuple()){
 			parametersMatched = true;
-			results.addAll(this.store.runQuery(this, RtsTupleType.TENTEMPLATE));
+			results.addAll(this.store.runQuery(this, RtsTupleType.TENTUPLE));
 		}
 
-		if(this.parametersMatchTeTemplate()){
+		if(this.parametersMatchTeTuple()){
 			parametersMatched = true;
-			results.addAll(this.store.runQuery(this, RtsTupleType.TETEMPLATE));
+			results.addAll(this.store.runQuery(this, RtsTupleType.TETUPLE));
 		}
 
 		if(!parametersMatched){
@@ -200,8 +200,8 @@ public class TupleQuery {
 		}
 	}
 
-	private boolean parametersMatchTeTemplate() {
-		if(this.types.contains(RtsTupleType.TETEMPLATE) || this.types.isEmpty()){
+	private boolean parametersMatchTeTuple() {
+		if(this.types.contains(RtsTupleType.TETUPLE) || this.types.isEmpty()){
 			if(this.relationshipURI != null){
 				return false;
 			} else if(data != null){
@@ -232,8 +232,8 @@ public class TupleQuery {
 		return false;
 	}
 
-	private boolean parametersMatchTenTemplate() {
-		if(this.types.contains(RtsTupleType.TENTEMPLATE) || this.types.isEmpty()){
+	private boolean parametersMatchTenTuple() {
+		if(this.types.contains(RtsTupleType.TENTUPLE) || this.types.isEmpty()){
 			if(this.relationshipURI != null){
 				return false;
 			} else if(data != null){
@@ -264,8 +264,8 @@ public class TupleQuery {
 		return false;
 	}
 
-	private boolean parametersMatchPtoUTemplate() {
-		if(this.types.contains(RtsTupleType.PTOUTEMPLATE) || this.types.isEmpty()){
+	private boolean parametersMatchPtoUTuple() {
+		if(this.types.contains(RtsTupleType.PTOUTUPLE) || this.types.isEmpty()){
 			if(data != null){
 				return false;
 			} else if(datatype != null){
@@ -296,8 +296,8 @@ public class TupleQuery {
 		return false;
 	}
 
-	private boolean parametersMatchPtoPTemplate() {
-		if(this.types.contains(RtsTupleType.PTOPTEMPLATE) || this.types.isEmpty()){
+	private boolean parametersMatchPtoPTuple() {
+		if(this.types.contains(RtsTupleType.PTOPTUPLE) || this.types.isEmpty()){
 			if(data != null){
 				return false;
 			} else if(datatype != null){
@@ -328,8 +328,8 @@ public class TupleQuery {
 		return false;
 	}
 
-	private boolean parametersMatchPtoLackUTemplate() {
-		if(this.types.contains(RtsTupleType.PTOLACKUTEMPLATE) || this.types.isEmpty()){
+	private boolean parametersMatchPtoLackUTuple() {
+		if(this.types.contains(RtsTupleType.PTOLACKUTUPLE) || this.types.isEmpty()){
 			if(data != null){
 				return false;
 			} else if(datatype != null){
@@ -360,8 +360,8 @@ public class TupleQuery {
 		return false;
 	}
 
-	private boolean parametersMatchPtoDRTemplate() {
-		if(this.types.contains(RtsTupleType.PTODETEMPLATE) || this.types.isEmpty()){
+	private boolean parametersMatchPtoDRTuple() {
+		if(this.types.contains(RtsTupleType.PTODETUPLE) || this.types.isEmpty()){
 			if(changeReason != null){
 				return false;
 			} else if(errorCode != null){
@@ -392,8 +392,8 @@ public class TupleQuery {
 		return false;
 	}
 
-	private boolean parametersMatchMetadataTemplate() {
-		if(this.types.contains(RtsTupleType.METADATATEMPLATE) || this.types.isEmpty()){
+	private boolean parametersMatchMetadataTuple() {
+		if(this.types.contains(RtsTupleType.METADATATUPLE) || this.types.isEmpty()){
 			if(data != null){
 				return false;
 			} else if(datatype != null){
@@ -424,8 +424,8 @@ public class TupleQuery {
 		return false;
 	}
 
-	private boolean parametersMatchATemplate() {
-		if(this.types.contains(RtsTupleType.ATEMPLATE) || this.types.isEmpty()){
+	private boolean parametersMatchATuple() {
+		if(this.types.contains(RtsTupleType.ATUPLE) || this.types.isEmpty()){
 			if(this.relationshipURI != null){
 				return false;
 			} else if(data != null){
