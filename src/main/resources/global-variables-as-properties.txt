@@ -40,3 +40,10 @@ APOLLO_SV=C45C0EA5-C00F-415F-B56F-78795AA0074B
 data-item=http://purl.obolibrary.org/obo/IAO_0000027
 is-about=http://purl.obolibrary.org/obo/IAO_0000136
 question-asking-process=http://purl.obolibrary.org/obo/OMRSE_00000168
+pcornet-patient-id=http://purl.obolibrary.org/obo/PCORnet/PCORnet_00000019
+pcornet-diagnosis-id=http://purl.obolibrary.org/obo/PCORnet/PCORnet_00000100
+pcornet-facility-id=http://purl.obolibrary.org/obo/PCORnet/PCORnet_00002019
+pcornet-encounter-id=http://purl.obolibrary.org/obo/PCORnet/PCORnet_00002018
+pcornet-provider-id=http://purl.obolibrary.org/obo/PCORnet/PCORnet_00002024
+PCOROWL=D31780E3-F127-4E39-8B1C-E4ED000BF4EF
+

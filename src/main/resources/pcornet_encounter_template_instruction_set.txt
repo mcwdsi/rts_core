@@ -1,0 +1,40 @@
+#PCORnet Common Data Model version 5
+#ENCOUNTER table
+
+#configuration / arguments input into the process
+#IUI of the database from which the source data derives
+IUIp-1 = $1             
+
+#ISO8601 timestamp to associate with time of IUI assignment               
+timestamp-1 = $2	     
+
+#IUI of the user running this process
+IUIp-16 = $3		   
+
+#ISO8601 timestamp to associate with time of template insertion  
+timestamp-2 = $4	   
+
+# SECTION FOR ENCOUNTERID
+
+# Assignment templates, which begin by assigning template IUIs.
+# new-iui is instruction to create a new IUI
+IUIt-1 = [new-iui]
+IUIt-2 = [new-iui]
+# assign IUI to the encounter that this demographic row is about
+@IM PATID
+IUIp-2 = A|[IUIt-1]~[IUIp-1]|[timestamp-1]|[new-iui]  
+# assign IUI to the id of the encounter
+@LV PATID
+IUIp-3 = A|[IUIt-2]~[IUIp-1]|[timestamp-1]|[new-iui]
+# for now, not storing D tuple’s IUI for later use
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-1]|I|CR|Null|   
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-2]|I|CR|Null|
+
+# lookup IUI for PATID that was assigned from demographic table.
+# If it's not there, then create it and register a UP error (i.e., PATID is unjustifiably present here in ENCOUNTER table if it is not also present in DEMOGRAPHIC table)
+
+# based on SOURCE field, lookup IUI of patient role for the encounter.  If there is no source field, then we assume patient just has one patient role total.
+# If it's not there then create it, and save it based on SOURCE.  If SOURCE not present, then we assume just one patient role per person
+
+
+

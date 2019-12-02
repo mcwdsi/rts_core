@@ -254,7 +254,7 @@ IUIt-11 = [new-iui]
 IUIp-5 = A|[IUIt-11]~[IUIp-1]|[timestamp-1]|[new-iui]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|  
 # declare it to be an instance of PNO:identifier at tr-6
-IUIt-12 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-5]|<http://purl.obolibrary.org/obo/IAO_0020000>|[PNO]|[tr-6]
+IUIt-12 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-5]|[pcornet-patient-id]|[PCOROWL]|[tr-6]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-12]|I|CR|Null|  
 # record the actual characters of the patid in a PtoDE template
 IUIt-14 = [new-iui]
