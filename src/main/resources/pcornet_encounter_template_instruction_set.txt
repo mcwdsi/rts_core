@@ -20,13 +20,13 @@ timestamp-2 = $4
 # new-iui is instruction to create a new IUI
 IUIt-1 = [new-iui]
 IUIt-2 = [new-iui]
-# assign IUI to the encounter that this demographic row is about
-@IM PATID
+# assign IUI to the encounter that this encounter table row is about
+@IM ENCOUNTERID
 IUIp-2 = A|[IUIt-1]~[IUIp-1]|[timestamp-1]|[new-iui]  
 # assign IUI to the id of the encounter
-@LV PATID
+@LV ENCOUNTERID
 IUIp-3 = A|[IUIt-2]~[IUIp-1]|[timestamp-1]|[new-iui]
-# for now, not storing D tuple’s IUI for later use
+# for now, not storing D tuples' IUIs for later use
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-1]|I|CR|Null|   
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-2]|I|CR|Null|
 

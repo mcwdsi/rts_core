@@ -74,6 +74,10 @@ public class RtsTupleTemplateInstructionSetTest implements DataEventSubscriber {
 				= new RtsTemplateInstructionListPseudoCompiler("./src/main/resources/" + 
 					"pcornet_demographics_template_instruction_set.txt", cdm, "DEMOGRAPHIC");
 	
+		RtsTemplateInstructionListPseudoCompiler c1
+				= new RtsTemplateInstructionListPseudoCompiler("./src/main/resources/" + 
+					"pcornet_provider_template_instruction_set.txt", cdm, "PROVIDER");
+	
 		@SuppressWarnings("rawtypes")
 		ArrayList<RtsTemplateVariable> globals = new ArrayList<RtsTemplateVariable>();
 		try {
@@ -87,6 +91,7 @@ public class RtsTupleTemplateInstructionSetTest implements DataEventSubscriber {
 		
 		try {
 			c.initialize();
+			c1.initialize();
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -94,6 +99,10 @@ public class RtsTupleTemplateInstructionSetTest implements DataEventSubscriber {
 		
 		RtsTemplateInstructionListExecutor e = c.getInstructionListExecutor();
 		e.setGlobalVariables(globals);
+
+		RtsTemplateInstructionListExecutor e1 = c1.getInstructionListExecutor();
+		e.setGlobalVariables(globals);
+		
 		
 		try {
 			fr = new FileReader("./src/main/resources/dummy-demographics-records.txt");

@@ -46,4 +46,5 @@ pcornet-facility-id=http://purl.obolibrary.org/obo/PCORnet/PCORnet_00002019
 pcornet-encounter-id=http://purl.obolibrary.org/obo/PCORnet/PCORnet_00002018
 pcornet-provider-id=http://purl.obolibrary.org/obo/PCORnet/PCORnet_00002024
 PCOROWL=D31780E3-F127-4E39-8B1C-E4ED000BF4EF
-
+healthcare-provider=http://purl.obolibrary.org/obo/OMRSE_00000012
+phenotypic-sex-quality=http://purl.obolibrary.org/obo/PATO_0001894

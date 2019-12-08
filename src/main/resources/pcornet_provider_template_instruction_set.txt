@@ -1,0 +1,124 @@
+#PCORnet Common Data Model version 5
+#PROVIDER table
+
+#configuration / arguments input into the process
+#IUI of the database from which the source data derives
+IUIp-1 = $1             
+
+#ISO8601 timestamp to associate with time of IUI assignment               
+timestamp-1 = $2	     
+
+#IUI of the user running this process
+IUIp-16 = $3		   
+
+#ISO8601 timestamp to associate with time of template insertion  
+timestamp-2 = $4	
+
+# ------
+# some temporal references we’ll need later
+# ------
+#interval over which person has been instance of human being
+tr-1 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
+#interval over which person has been bearer of his/her phenotypic sex
+tr-2 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
+#interval over which the person's provider role has existed
+tr-3 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
+#temporal instant for time of assertion
+T~[timestamp-2]|[temporal-instant]|d4af5c9a-47ba-4bf4-9bae-f13a8ed6455e   
+
+# SECTION FOR PROVIDERID
+
+# Assignment templates, which begin by assigning template IUIs.
+# new-iui is instruction to create a new IUI
+IUIt-1 = [new-iui]
+# assign IUI to the person that this provider table row is about
+@IM PROVIDERID
+IUIp-2 = A|[IUIt-1]~[IUIp-1]|[timestamp-1]|[new-iui]  
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-1]|I|CR|Null|
+
+# assign IUI to the person's provider role.  At some point, we'll want to 
+#   disambiguate providers across data sources (most likely using NPI), in
+#   which case, we'll assign a different provider role for each source, 
+#   with the likely exception of Medicaid data.  But for now, we just 
+#   assume that each row in the provider table is a different person, to
+#   get started, and until we learn more about some of the oddities in 
+#   NPIs (e.g., one NPI appears in 15 rows of the provider table, 9 of which
+#   come from one source)
+IUIt-2 = [new-iui]
+@IM PROVIDERID
+IUI-p3 = A|[IUIt-2]~[IUIp-1]|[timestamp-1]|[new-iui]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-2]|I|CR|Null|
+
+# instantiations
+IUIt-4 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[human]|[NCBI]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-4]|I|CR|Null|
+IUIt-5 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-3]|[healthcare-provider]|[OMRSE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-5]|I|CR|Null|
+
+# relationships
+# the provider is the bearer of his/her provider role
+IUIt-6 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[bearer-of]|[BFO]|iui=[IUI-p2],iui=[IUIp-3]|[tr-3]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-5]|I|CR|Null|
+
+# SECTION FOR PROVIDER_SEX field
+# assign IUI to the person's phenotypic sex quality.
+IUI-t3 = [new-iui]
+IUI-p4 = A|[IUI-t3]~[IUIp-1]|[timestamp-1]|[new-iui]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-3]|I|CR|Null|
+
+# instantiations
+# it's an instance of phenotypic sex quality
+IUIt-7 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-4]|[phenotypic-sex-quality]|[PATO]|[tr-2]
+# based on the value of the field, it's more specifically an instance of 
+#  something else (and possibly not an instance of other things)
+
+if (%2 =="M") 
+	IUIt-8 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-4]|[male-sex]|[PATO]|[tr-2]
+	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-8]|I|CR|Null|
+@CV PROVIDER_SEX
+
+else if (%2 == "F")
+	IUIt-8 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-4]|[female-sex]|[PATO]|[tr-2]
+	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-8]|I|CR|Null|
+@CV PROVIDER_SEX
+
+else if (%2=="A")
+	IUIt-8 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-4]|[intersex]|[PATO]|[tr-2]
+	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-8]|I|CR|Null|
+@CV PROVIDER_SEX
+
+else if (%2 == "OT") 
+	IUIt-8 = U|[new-iui]~[IUIp-1]|[timestamp-2]|<-!-http://purl.obolibrary.org/obo/OBO_REL#_instance_of>|[BFO]|[IUIp-4]|[male-sex]|[PATO]|[tr-2]
+	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-8]|I|CR|Null|
+	IUIt-9 = U|[new-iui]~[IUIp-1]|[timestamp-2]|<-!-http://purl.obolibrary.org/obo/OBO_REL#_instance_of>|[BFO]|[IUIp-4]|[female-sex]|[PATO]|[tr-2]
+	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-9]|I|CR|Null|
+@CV PROVIDER_SEX
+@UA PROVIDER_SEX
+
+else if (%2=="") 
+#comment
+@DV PROVIDER_SEX
+
+else 
+#comment
+@DV PROVIDER_SEX
+
+endif
+
+# relationships
+IUIt-10 = [new-iui]
+# person is bearer of his sex quality
+P|[IUIt-10]~[IUIp-1]|[timestamp-2]|[bearer-of]|[RO]|iui=[IUIp-2], iui=[IUIp-4]|[tr-2]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-10]|I|CR|Null|
+
+# -----------------------------------------------------------------
+#
+#	Handling the information side
+#
+# -----------------------------------------------------------------
+# assign IUI to the id of the provider
+@LV PROVIDERID
+IUIt-101 = [new-iui]
+IUIp-101 = A|[IUIt-101]~[IUIp-1]|[timestamp-1]|[new-iui]
+# for now, not storing D tuples' IUIs for later use
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-2]|I|CR|Null|

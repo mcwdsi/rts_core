@@ -31,7 +31,7 @@ public class RtsTemplateInstructionListPseudoCompiler {
 	public static String DETECT_TUPLE_COMPLETION_PATTERN = "^(([DUPEACL]\\|)|(T~))";
 	public static String DETECT_VARIABLE_ASSIGNMENT_PLUS_TUPLE_COMPLETION = "^([A-Za-z0-9-]+)[ \\t]*=[ \\t]*([DUPEACLT])";
 	
-	public static String ANNOTATION_PATTERN = "^@(LV|CV|IM|RP|UP|JA|UA|DV)[ \\t]*([A-Za-z0-9-]+)";
+	public static String ANNOTATION_PATTERN = "^@(LV|CV|IM|RP|UP|JA|UA|DV)[ \\t]*([A-Za-z0-9-_]+)";
 	
 
 	Pattern variableAssignmentPattern, conditionalStartPattern, conditionalEndPattern, 
