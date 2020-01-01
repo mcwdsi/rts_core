@@ -70,14 +70,6 @@ public class RtsTupleTemplateInstructionSetTest implements DataEventSubscriber {
 			e1.printStackTrace();
 		}
 		
-		RtsTemplateInstructionListPseudoCompiler c 
-				= new RtsTemplateInstructionListPseudoCompiler("./src/main/resources/" + 
-					"pcornet_demographics_template_instruction_set.txt", cdm, "DEMOGRAPHIC");
-	
-		RtsTemplateInstructionListPseudoCompiler c1
-				= new RtsTemplateInstructionListPseudoCompiler("./src/main/resources/" + 
-					"pcornet_provider_template_instruction_set.txt", cdm, "PROVIDER");
-	
 		@SuppressWarnings("rawtypes")
 		ArrayList<RtsTemplateVariable> globals = new ArrayList<RtsTemplateVariable>();
 		try {
@@ -88,22 +80,37 @@ public class RtsTupleTemplateInstructionSetTest implements DataEventSubscriber {
 			e1.printStackTrace();
 		}
 		
+		referentTrackingEtlRecords("./src/main/resources/pcornet_demographics_template_instruction_set.txt", 
+				"./src/main/resources/dummy-demographics-records.txt", "./src/test/resources//test-tuple-generation.out",
+				"./src/test/resources//test-data-events-generated.out", globals, cdm, "DEMOGRAPHIC");
 		
-		try {
-			c.initialize();
-			c1.initialize();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		referentTrackingEtlRecords("./src/main/resources/pcornet_provider_template_instruction_set.txt", 
+				"./src/main/resources/dummy-provider-records.txt", "./src/test/resources//test-tuple-generation-provider.out",
+				"./src/test/resources//test-data-events-generated-provider.out", globals, cdm, "PROVIDER");
 		
-		RtsTemplateInstructionListExecutor e = c.getInstructionListExecutor();
-		e.setGlobalVariables(globals);
+		//RtsTemplateInstructionListPseudoCompiler c 
+		//		= new RtsTemplateInstructionListPseudoCompiler("./src/main/resources/" + 
+		//			"pcornet_demographics_template_instruction_set.txt", cdm, "DEMOGRAPHIC");
+	
+		//RtsTemplateInstructionListPseudoCompiler c1
+			//	= new RtsTemplateInstructionListPseudoCompiler("./src/main/resources/" + 
+				//	"pcornet_provider_template_instruction_set.txt", cdm, "PROVIDER");
 
-		RtsTemplateInstructionListExecutor e1 = c1.getInstructionListExecutor();
-		e.setGlobalVariables(globals);
+		//try {
+			//c.initialize();
+		//	c1.initialize();
+		//} catch (IOException e1) {
+			// TODO Auto-generated catch block
+		//	e1.printStackTrace();
+		//}
 		
+		//RtsTemplateInstructionListExecutor e = c.getInstructionListExecutor();
+		//e.setGlobalVariables(globals);
+
+		// RtsTemplateInstructionListExecutor e1 = c1.getInstructionListExecutor();
+		// e1.setGlobalVariables(globals);
 		
+		/*
 		try {
 			fr = new FileReader("./src/main/resources/dummy-demographics-records.txt");
 			LineNumberReader lnr = new LineNumberReader(fr);
@@ -148,11 +155,75 @@ public class RtsTupleTemplateInstructionSetTest implements DataEventSubscriber {
 			// TODO Auto-generated catch block
 			ioe.printStackTrace();
 		}
+		*/
 		
 		System.out.println("There were " + sub1.getCount() + " " + sub1.getDataEventType() + " data events.");
 		System.out.println("There were " + sub2.getCount() + " " + sub2.getDataEventType() + " data events.");
 		System.out.println("There were " + sub3.getCount() + " " + sub3.getDataEventType() + " data events for the field " + sub3.getFieldName());
 		System.out.println("There were " + sub4.getCount() + " " + sub4.getDataEventType() + " data events total.");
+	}
+	
+	public static void referentTrackingEtlRecords(String instructionSetFilePathAndName, String tableRecordsToEtlFilePathAndName, 
+			String tupleOutputFilePathAndName, String dataEventOutputFilePathAndName, ArrayList<RtsTemplateVariable> globals, 
+			CommonDataModel cdm, String tableName) {
+		RtsTemplateInstructionListPseudoCompiler c = new RtsTemplateInstructionListPseudoCompiler(
+				instructionSetFilePathAndName, cdm, tableName);
+		try {
+			c.initialize();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		RtsTemplateInstructionListExecutor e = c.getInstructionListExecutor();
+		e.setGlobalVariables(globals);
+		
+		FileReader fr = null;
+		try {
+			fr = new FileReader(tableRecordsToEtlFilePathAndName);
+			LineNumberReader lnr = new LineNumberReader(fr);
+			
+			FileWriter fw1 = new FileWriter(dataEventOutputFilePathAndName);
+			AllDataEventStreamWriterSubscriber allEventsSub = new AllDataEventStreamWriterSubscriber(fw1);
+			DataEventMessageBoard.subscribe(allEventsSub, allEventsSub.getFilter());
+			
+			FileWriter fw2 = new FileWriter(tupleOutputFilePathAndName);
+			RtsTupleTextWriter w = new RtsTupleTextWriter(fw2);
+			
+			String record;
+			int iRecord = 1;
+			while((record=lnr.readLine())!=null) {
+				String[] fieldsArray = record.split(Pattern.quote(","), -1);
+				System.out.println(fieldsArray.length);
+				ArrayList<String> fields = new ArrayList<String>();
+				for (String s: fieldsArray) fields.add(s);
+				
+				List<RtsDeclaration> declarationSet = e.processRecord(fields, iRecord);
+				
+				Iterator<RtsDeclaration> i = declarationSet.iterator();
+				while (i.hasNext()) {
+					RtsDeclaration d = i.next();
+					if (d instanceof RtsTuple) {
+						RtsTuple t = (RtsTuple)d;
+						w.writeTuple(t);
+					} else if (d instanceof TemporalRegion) {
+						TemporalRegion r = (TemporalRegion)d;
+						w.writeTemporalRegion(r);
+					}
+				}
+				iRecord++;
+			}
+		
+			
+			fw1.close();
+			fw2.close();
+			fr.close();
+		
+		} catch (IOException ioe) {
+			// TODO Auto-generated catch block
+			ioe.printStackTrace();
+		}
+		
 	}
 	
 	public static Properties loadGlobalVariables(String absPathAndFile) throws IOException {

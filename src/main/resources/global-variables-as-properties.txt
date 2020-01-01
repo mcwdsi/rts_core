@@ -49,3 +49,5 @@ PCOROWL=D31780E3-F127-4E39-8B1C-E4ED000BF4EF
 healthcare-provider=http://purl.obolibrary.org/obo/OMRSE_00000012
 phenotypic-sex-quality=http://purl.obolibrary.org/obo/PATO_0001894
 identifier=http://purl.obolibrary.org/obo/IAO_0020000
+OMRSE=EB3B6F9E-3774-4D9B-97E1-9872DBB70C69
+denotes=http://purl.obolibrary.org/obo/IAO_0000219

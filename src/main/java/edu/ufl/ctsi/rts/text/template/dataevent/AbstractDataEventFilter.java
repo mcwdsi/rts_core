@@ -21,7 +21,8 @@ public abstract class AbstractDataEventFilter {
 			 * 
 			 * If either one is true, then true for that part of the conjunct.
 			 */
-			eq = (eventType.equals(de.eventType) && (fieldName == de.fieldName || fieldName.equals(de.fieldName))
+			System.err.println(eventType + "\t" + de.eventType);
+			eq = ((eventType == de.eventType || eventType.equals(de.eventType)) && (fieldName == de.fieldName || fieldName.equals(de.fieldName))
 					&& (fieldValue == de.fieldValue || fieldValue.equals(de.fieldValue)));
 		}
 		return eq;
