@@ -311,7 +311,7 @@ public class RtsTemplateInstructionListPseudoCompiler {
 						RtsAssignIuiInstruction inst = new RtsAssignIuiInstruction(varName);
 						currentInstructionList.addInstruction(inst);
 					} else if (s.startsWith("%")) {
-						if (found) throw new IllegalArgumentException("Variable value may be set only once.");
+						if (found) throw new IllegalArgumentException("Variable value may be set only once: " + varName);
 						String numTxt = s.substring(1);
 						int fieldNum = Integer.parseInt(numTxt);
 						found = true;

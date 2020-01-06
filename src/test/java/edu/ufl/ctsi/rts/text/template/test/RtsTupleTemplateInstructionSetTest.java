@@ -82,11 +82,15 @@ public class RtsTupleTemplateInstructionSetTest implements DataEventSubscriber {
 		
 		referentTrackingEtlRecords("./src/main/resources/pcornet_demographics_template_instruction_set.txt", 
 				"./src/main/resources/dummy-demographics-records.txt", "./src/test/resources//test-tuple-generation.out",
-				"./src/test/resources//test-data-events-generated.out", globals, cdm, "DEMOGRAPHIC");
+				"./src/test/resources//test-data-events-generated.out", globals, cdm, "DEMOGRAPHIC", ",");
 		
 		referentTrackingEtlRecords("./src/main/resources/pcornet_provider_template_instruction_set.txt", 
 				"./src/main/resources/dummy-provider-records.txt", "./src/test/resources//test-tuple-generation-provider.out",
-				"./src/test/resources//test-data-events-generated-provider.out", globals, cdm, "PROVIDER");
+				"./src/test/resources//test-data-events-generated-provider.out", globals, cdm, "PROVIDER", ",");
+		
+		referentTrackingEtlRecords("./src/main/resources/language-instruction-set.txt", 
+				"./src/main/resources/iso-639-language-individuals-to-process.txt", "./src/test/resources//test-tuple-generation-language.out",
+				"./src/test/resources//test-data-events-generated-language.out", globals, null, null, "\t");
 		
 		//RtsTemplateInstructionListPseudoCompiler c 
 		//		= new RtsTemplateInstructionListPseudoCompiler("./src/main/resources/" + 
@@ -165,7 +169,7 @@ public class RtsTupleTemplateInstructionSetTest implements DataEventSubscriber {
 	
 	public static void referentTrackingEtlRecords(String instructionSetFilePathAndName, String tableRecordsToEtlFilePathAndName, 
 			String tupleOutputFilePathAndName, String dataEventOutputFilePathAndName, ArrayList<RtsTemplateVariable> globals, 
-			CommonDataModel cdm, String tableName) {
+			CommonDataModel cdm, String tableName, String delim) {
 		RtsTemplateInstructionListPseudoCompiler c = new RtsTemplateInstructionListPseudoCompiler(
 				instructionSetFilePathAndName, cdm, tableName);
 		try {
@@ -193,7 +197,7 @@ public class RtsTupleTemplateInstructionSetTest implements DataEventSubscriber {
 			String record;
 			int iRecord = 1;
 			while((record=lnr.readLine())!=null) {
-				String[] fieldsArray = record.split(Pattern.quote(","), -1);
+				String[] fieldsArray = record.split(Pattern.quote(delim), -1);
 				System.out.println(fieldsArray.length);
 				ArrayList<String> fields = new ArrayList<String>();
 				for (String s: fieldsArray) fields.add(s);
@@ -214,6 +218,7 @@ public class RtsTupleTemplateInstructionSetTest implements DataEventSubscriber {
 				iRecord++;
 			}
 		
+			DataEventMessageBoard.unsubscribe(allEventsSub, allEventsSub.getFilter());
 			
 			fw1.close();
 			fw2.close();

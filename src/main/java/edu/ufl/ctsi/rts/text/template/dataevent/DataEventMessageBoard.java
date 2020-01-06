@@ -98,5 +98,12 @@ public class DataEventMessageBoard {
 		}
 	}
 	
+	public static void unsubscribe(DataEventSubscriber s, AbstractDataEventFilter f) {
+		if (filterSubscriberMap.containsKey(f)) {
+			ArrayList<DataEventSubscriber> list = filterSubscriberMap.get(f);
+			list.remove(s);
+		}
+	}
+	
 	
 }

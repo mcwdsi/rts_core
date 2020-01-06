@@ -1,0 +1,137 @@
+# OMRSE Language
+# ISO 639 language individuals
+
+#  IUIp-1.  William Hogan - the person doing all the assigning/asserting
+IUIp-1 = $1
+
+# timestamp-1 - the time of all the assigning/asserting
+timestamp-1 = $2
+
+# tr-1 is the interval over which the language has existed
+tr-1 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
+# tr-2 is the interval over which the language's English name has existed
+tr-2 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
+
+# assign IUI to the language
+IUIt-1 = [new-iui]
+IUIp-2 = A|[IUIt-1]~[IUIp-1]|[timestamp-1]|[new-iui]
+
+# assert that it's an instance of language at tr-1
+IUIt-2 = U|[new-iui]~[IUIp-1]|[timestamp-1]|[instance-of]|[BFO]|[IUIp-2]|[language]|[OMRSE]|[tr-1]
+
+# assign IUI to the language's proper name in English
+IUIt-3 = [new-iui]
+IUIp-3 = A|[IUIt-3]~[IUIp-1]|[timestamp-1]|[new-iui]
+
+# assert that the language's name is an instance of Proper Name at tr-2
+IUIt-4 = U|[new-iui]~[IUIp-1]|[timestamp-1]|[instance-of]|[BFO]|[IUIp-3]|[identifier]|[PNO]|[tr-2]
+
+# the name denotes the language at tr-2
+IUIt-5 = P|[new-iui]~[IUIp-1]|timestamp-1]|[denotes]|[IAO]|iui=[IUIp-3],iui=[IUIp-2]|[tr-2]
+
+# PtoDE template for the name
+IUIt-6 = [new-iui]
+E|[IUIt-6]~[IUIp-1]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-3]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%1
+
+# ----------------------------------------------
+#
+#    Section for handling ISO 639-2T code field
+#
+# ----------------------------------------------
+
+# Assign IUI to ISO 639-2T code
+IUIt-10 = [new-iui]
+IUIp-4 = A|[IUIt-10]~[IUIp-1]|[timestamp-1]|[new-iui]
+
+# temporal reference for 2T code
+tr-10 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
+
+# ISO 639-2T code is an instance of identifier at time it exists
+IUIt-11 = U|[new-iui]~[IUIp-1]|[timestamp-1]|[instance-of]|[BFO]|[IUIp-4]|[identifier]|[PNO]|[tr-10]
+
+# ISO 639-2T code is a member of the ISO 639-2T codeset at time the code exists
+IUIt-12 = P|[new-iui]~[IUIp-1]|timestamp-1]|[member-of]|[IAO]|iui=[IUIp-4],iui=[iso639-2t-codeset]|[tr-10]
+
+# ISO 639-2T code denotes the language at the time the code exists
+IUIt-13 = P|[new-iui]~[IUIp-1]|timestamp-1]|[denotes]|[IAO]|iui=[IUIp-4],iui=[IUIp-2]|[tr-10]
+
+# PtoDE template for the ISO 639-2T code
+IUIt-14 = [new-iui]
+E|[IUIt-14]~[IUIp-1]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-4]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%2
+
+# ----------------------------------------------
+#
+#    Section for handling ISO 639-2B code field
+#
+# ----------------------------------------------
+
+# Assign IUI to ISO 639-2B code
+IUIt-20 = [new-iui]
+IUIp-20 = A|[IUIt-20]~[IUIp-1]|[timestamp-1]|[new-iui]
+
+# temporal reference for 2B code
+tr-20 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
+
+# ISO 639-2B code is an instance of identifier at time it exists
+IUIt-21 = U|[new-iui]~[IUIp-1]|[timestamp-1]|[instance-of]|[BFO]|[IUIp-20]|[identifier]|[PNO]|[tr-20]
+
+# ISO 639-2B code is a member of the ISO 639-2B codeset at time the code exists
+IUIt-22 = P|[new-iui]~[IUIp-1]|timestamp-1]|[member-of]|[IAO]|iui=[IUIp-20],iui=[iso639-2b-codeset]|[tr-20]
+
+# ISO 639-2B code denotes the language at the time the code exists
+IUIt-23 = P|[new-iui]~[IUIp-1]|timestamp-1]|[denotes]|[IAO]|iui=[IUIp-20],iui=[IUIp-2]|[tr-20]
+
+# PtoDE template for the ISO 639-2T code
+IUIt-24 = [new-iui]
+E|[IUIt-24]~[IUIp-1]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-20]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%3
+
+# ----------------------------------------------
+#
+#    Section for handling ISO 639-1 code field
+#
+# ----------------------------------------------
+
+if (%4 != "")
+	# Assign IUI to ISO 639-1 code
+	IUIt-30 = [new-iui]
+	IUIp-30 = A|[IUIt-30]~[IUIp-1]|[timestamp-1]|[new-iui]
+
+	# temporal reference for 639-1 code
+	tr-30 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
+
+	# ISO 639-1 code is an instance of identifier at time it exists
+	IUIt-31 = U|[new-iui]~[IUIp-1]|[timestamp-1]|[instance-of]|[BFO]|[IUIp-30]|[identifier]|[PNO]|[tr-30]
+
+	# ISO 639-1 code is a member of the ISO 639-2T codeset at time the code exists
+	IUIt-32 = P|[new-iui]~[IUIp-1]|timestamp-1]|[member-of]|[IAO]|iui=[IUIp-30],iui=[iso639-1-codeset]|[tr-30]
+
+	# ISO 639-1 code denotes the language at the time the code exists
+	IUIt-33 = P|[new-iui]~[IUIp-1]|timestamp-1]|[denotes]|[IAO]|iui=[IUIp-30],iui=[IUIp-2]|[tr-30]
+
+	# PtoDE template for the ISO 639-2T code
+	IUIt-34 = [new-iui]
+	E|[IUIt-34]~[IUIp-1]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-30]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%4
+endif
+
+# ----------------------------------------------
+#
+#    Section for handling iri field
+#
+# ----------------------------------------------
+
+# Assign IUI to IRI
+IUIt-40 = [new-iui]
+IUIp-40 = A|[IUIt-40]~[IUIp-1]|[timestamp-1]|[new-iui]
+
+# temporal reference for IRI
+tr-40 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
+
+# IRI is an instance of identifier at time it exists
+IUIt-41 = U|[new-iui]~[IUIp-1]|[timestamp-1]|[instance-of]|[BFO]|[IUIp-40]|[iri]|[PCOROWL]|[tr-40]
+
+# IRI denotes the language at the time the code exists
+IUIt-43 = P|[new-iui]~[IUIp-1]|timestamp-1]|[denotes]|[IAO]|iui=[IUIp-40],iui=[IUIp-2]|[tr-40]
+
+# PtoDE template for the IRI
+IUIt-44 = [new-iui]
+E|[IUIt-44]~[IUIp-1]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-40]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%5

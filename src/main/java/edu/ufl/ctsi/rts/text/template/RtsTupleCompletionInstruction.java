@@ -107,6 +107,9 @@ public class RtsTupleCompletionInstruction extends RtsTemplateInstruction {
 				contentBlock.add(substitution); 
 			} else if (s.startsWith("%")) {
 				int fieldNum = Integer.parseInt(s.substring(1));
+				if (fieldNum >= args.size()) {
+					System.err.println(args.size() + "\t" + args.get(1) + "\t" + args.get(fieldNum-1));
+				}
 				contentBlock.add(args.get(fieldNum));
 			} else if (s.indexOf("=") > -1) {
 				String[] refInfo = s.split(Pattern.quote(Character.toString('=')));
