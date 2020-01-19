@@ -127,6 +127,9 @@ public class PtoCTuple extends RtsTuple {
 		builder.append(", ");
 		
 		builder.append(this.getConceptSystemIui());
+		builder.append(", ");
+		
+		builder.append(this.getTemporalReference());
 		builder.append(" >");
 		
 		return builder.toString();

@@ -146,7 +146,13 @@ public class PtoDETuple extends RtsTuple {
 		builder.append(this.getReferent());
 		builder.append(", ");
 
-		builder.append(this.getData());
+		//if the data is UTF-8, just display the actual text instead of the hex for the byte array
+		if (this.getDatatypeUui().toString().equals("https://www.ietf.org/rfc/rfc3629.txt")) {
+			builder.append(new String(this.getData()));
+		} else {
+			builder.append(this.getData());
+		}
+		
 		builder.append(", ");
 		
 		builder.append(this.getRelationshipURI());
