@@ -4,10 +4,12 @@ public class DataEventTypeCounterSubscriber implements DataEventSubscriber {
 
 	int count;
 	DataEventType de;
+	DataEventFilter def;
 	
 	public DataEventTypeCounterSubscriber(DataEventType de) {
 		count = 0;
 		this.de = de;
+		this.def = new DataEventFilter(de);
 	}
 	
 	@Override
@@ -22,5 +24,9 @@ public class DataEventTypeCounterSubscriber implements DataEventSubscriber {
 	
 	public DataEventType getDataEventType() {
 		return de;
+	}
+
+	public DataEventFilter getFilter() {
+		return def;
 	}
 }

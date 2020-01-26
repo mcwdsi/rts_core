@@ -100,7 +100,7 @@ public class RtsTemplateInstructionListExecutor {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public void setGlobalVariables( ArrayList<RtsTemplateVariable> globalVariables) {
+	public void setGlobalVariables( List<RtsTemplateVariable> globalVariables) {
 		this.globalVariables = new HashMap<String, RtsTemplateVariable>();
 		for (RtsTemplateVariable var : globalVariables) {
 			this.globalVariables.put(var.getName(), var);

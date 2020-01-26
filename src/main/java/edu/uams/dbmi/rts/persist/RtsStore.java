@@ -75,5 +75,8 @@ public interface RtsStore {
 	 * @param TupleType 
 	 */
 	public Set<RtsTuple> runQuery(TupleQuery TupleQuery, RtsTupleType TupleType);
-	
+
+	public void shutDown();
+
+	public void commit();
 }
