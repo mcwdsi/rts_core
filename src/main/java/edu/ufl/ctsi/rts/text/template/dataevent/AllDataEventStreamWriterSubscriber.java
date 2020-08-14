@@ -34,9 +34,14 @@ public class AllDataEventStreamWriterSubscriber extends AllEventAbstractSubscrib
 			System.err.println("RECORD NUMBER IS: " + e.getRecordNumber());
 			w.write(Integer.toString(e.getRecordNumber()));
 			w.write("\n");
+			w.flush();
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		}
 	}
 
+	@Override
+	public Writer getWriter() {
+		return w;
+	}
 }

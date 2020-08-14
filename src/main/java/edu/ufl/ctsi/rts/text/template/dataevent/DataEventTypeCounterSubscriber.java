@@ -17,15 +17,18 @@ public class DataEventTypeCounterSubscriber implements DataEventSubscriber {
 		if (e.getDataEventType().equals(de))
 			count++;
 	}
-	
+
+	@Override
 	public int getCount() {
 		return count;
 	}
-	
+
+	@Override
 	public DataEventType getDataEventType() {
 		return de;
 	}
 
+	@Override
 	public DataEventFilter getFilter() {
 		return def;
 	}
