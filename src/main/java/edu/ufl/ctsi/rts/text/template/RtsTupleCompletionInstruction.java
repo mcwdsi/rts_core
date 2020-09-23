@@ -40,7 +40,7 @@ public class RtsTupleCompletionInstruction extends RtsTemplateInstruction {
 		ArrayList<String> tupleBlock = new ArrayList<String>();
 		ArrayList<String> contentBlock = new ArrayList<String>();
 		for (String s : tupleBlockFields) {
-			System.out.println("\t" + s);
+			//System.out.println("\t" + s);
 			if (s.startsWith("[") && s.endsWith("]")) {
 				String command = s.substring(1, s.length()-1);
 				if (command.equals("new-iui")) {
@@ -57,7 +57,7 @@ public class RtsTupleCompletionInstruction extends RtsTemplateInstruction {
 		}
 		
 		for (String s : contentBlockFields) {
-			System.out.println("\t" + s);
+			//System.out.println("\t" + s);
 			if (s.startsWith("[") && s.endsWith("]")) {
 				String command = s.substring(1, s.length()-1);
 				if (command.equals("new-iui")) {
@@ -65,7 +65,7 @@ public class RtsTupleCompletionInstruction extends RtsTemplateInstruction {
 				} else if (variables.containsKey(command) || command.startsWith("!")) {
 					boolean negation = command.startsWith("!");
 					if (negation) command = command.substring(1);
-					System.out.println("\t\tCommand is variable: " + command + "\t" + variables.get(command).getValue() + " and negation is " + negation);
+					//System.out.println("\t\tCommand is variable: " + command + "\t" + variables.get(command).getValue() + " and negation is " + negation);
 					Object value = variables.get(command).getValue();
 					if (value instanceof URI) {
 						StringBuilder sb = new StringBuilder();
@@ -74,7 +74,7 @@ public class RtsTupleCompletionInstruction extends RtsTemplateInstruction {
 						if (negation) sb.append("-!-");
 						sb.append(value.toString());
 						//sb.append(quoteClose);
-						System.out.println("\t\t\t\tURI value with quotes is: " + sb.toString());
+						//System.out.println("\t\t\t\tURI value with quotes is: " + sb.toString());
 						contentBlock.add(sb.toString());
 					} else {
 						contentBlock.add(variables.get(command).getValue().toString());
@@ -85,17 +85,17 @@ public class RtsTupleCompletionInstruction extends RtsTemplateInstruction {
 			} else if (s.indexOf(subfieldDelim) > -1) {
 				String[] subfields = s.split(Pattern.quote(Character.toString(subfieldDelim)));
 				
-				System.out.println("\t\tCommand has subfields: " + s + "\t" + subfields[0] + "\t" + subfields[1]);
+				//System.out.println("\t\tCommand has subfields: " + s + "\t" + subfields[0] + "\t" + subfields[1]);
 						/*+ "\t" +
 						variables.get(subfields[0].trim()).getValue() + "\t" +
 						variables.get(subfields[1].trim()).getValue());*/
 				String substitution = "";
 				for (String sub : subfields) {
-					System.out.println("\t\t\t" + sub);
+					//System.out.println("\t\t\t" + sub);
 					if (substitution.length() > 0) substitution += Character.toString(subfieldDelim);
 					String[] refInfo = sub.split(Pattern.quote("="));
 					String command = refInfo[1].substring(1, refInfo[1].length()-1).trim();
-					System.out.println("command = '" + command + "'");
+					//System.out.println("command = '" + command + "'");
 					
 					String varValue = variables.get(command).getValue().toString();
 					substitution += refInfo[0].trim() + "=" + varValue;
@@ -103,7 +103,7 @@ public class RtsTupleCompletionInstruction extends RtsTemplateInstruction {
 				
 				//String substitution = variables.get(subfields[0].trim()).getValue() + Character.toString(subfieldDelim) + 
 				//		variables.get(subfields[1].trim()).getValue();
-				System.out.println("Substitution = " + substitution);
+				//System.out.println("Substitution = " + substitution);
 				contentBlock.add(substitution); 
 			} else if (s.startsWith("%")) {
 				int fieldNum = Integer.parseInt(s.substring(1));
@@ -113,13 +113,13 @@ public class RtsTupleCompletionInstruction extends RtsTemplateInstruction {
 				contentBlock.add(args.get(fieldNum));
 			} else if (s.indexOf("=") > -1) {
 				String[] refInfo = s.split(Pattern.quote(Character.toString('=')));
-				System.out.println("\t\tCommand has '=': " + s + "\t" + refInfo[0] + "\t" + refInfo[1]);
+				//System.out.println("\t\tCommand has '=': " + s + "\t" + refInfo[0] + "\t" + refInfo[1]);
 				String command = refInfo[1].substring(1, refInfo[1].length()-1).trim();
-				System.out.println(command);
+				//System.out.println(command);
 				
 				String varValue = variables.get(command).getValue().toString();
 				String substitution = refInfo[0].trim() + "=" + varValue;
-				System.out.println("Substitution = " + substitution);
+				//System.out.println("Substitution = " + substitution);
 				contentBlock.add(substitution);
 			}
 			else {

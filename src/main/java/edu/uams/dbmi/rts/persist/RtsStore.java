@@ -16,6 +16,7 @@ package edu.uams.dbmi.rts.persist;
 
 import java.util.Set;
 
+import edu.uams.dbmi.rts.RtsDeclaration;
 import edu.uams.dbmi.rts.iui.Iui;
 import edu.uams.dbmi.rts.query.TupleQuery;
 import edu.uams.dbmi.rts.tuple.RtsTuple;
@@ -79,4 +80,12 @@ public interface RtsStore {
 	public void shutDown();
 
 	public void commit();
+	
+	/**
+	 *  Persists an RtsDeclaration in the backing store
+	 *  
+	 *  @param RtsDeclaration
+	 *  @return true if successful
+	 */
+	public boolean saveRtsDeclaration(RtsDeclaration rd);
 }

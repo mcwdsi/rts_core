@@ -23,7 +23,7 @@ public class RtsAssignIuiInstruction extends RtsVariableAssignmentInstruction {
 		var = new RtsTemplateVariable<Iui>(varName);
 		var.setValue(Iui.createRandomIui());
 		
-		System.out.println("Set " + var.getName() + " to " + var.getValue().toString());
+		//System.out.println("Set " + var.getName() + " to " + var.getValue().toString());
 		
 		variables.put(varName, var);
 		

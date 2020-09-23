@@ -301,4 +301,8 @@ public class RtsTupleTextWriter {
 		w.write(tr.getCalendarSystemIui().toString());
 		w.write(TUPLE_DELIM);
 	}
+
+	public void close() throws IOException {
+		w.close();
+	}
 }

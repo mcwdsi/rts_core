@@ -43,9 +43,9 @@ public class RtsTemplateInstructionListExecutor {
 		ArrayList<String> args = new ArrayList<String>();
 		args.add(systimeTxt);
 		args.addAll(fields);
-		System.out.println("num of fields " + fields.size());
+		//System.out.println("num of fields " + fields.size());
 		for (RtsTemplateInstructionList instList : listOfInstructionLists) {
-			System.out.println("Processing instruction set:");
+			//System.out.println("Processing instruction set:");
 			boolean shouldExecute = instList.shouldExecute(fields);
 			if (!shouldExecute) {
 				System.out.println("Not executing " + instList.getConditionFieldNum() + 
@@ -56,7 +56,7 @@ public class RtsTemplateInstructionListExecutor {
 				System.out.println("Executing " + instList.getConditionFieldNum() + 
 					" = " + instList.getConditionFieldValue() + "  (" + fields + ")");
 				for (RtsAbstractInstruction instruction : instList) {
-					System.out.println("\tProcessing instruction " + instruction);
+					//System.out.println("\tProcessing instruction " + instruction);
 					instruction.execute(args, localVariables);
 					/*if (instruction instanceof RtsVariableAssignmentInstruction) {
 						RtsVariableAssignmentInstruction varInst = (RtsVariableAssignmentInstruction)instruction;
