@@ -56,10 +56,15 @@ public class TemporalReferenceTest extends TestCase {
 			String idBase = df.format(d);
 
 			long offsetMillis = tz.getOffset(c.getTimeInMillis());
-			long offsetHour = offsetMillis / 3600000L;
-			long offsetMinutes = (offsetMillis % 3600000L) / 60000L;
-			if (offsetMinutes < 0) offsetMinutes = -offsetMinutes;
-			String tzOffset = Iso8601TimeZoneFormatter.formatTimeZone((int)offsetHour, (int)offsetMinutes);
+			String tzOffset;
+			if (offsetMillis == 0) {
+				tzOffset = "Z";
+			} else {
+				long offsetHour = offsetMillis / 3600000L;
+				long offsetMinutes = (offsetMillis % 3600000L) / 60000L;
+				if (offsetMinutes < 0) offsetMinutes = -offsetMinutes;
+				tzOffset = Iso8601TimeZoneFormatter.formatTimeZone((int)offsetHour, (int)offsetMinutes);
+			}
 			
 			String comparisonId = idBase + "_" + tzOffset;
 			
