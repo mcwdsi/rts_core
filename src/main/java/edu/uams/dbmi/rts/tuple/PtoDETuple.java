@@ -170,4 +170,9 @@ public class PtoDETuple extends RtsTuple {
 		
 		return builder.toString();
 	}
+
+	@Override
+	public RtsTupleType getRtsTupleType() {
+		return RtsTupleType.PTODETUPLE;
+	}
 }

@@ -11,6 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import edu.uams.dbmi.rts.iui.Iui;
+import edu.uams.dbmi.rts.persist.RtsStore;
 import edu.ufl.bmi.util.cdm.CommonDataModel;
 import edu.ufl.bmi.util.cdm.CommonDataModelField;
 import edu.ufl.bmi.util.cdm.CommonDataModelTable;
@@ -22,7 +23,7 @@ import edu.ufl.ctsi.rts.text.template.dataevent.DataEventType;
 
 public class RtsTemplateInstructionListPseudoCompiler {
 	
-	public static String VARIABLE_ASSIGNMENT_PATTERN = "^([A-Za-z0-9-]+)[ \\t]*=[ \\t]*((\\$[0-9][0-9]*)|\\[(new-iui)\\]|\\[(sys-time)\\])[ \\t]*";
+	public static String VARIABLE_ASSIGNMENT_PATTERN = "^([A-Za-z0-9-]+)[ \\t]*=[ \\t]*((\\$[0-9][0-9]*)|\\[(new-iui)\\]|\\[(sys-time)\\]|\\[(lookup-iui.*?)\\])[ \\t]*";
 	public static String CONDITIONAL_START_PATTERN = "^if[ \\t]*\\([ \\t]*\\%([0-9]+)[ \\t]*(==|!=)[ \\t]*((\"(.*?)\")|\\[([A-Za-z0-9-]+)\\])\\)[ \\t]*";
 	public static String CONDITIONAL_ELSE_IF_PATTERN = "^else if[ \\t]*\\([ \\t]*\\%([0-9]+)[ \\t]*(==|!=)[ \\t]*((\"(.*?)\")|\\[([A-Za-z0-9-]+)\\])\\)[ \\t]*";
 	public static String CONDITIONAL_ELSE_PATTERN = "^[ \\t]*else[ \\t]*$";
@@ -63,12 +64,15 @@ public class RtsTemplateInstructionListPseudoCompiler {
 	CommonDataModel cdm;
 	String tableName;
 	
+	RtsStore db;
+	
 	@SuppressWarnings("rawtypes")
-	public RtsTemplateInstructionListPseudoCompiler(String fileName, CommonDataModel cdm, String tableName) {
+	public RtsTemplateInstructionListPseudoCompiler(String fileName, CommonDataModel cdm, String tableName, RtsStore db) {
 		this.fname = fileName;
 		file = new File(fname);
 		this.cdm = cdm;
 		this.tableName = tableName;
+		this.db = db;
 		
 		variableAssignmentPattern = Pattern.compile(VARIABLE_ASSIGNMENT_PATTERN);
 		conditionalStartPattern = Pattern.compile(CONDITIONAL_START_PATTERN);
@@ -336,6 +340,7 @@ public class RtsTemplateInstructionListPseudoCompiler {
 		String globalArg = m.group(3);
 		String iuiTxt = m.group(4);
 		String systime = m.group(5);
+		String lookup = m.group(6);
 		
 		if (globalArg != null) {
 			try {
@@ -360,6 +365,23 @@ public class RtsTemplateInstructionListPseudoCompiler {
 			currentInstructionList.addInstruction(inst);
 		}
 		
+		else if (lookup != null) {
+			System.out.println("Lookup IUI instruction: " + lookup);
+			String[] flds = lookup.split(Pattern.quote(","));
+			String tableFieldTxt = flds[1];
+			System.out.println("Table and field: " + tableFieldTxt);
+			String[] tableField = tableFieldTxt.split(Pattern.quote("."));
+			System.out.println("after split length is " + tableField.length + ", first entry is: "+ tableField[0]);
+			CommonDataModelField lookupField = cdm.getTableByName(tableField[0]).getFieldByName(tableField[1]);
+			ArrayList<String> lookupSequence = new ArrayList<String>();
+			for (int i=1; i<flds.length; i++) {
+				lookupSequence.add(flds[i]);
+			}
+			//need to send the varName, the lookupField, the lookupSequence
+			//anything else?
+			RtsIuiLookupInstruction rili = new RtsIuiLookupInstruction(db, varName, lookupField, lookupSequence);
+			currentInstructionList.addInstruction(rili);
+		}
 	}
 	
 	private void handleAnnotationInstruction(Matcher m) {

@@ -40,9 +40,9 @@ public class RtsTemplateInstructionListExecutor {
 		localVariables.put(recVar.getName(), recVar);
 		
 		String systimeTxt = getNewIso8601SystimeString();
-		ArrayList<String> args = new ArrayList<String>();
-		args.add(systimeTxt);
-		args.addAll(fields);
+		ArrayList<String> fieldsAndSysVariables = new ArrayList<String>();
+		fieldsAndSysVariables.add(systimeTxt);
+		fieldsAndSysVariables.addAll(fields);
 		//System.out.println("num of fields " + fields.size());
 		for (RtsTemplateInstructionList instList : listOfInstructionLists) {
 			//System.out.println("Processing instruction set:");
@@ -57,7 +57,7 @@ public class RtsTemplateInstructionListExecutor {
 					" = " + instList.getConditionFieldValue() + "  (" + fields + ")");
 				for (RtsAbstractInstruction instruction : instList) {
 					//System.out.println("\tProcessing instruction " + instruction);
-					instruction.execute(args, localVariables);
+					instruction.execute(fieldsAndSysVariables, localVariables);
 					/*if (instruction instanceof RtsVariableAssignmentInstruction) {
 						RtsVariableAssignmentInstruction varInst = (RtsVariableAssignmentInstruction)instruction;
 						varInst.execute(args, localVariables);

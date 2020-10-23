@@ -81,7 +81,7 @@ public class RtsTupleTextParser implements Iterable<RtsTuple> {
 					else if (read[j] == RtsTupleTextWriter.TUPLE_DELIM && prior_read != '\\' && !inside_quote) {
 						String Tuple = sb.toString();
 						parseTupleFromText(Tuple);
-						System.out.println("Tuple = \"" + sb.toString() + "\"");
+						//System.out.println("Tuple = \"" + sb.toString() + "\"");
 						sb = new StringBuilder();
 						prior_read = '\0';
 					} else {

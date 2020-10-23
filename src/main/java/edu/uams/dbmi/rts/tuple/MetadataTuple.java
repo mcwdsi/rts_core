@@ -162,4 +162,9 @@ public class MetadataTuple extends RtsTuple {
 		return builder.toString();
 
 	}
+
+	@Override
+	public RtsTupleType getRtsTupleType() {
+		return RtsTupleType.METADATATUPLE;
+	}
 }

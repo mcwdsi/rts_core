@@ -35,7 +35,7 @@ public abstract class RtsSession {
 	}
 	
 	public TupleQuery createTupleQuery(){
-		return new TupleQuery(store);
+		return new TupleQuery();
 	}
 	
 	public Iui getAvailableIui(){

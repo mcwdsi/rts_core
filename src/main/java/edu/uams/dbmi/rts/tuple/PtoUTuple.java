@@ -192,4 +192,9 @@ public class PtoUTuple extends RtsTuple {
 		
 		return builder.toString();
 	}
+
+	@Override
+	public RtsTupleType getRtsTupleType() {
+		return RtsTupleType.PTOUTUPLE;
+	}
 }

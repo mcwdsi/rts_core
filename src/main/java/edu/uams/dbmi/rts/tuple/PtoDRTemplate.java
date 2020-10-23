@@ -118,4 +118,9 @@ public class PtoDRTemplate extends RtsTuple {
 		return builder.toString();
 	}
 
+	@Override
+	public RtsTupleType getRtsTupleType() {
+		return null;
+	}
+
 }

@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
 
 import edu.uams.dbmi.rts.RtsDeclaration;
 import edu.uams.dbmi.rts.iui.Iui;
+import edu.uams.dbmi.rts.persist.demofilestore.DemoFileStore;
 import edu.uams.dbmi.rts.time.TemporalRegion;
 import edu.uams.dbmi.rts.tuple.RtsTuple;
 import edu.ufl.bmi.util.cdm.CommonDataModel;
@@ -80,10 +81,18 @@ public class RtsTupleTemplateInstructionSetTest implements DataEventSubscriber {
 			e1.printStackTrace();
 		}
 		
-		referentTrackingEtlRecords("./src/main/resources/pcornet_demographics_template_instruction_set.txt", 
-				"./src/main/resources/dummy-demographics-records.txt", "./src/test/resources//test-tuple-generation.out",
-				"./src/test/resources//test-data-events-generated.out", globals, cdm, "DEMOGRAPHIC", ",");
+		String dir = "./src/test/resources/etl-output";
+		File fdir = new File(dir);
+		if (!fdir.exists()) {
+			fdir.mkdir();
+		}
 		
+		DemoFileStore dfs = new DemoFileStore(fdir);
+		
+		referentTrackingEtlRecords("./src/main/resources/pcornet_demographics_template_instruction_set.txt", 
+				"./src/main/resources/dummy-demographics-records.txt", dfs,
+				"./src/test/resources//test-data-events-generated.out", globals, cdm, "DEMOGRAPHIC", ",");
+		/*
 		referentTrackingEtlRecords("./src/main/resources/pcornet_provider_template_instruction_set.txt", 
 				"./src/main/resources/dummy-provider-records.txt", "./src/test/resources//test-tuple-generation-provider.out",
 				"./src/test/resources//test-data-events-generated-provider.out", globals, cdm, "PROVIDER", ",");
@@ -91,6 +100,13 @@ public class RtsTupleTemplateInstructionSetTest implements DataEventSubscriber {
 		referentTrackingEtlRecords("./src/main/resources/language-instruction-set.txt", 
 				"./src/main/resources/iso-639-language-individuals-to-process.txt", "./src/test/resources//test-tuple-generation-language.out",
 				"./src/test/resources//test-data-events-generated-language.out", globals, null, null, "\t");
+		*/
+		referentTrackingEtlRecords("./src/main/resources/pcornet_encounter_template_instruction_set.txt", 
+				"./src/main/resources/dummy-encounter-records.txt", dfs,
+				"./src/test/resources//test-data-events-generated-language.out", globals, cdm, "ENCOUNTER", "\t");
+		
+		
+		dfs.shutDown();
 		
 		//RtsTemplateInstructionListPseudoCompiler c 
 		//		= new RtsTemplateInstructionListPseudoCompiler("./src/main/resources/" + 
@@ -168,10 +184,10 @@ public class RtsTupleTemplateInstructionSetTest implements DataEventSubscriber {
 	}
 	
 	public static void referentTrackingEtlRecords(String instructionSetFilePathAndName, String tableRecordsToEtlFilePathAndName, 
-			String tupleOutputFilePathAndName, String dataEventOutputFilePathAndName, ArrayList<RtsTemplateVariable> globals, 
+			DemoFileStore store, String dataEventOutputFilePathAndName, ArrayList<RtsTemplateVariable> globals, 
 			CommonDataModel cdm, String tableName, String delim) {
 		RtsTemplateInstructionListPseudoCompiler c = new RtsTemplateInstructionListPseudoCompiler(
-				instructionSetFilePathAndName, cdm, tableName);
+				instructionSetFilePathAndName, cdm, tableName, store);
 		try {
 			c.initialize();
 		} catch (IOException e1) {
@@ -190,10 +206,7 @@ public class RtsTupleTemplateInstructionSetTest implements DataEventSubscriber {
 			FileWriter fw1 = new FileWriter(dataEventOutputFilePathAndName);
 			AllDataEventStreamWriterSubscriber allEventsSub = new AllDataEventStreamWriterSubscriber(fw1);
 			DataEventMessageBoard.subscribe(allEventsSub, allEventsSub.getFilter());
-			
-			FileWriter fw2 = new FileWriter(tupleOutputFilePathAndName);
-			RtsTupleTextWriter w = new RtsTupleTextWriter(fw2);
-			
+								
 			String record;
 			int iRecord = 1;
 			while((record=lnr.readLine())!=null) {
@@ -206,22 +219,24 @@ public class RtsTupleTemplateInstructionSetTest implements DataEventSubscriber {
 				
 				Iterator<RtsDeclaration> i = declarationSet.iterator();
 				while (i.hasNext()) {
-					RtsDeclaration d = i.next();
+					store.saveRtsDeclaration(i.next());
+					/*RtsDeclaration d = i.next();
 					if (d instanceof RtsTuple) {
 						RtsTuple t = (RtsTuple)d;
 						w.writeTuple(t);
 					} else if (d instanceof TemporalRegion) {
 						TemporalRegion r = (TemporalRegion)d;
 						w.writeTemporalRegion(r);
-					}
+					}*/
 				}
+				store.commit();
 				iRecord++;
 			}
 		
 			DataEventMessageBoard.unsubscribe(allEventsSub, allEventsSub.getFilter());
 			
 			fw1.close();
-			fw2.close();
+			//fw2.close();
 			fr.close();
 		
 		} catch (IOException ioe) {

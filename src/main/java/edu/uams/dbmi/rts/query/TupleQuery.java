@@ -1,15 +1,23 @@
 package edu.uams.dbmi.rts.query;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
+import edu.uams.dbmi.rts.ParticularReference;
+import edu.uams.dbmi.rts.RtsDeclaration;
 import edu.uams.dbmi.rts.iui.Iui;
 import edu.uams.dbmi.rts.metadata.RtsChangeReason;
 import edu.uams.dbmi.rts.metadata.RtsErrorCode;
-import edu.uams.dbmi.rts.persist.RtsStore;
+import edu.uams.dbmi.rts.time.TemporalReference;
+import edu.uams.dbmi.rts.tuple.ATuple;
+import edu.uams.dbmi.rts.tuple.MetadataTuple;
+import edu.uams.dbmi.rts.tuple.PtoCTuple;
+import edu.uams.dbmi.rts.tuple.PtoDETuple;
+import edu.uams.dbmi.rts.tuple.PtoLackUTuple;
+import edu.uams.dbmi.rts.tuple.PtoPTuple;
+import edu.uams.dbmi.rts.tuple.PtoUTuple;
 import edu.uams.dbmi.rts.tuple.RtsTuple;
 import edu.uams.dbmi.rts.tuple.RtsTupleType;
 import edu.uams.dbmi.rts.uui.Uui;
@@ -17,11 +25,10 @@ import edu.uams.dbmi.util.iso8601.Iso8601DateTime;
 
 public class TupleQuery {
 
-	private List<RtsTupleType> types = new ArrayList<RtsTupleType>();;
+	private HashSet<RtsTupleType> types = new HashSet<RtsTupleType>();
 	private Iui referentIui = null;
 	private URI relationshipURI = null;
 	private Uui universalUui = null;
-	private RtsStore store;
 	private Iui authorIui = null;
 	private Iui authoringTimeIui = null;
 	private Iso8601DateTime beginTimestamp = null;
@@ -32,9 +39,161 @@ public class TupleQuery {
 	private RtsErrorCode errorCode = null;
 	private Iui namingSystem = null;
 	private String temporalEntityName = null;
+	private TemporalReference tr;
+	private List<ParticularReference> p;
 
-	public TupleQuery(RtsStore rtsStore) {
-		this.store = rtsStore;
+	public TupleQuery() {
+
+	}
+	
+	public void setP(List<ParticularReference> p) {
+		this.p = p;
+	}
+	
+	/*
+	 * Later, we need to let the user specify the position at which each
+	 * 	particular reference appears in the list.  For now, we're just 
+	 * 	going to return true if each particular reference provided here
+	 *  is in p parameter of the PtoP tuple.
+	 */
+	public Iterator<ParticularReference> iteratorP() {
+		if (p!=null) {
+			return p.iterator();
+		} else {
+			return null;
+		}
+	}
+	
+	public void setTemporalReference(TemporalReference tr) {
+		this.tr = tr;
+	}
+	
+	public TemporalReference getTemporalReference() {
+		return tr;
+	}
+	
+	public boolean matches(RtsTuple t) {
+		boolean matches = true;
+		matches = matches && (types.isEmpty() || types.contains(t.getRtsTupleType()));
+		matches = matches && (authorIui == null || t.getAuthorIui().equals(authorIui));
+		//System.out.println("types and author meet criteria");
+		if (matches) 
+			matches = matches && matchTupleTypeSpecificParameters(t);
+		
+		return matches;
+	}
+	
+	private boolean matchTupleTypeSpecificParameters(RtsTuple t) {
+		if (t instanceof ATuple) {
+			ATuple at = (ATuple)t;
+			return matchATuple(at);
+		} else if (t instanceof PtoCTuple) {
+			PtoCTuple ptc = (PtoCTuple)t;
+			//TODO
+		} else if (t instanceof PtoDETuple) {
+			PtoDETuple ptd = (PtoDETuple)t;
+			return matchPtoDETuple(ptd);
+		} else if (t instanceof PtoLackUTuple) {
+			PtoLackUTuple ptlu = (PtoLackUTuple)t;
+			//TODO
+		} else if (t instanceof PtoPTuple) {
+			PtoPTuple ptp = (PtoPTuple)t;
+			return matchPtoPTuple(ptp);
+		} else if (t instanceof PtoUTuple) {
+			PtoUTuple ptu = (PtoUTuple)t;
+			return matchPtoUTuple(ptu);
+		} else if (t instanceof MetadataTuple) {
+			MetadataTuple mt = (MetadataTuple)t;
+			//TODO
+		}
+		return false;
+	}
+
+	private boolean matchATuple(ATuple at) {
+		//If we get here we already matched author IUI
+		//So we only need to check timestamp and referent IUI
+		boolean matches = (referentIui == null || at.getReferentIui().equals(referentIui));
+		matches = matches && (beginTimestamp == null || at.getAuthoringTimestamp().equals(beginTimestamp));
+		return matches;
+	}
+	
+	private boolean matchPtoDETuple(PtoDETuple ptd) {
+		//System.out.println("Comparing PtoDE tuple to query");
+		ParticularReference pr = ptd.getReferent();
+		boolean matches;
+		if (pr instanceof TemporalReference) {
+			TemporalReference tr = (TemporalReference)pr;
+			matches = (tr == null || tr.equals(this.tr));
+		} else {
+			Iui iui = (Iui)pr;
+			matches = (referentIui == null || iui.equals(referentIui));
+		}
+	
+		if (matches && this.data != null) {
+			//System.out.println("Comparing PtoDE tuple data.");
+			byte[] ptdData = ptd.getData();
+			matches = matches && (ptdData.length == data.length);
+			if (matches) {
+				for (int i=0; i<ptdData.length; i++) {
+					matches = matches && (ptdData[i] == data[i]);
+				}
+			}
+		}
+		
+		if (matches && this.datatype != null) {
+			matches = matches && this.datatype.equals(ptd.getDatatypeUui());
+		}
+		
+		if (matches && this.relationshipURI != null) {
+			matches = matches && this.relationshipURI.equals(ptd.getRelationshipURI());
+		}
+		
+		//TODO can also match on ontology IUIs
+		//System.out.println("tuple is a match? " + matches);
+		return matches;
+	}
+	
+	private boolean matchPtoUTuple(PtoUTuple ptu) {
+		boolean matches = true;
+		if (this.referentIui != null) {
+			matches = matches && this.referentIui.equals(ptu.getReferentIui());
+		}
+		if (this.universalUui != null) {
+			matches = matches && this.universalUui.equals(ptu.getUniversalUui());
+		}
+		if (this.relationshipURI != null) {
+			matches = matches && this.relationshipURI.equals(ptu.getRelationshipURI());
+		}
+		
+		//TODO can also match on universal ontology IUI, relationship ontology IUI
+		//TODO can also match on ta
+		//TODO can also match on tr
+		//TODO can also match on relationship polarity
+		
+		return matches;
+	}
+	
+	private boolean matchPtoPTuple(PtoPTuple ptp) {
+		boolean matches = true;
+		if (this.relationshipURI != null) {
+			matches = matches && this.relationshipURI.equals(ptp.getRelationshipURI());
+		}
+		if (this.p != null) {
+			Iterator<ParticularReference> j = ptp.getAllParticulars().iterator();
+			while (j.hasNext()) {
+				matches = matches && this.p.contains(j.next());
+			}
+		}
+		//TODO can also match on relationship ontology IUI
+		//TODO can also match on ta
+		//TODO can also match on tr
+		//TODO can also match on relationship polarity	
+	
+		return matches;
+	}
+
+	public Iterator<RtsTupleType> getTypes() {
+		return types.iterator();
 	}
 
 	public void addType(RtsTupleType tupleType){
@@ -121,6 +280,12 @@ public class TupleQuery {
 		return authorIui;
 	}
 
+	/**
+	 * For ATuple use beginTimestamp to match authoring timestamp
+	 * For PtoDETuple use beginTimestamp to match particulars that are temporal regions and have a timestamp as identifier
+	 * For PtoPTuple...
+	 * @return
+	 */
 	public Iso8601DateTime getBeginTimestamp() {
 		return beginTimestamp;
 	}
@@ -149,57 +314,7 @@ public class TupleQuery {
 		this.authoringTimeIui = authoringTimeIui;
 	}
 
-	public Set<RtsTuple> runQuery() throws Exception{
-		Set<RtsTuple> results = new HashSet<RtsTuple>();
-		
-		boolean parametersMatched = false;
-		if(this.parametersMatchATuple()){
-			parametersMatched = true;
-			results.addAll(this.store.runQuery(this, RtsTupleType.ATUPLE));
-		}
-
-		if(this.parametersMatchMetadataTuple()){
-			parametersMatched = true;
-			results.addAll(this.store.runQuery(this, RtsTupleType.METADATATUPLE));
-		}
-
-		if(this.parametersMatchPtoDRTuple()){
-			parametersMatched = true;
-			results.addAll(this.store.runQuery(this, RtsTupleType.PTODETUPLE));
-		}
-
-		if(this.parametersMatchPtoLackUTuple()){
-			parametersMatched = true;
-			results.addAll(this.store.runQuery(this, RtsTupleType.PTOLACKUTUPLE));
-		}
-
-		if(this.parametersMatchPtoPTuple()){
-			parametersMatched = true;
-			results.addAll(this.store.runQuery(this, RtsTupleType.PTOPTUPLE));
-		}
-
-		if(this.parametersMatchPtoUTuple()){
-			parametersMatched = true;
-			results.addAll(this.store.runQuery(this, RtsTupleType.PTOUTUPLE));
-		}
-
-		if(this.parametersMatchTenTuple()){
-			parametersMatched = true;
-			results.addAll(this.store.runQuery(this, RtsTupleType.TENTUPLE));
-		}
-
-		if(this.parametersMatchTeTuple()){
-			parametersMatched = true;
-			results.addAll(this.store.runQuery(this, RtsTupleType.TETUPLE));
-		}
-
-		if(!parametersMatched){
-			throw new Exception("Malformed query");
-		} else {
-			return results;
-		}
-	}
-
+	@Deprecated
 	private boolean parametersMatchTeTuple() {
 		if(this.types.contains(RtsTupleType.TETUPLE) || this.types.isEmpty()){
 			if(this.relationshipURI != null){
@@ -232,6 +347,7 @@ public class TupleQuery {
 		return false;
 	}
 
+	@Deprecated
 	private boolean parametersMatchTenTuple() {
 		if(this.types.contains(RtsTupleType.TENTUPLE) || this.types.isEmpty()){
 			if(this.relationshipURI != null){

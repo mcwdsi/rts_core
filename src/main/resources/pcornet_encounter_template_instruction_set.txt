@@ -32,9 +32,11 @@ D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-2]|I|CR|Null|
 
 # lookup IUI for PATID that was assigned from demographic table.
 # If it's not there, then create it and register a UP error (i.e., PATID is unjustifiably present here in ENCOUNTER table if it is not also present in DEMOGRAPHIC table)
+IUIp-4 = [lookup-iui, ENCOUNTER.PATID, human]
+
 
 # based on SOURCE field, lookup IUI of patient role for the encounter.  If there is no source field, then we assume patient just has one patient role total.
 # If it's not there then create it, and save it based on SOURCE.  If SOURCE not present, then we assume just one patient role per person
-
+IUIp-5 = [lookup-iui, ENCOUNTER.PATID, human, bearer-of, patient-role]
 
 

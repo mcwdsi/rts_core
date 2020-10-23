@@ -134,4 +134,9 @@ public class PtoCTuple extends RtsTuple {
 		
 		return builder.toString();
 	}
+
+	@Override
+	public RtsTupleType getRtsTupleType() {
+		return RtsTupleType.PTOCTUPLE;
+	}
 }

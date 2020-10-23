@@ -138,4 +138,9 @@ public class TenTemplate extends RtsTuple {
 		return builder.toString();
 
 	}
+
+	@Override
+	public RtsTupleType getRtsTupleType() {
+		return null;
+	}
 }

@@ -33,6 +33,8 @@ public abstract class RtsTuple extends RtsDeclaration {
 		this.authoringComponent = new AuthoringComponent();
 	}
 	
+	public abstract RtsTupleType getRtsTupleType();
+	
 	public Iui getTupleIui() {
 		return iuiComponent.getIui();
 	}

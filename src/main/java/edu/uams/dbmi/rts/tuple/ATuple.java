@@ -68,4 +68,9 @@ public class ATuple extends RtsTuple {
 		return builder.toString();
 
 	}
+
+	@Override
+	public RtsTupleType getRtsTupleType() {
+		return RtsTupleType.ATUPLE;
+	}
 }

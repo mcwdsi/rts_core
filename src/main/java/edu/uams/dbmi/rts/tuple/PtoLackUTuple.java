@@ -165,4 +165,9 @@ public class PtoLackUTuple extends RtsTuple {
 		
 		return builder.toString();
 	}
+
+	@Override
+	public RtsTupleType getRtsTupleType() {
+		return RtsTupleType.PTOLACKUTUPLE;
+	}
 }
