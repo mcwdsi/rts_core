@@ -41,6 +41,7 @@ data-item=http://purl.obolibrary.org/obo/IAO_0000027
 is-about=http://purl.obolibrary.org/obo/IAO_0000136
 question-asking-process=http://purl.obolibrary.org/obo/OMRSE_00000168
 pcornet-patient-id=http://purl.obolibrary.org/obo/PCORnet/PCORnet_00000019
+PATID=http://purl.obolibrary.org/obo/PCORnet/PCORnet_00000019
 pcornet-diagnosis-id=http://purl.obolibrary.org/obo/PCORnet/PCORnet_00000100
 pcornet-facility-id=http://purl.obolibrary.org/obo/PCORnet/PCORnet_00002019
 pcornet-encounter-id=http://purl.obolibrary.org/obo/PCORnet/PCORnet_00002018

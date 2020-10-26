@@ -374,7 +374,8 @@ public class RtsTemplateInstructionListPseudoCompiler {
 			System.out.println("after split length is " + tableField.length + ", first entry is: "+ tableField[0]);
 			CommonDataModelField lookupField = cdm.getTableByName(tableField[0]).getFieldByName(tableField[1]);
 			ArrayList<String> lookupSequence = new ArrayList<String>();
-			for (int i=1; i<flds.length; i++) {
+			lookupSequence.add(tableField[1]);
+			for (int i=2; i<flds.length; i++) {
 				lookupSequence.add(flds[i]);
 			}
 			//need to send the varName, the lookupField, the lookupSequence

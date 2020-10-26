@@ -1,27 +1,35 @@
 package edu.ufl.ctsi.rts.text.template;
 
+import java.net.URI;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import edu.uams.dbmi.rts.ParticularReference;
+import edu.uams.dbmi.rts.iui.Iui;
 import edu.uams.dbmi.rts.persist.RtsStore;
 import edu.uams.dbmi.rts.query.TupleQuery;
+import edu.uams.dbmi.rts.tuple.PtoDETuple;
 import edu.uams.dbmi.rts.tuple.RtsTuple;
 import edu.uams.dbmi.rts.tuple.RtsTupleType;
+import edu.uams.dbmi.rts.uui.Uui;
 import edu.ufl.bmi.util.cdm.CommonDataModelField;
 
 public class RtsIuiLookupInstruction extends RtsVariableAssignmentInstruction {
 	RtsTemplateVariable<String> var;
 	CommonDataModelField cdmField;
-	List<String> lookupSequence;
+	ArrayList<String> lookupSequence;
 	RtsStore db;
 	
 
 	public RtsIuiLookupInstruction(RtsStore db, String varName, CommonDataModelField fieldValue, List<String> lookupSequence) {
 		super(varName);
 		this.cdmField = fieldValue;
-		this.lookupSequence = lookupSequence;
+		this.lookupSequence = new ArrayList<String>();
+		for (String s : lookupSequence)
+			this.lookupSequence.add(s.trim());
 		this.db = db;
 	}
 
@@ -44,6 +52,7 @@ public class RtsIuiLookupInstruction extends RtsVariableAssignmentInstruction {
 			// check that iupNext1 has a PtoU tuple with uui = next in sequence
 			// and so on until sequence is exhausted, the last iuipNextn is the IUI you want, so set the variable value to that IUI and add 
 			// the variable to variables.
+		Iterator<String> seq = lookupSequence.iterator();
 		
 		TupleQuery getPtoDe = new TupleQuery(); 
 		getPtoDe.addType(RtsTupleType.PTODETUPLE);
@@ -53,10 +62,32 @@ public class RtsIuiLookupInstruction extends RtsVariableAssignmentInstruction {
 		System.out.println("result size: " + pdeResult.size());
 		for (RtsTuple rt : pdeResult) {
 			System.out.println("QUERY RESULT:\n\t" + rt);
+			PtoDETuple ptode = (PtoDETuple)rt;
+			ParticularReference pr = ptode.getReferent();
+			if (pr instanceof Iui) {
+				TupleQuery getPtoU = new TupleQuery();
+				getPtoU.addType(RtsTupleType.PTOUTUPLE);
+				getPtoU.setReferentIui((Iui)pr);
+				String varName= seq.next();
+				System.out.println("Getting value of " + varName);
+				RtsTemplateVariable val = variables.get(varName);
+				System.out.println(val);
+				Object valObj = val.getValue();
+				if (valObj instanceof URI) {
+					Uui uui = new Uui((URI)valObj);
+					getPtoU.setUniversalUui(uui);
+					Set<RtsTuple> ptuResult = db.runQuery(getPtoU);
+					System.out.println("ptou1 result size: " + ptuResult.size());
+				} else {
+					System.err.println("ERROR: Was expecting a Uui for " + varName + " but got a " + valObj.getClass());
+				}
+				
+			}
 		}
 		
+		
 		TupleQuery getPtoP = new TupleQuery();
-		TupleQuery getPtoU = new TupleQuery();
+		
 		TupleQuery getPtoP2 = new TupleQuery();
 		TupleQuery getPtoU2 = new TupleQuery();
 		return false;
