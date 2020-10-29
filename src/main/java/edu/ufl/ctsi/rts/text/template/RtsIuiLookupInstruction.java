@@ -22,6 +22,7 @@ public class RtsIuiLookupInstruction extends RtsVariableAssignmentInstruction {
 	CommonDataModelField cdmField;
 	ArrayList<String> lookupSequence;
 	RtsStore db;
+	URI inst;
 	
 
 	public RtsIuiLookupInstruction(RtsStore db, String varName, CommonDataModelField fieldValue, List<String> lookupSequence) {
@@ -53,6 +54,7 @@ public class RtsIuiLookupInstruction extends RtsVariableAssignmentInstruction {
 			// and so on until sequence is exhausted, the last iuipNextn is the IUI you want, so set the variable value to that IUI and add 
 			// the variable to variables.
 		Iterator<String> seq = lookupSequence.iterator();
+		if (inst == null) initializeInst(variables);
 		
 		TupleQuery getPtoDe = new TupleQuery(); 
 		getPtoDe.addType(RtsTupleType.PTODETUPLE);
@@ -65,21 +67,12 @@ public class RtsIuiLookupInstruction extends RtsVariableAssignmentInstruction {
 			PtoDETuple ptode = (PtoDETuple)rt;
 			ParticularReference pr = ptode.getReferent();
 			if (pr instanceof Iui) {
-				TupleQuery getPtoU = new TupleQuery();
-				getPtoU.addType(RtsTupleType.PTOUTUPLE);
-				getPtoU.setReferentIui((Iui)pr);
-				String varName= seq.next();
-				System.out.println("Getting value of " + varName);
-				RtsTemplateVariable val = variables.get(varName);
-				System.out.println(val);
-				Object valObj = val.getValue();
-				if (valObj instanceof URI) {
-					Uui uui = new Uui((URI)valObj);
-					getPtoU.setUniversalUui(uui);
-					Set<RtsTuple> ptuResult = db.runQuery(getPtoU);
-					System.out.println("ptou1 result size: " + ptuResult.size());
+				Iui currentIui = (Iui)pr;
+				String handle = seq.next();
+				if (checkInstantiationofUniversal(variables, handle, currentIui)) {
+					System.out.println("ID is of type: " + handle);
 				} else {
-					System.err.println("ERROR: Was expecting a Uui for " + varName + " but got a " + valObj.getClass());
+					System.err.println("Referent of ID is not of ID type: " + handle);
 				}
 				
 			}
@@ -93,4 +86,57 @@ public class RtsIuiLookupInstruction extends RtsVariableAssignmentInstruction {
 		return false;
 	}
 
+	private boolean checkInstantiationofUniversal(Map<String, RtsTemplateVariable> variables, String handle,
+			Iui currentIui) {
+		TupleQuery getPtoU = new TupleQuery();
+		boolean isInstanceOf = false;
+		getPtoU.addType(RtsTupleType.PTOUTUPLE);
+		getPtoU.setReferentIui(currentIui);
+		Uui uui = getUniversalUi(handle, variables);
+		if (uui != null) {
+			getPtoU.setUniversalUui(uui);
+			getPtoU.setRelationshipURI(inst);
+			Set<RtsTuple> ptuResult = db.runQuery(getPtoU);
+			isInstanceOf = (ptuResult.size() > 0);
+		} else {
+			System.err.println("ERROR: Unable to obtain Uui for handle " + handle);
+		}
+		return isInstanceOf;
+	}
+
+	private void initializeInst(Map<String, RtsTemplateVariable> variables) {
+		inst = getRelationshipUri("instance-of", variables);
+	}
+	
+	private URI getRelationshipUri(String handle, Map<String, RtsTemplateVariable> variables) {
+		RtsTemplateVariable var = variables.get(handle);
+		URI uri = null;
+		if (var != null) {
+			Object valObj = var.getValue();
+			if (valObj instanceof URI) {
+				uri = (URI)valObj;
+			} else {
+				System.err.println("valObj is not a URI for relationship in RtsIuiLookupInstruction with handle " + handle);
+			}
+		} else {
+			System.err.println("Can't find handle " + handle + " for relationship in RtsIuiLookupInstruction.");
+		}
+		return uri;
+	}
+	
+	private Uui getUniversalUi(String handle, Map<String, RtsTemplateVariable> variables) {
+		RtsTemplateVariable var = variables.get(handle);
+		Uui uui = null;
+		if (var != null) {
+			Object valObj = var.getValue();
+			if (valObj instanceof URI) {
+				uui = new Uui((URI)valObj);
+			} else {
+				System.err.println("valObj is not a URI for universal in RtsIuiLookupInstruction with handle " + handle);
+			}
+		} else {
+			System.err.println("Can't find handle " + handle + " for universal in RtsIuiLookupInstruction.");
+		}
+		return uui;
+	}
 }
