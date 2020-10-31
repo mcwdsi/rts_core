@@ -57,7 +57,7 @@ D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-5]|I|CR|Null|
 # relationships
 # the provider is the bearer of his/her provider role
 IUIt-6 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[bearer-of]|[BFO]|iui=[IUIp-2],iui=[IUIp-3]|[tr-3]
-D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-5]|I|CR|Null|
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-6]|I|CR|Null|
 
 # SECTION FOR PROVIDER_SEX field
 # assign IUI to the person's phenotypic sex quality.
@@ -69,6 +69,7 @@ D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-3]|I|CR|Null|
 # it's an instance of phenotypic sex quality
 @IM PROVIDER_SEX
 IUIt-7 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-4]|[phenotypic-sex-quality]|[PATO]|[tr-2]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-7]|I|CR|Null|
 # based on the value of the field, it's more specifically an instance of 
 #  something else (and possibly not an instance of other things)
 
@@ -192,7 +193,7 @@ D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-174]|I|CR|Null|
 if (%4 != "") 
 	IUIt-194 = [new-iui]
 	E|[IUIt-194]~[IUIp-1]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-104]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%4
-	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-193]|I|CR|Null|
+	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-194]|I|CR|Null|
 endif
 
 # assign IUI to the provider_npi_flag field

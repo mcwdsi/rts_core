@@ -175,13 +175,16 @@ public class TupleQuery {
 	
 	private boolean matchPtoPTuple(PtoPTuple ptp) {
 		boolean matches = true;
+		//System.out.println("matching ptop tuple in TupleQuery");
 		if (this.relationshipURI != null) {
 			matches = matches && this.relationshipURI.equals(ptp.getRelationshipURI());
 		}
 		if (this.p != null) {
-			Iterator<ParticularReference> j = ptp.getAllParticulars().iterator();
-			while (j.hasNext()) {
-				matches = matches && this.p.contains(j.next());
+			//System.out.println("Checking particular list");
+			List<ParticularReference> tupleP = ptp.getAllParticulars();
+			//System.out.println("the tuple we're querying has " + tupleP.size() + " particulars.");
+			for (ParticularReference pr : this.p) {
+				matches = matches && tupleP.contains(pr);
 			}
 		}
 		//TODO can also match on relationship ontology IUI

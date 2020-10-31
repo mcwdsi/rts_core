@@ -12,6 +12,7 @@ import edu.uams.dbmi.rts.iui.Iui;
 import edu.uams.dbmi.rts.persist.RtsStore;
 import edu.uams.dbmi.rts.query.TupleQuery;
 import edu.uams.dbmi.rts.tuple.PtoDETuple;
+import edu.uams.dbmi.rts.tuple.PtoPTuple;
 import edu.uams.dbmi.rts.tuple.RtsTuple;
 import edu.uams.dbmi.rts.tuple.RtsTupleType;
 import edu.uams.dbmi.rts.uui.Uui;
@@ -56,14 +57,15 @@ public class RtsIuiLookupInstruction extends RtsVariableAssignmentInstruction {
 		Iterator<String> seq = lookupSequence.iterator();
 		if (inst == null) initializeInst(variables);
 		
+		Iui valueIui = null;
 		TupleQuery getPtoDe = new TupleQuery(); 
 		getPtoDe.addType(RtsTupleType.PTODETUPLE);
 		String fieldEntry=fieldsAndSysVariables.get(cdmField.getFieldOrderInTable());
 		getPtoDe.setData(fieldEntry.getBytes());
 		Set<RtsTuple> pdeResult = db.runQuery(getPtoDe);
-		System.out.println("result size: " + pdeResult.size());
+		//System.out.println("result size: " + pdeResult.size());
 		for (RtsTuple rt : pdeResult) {
-			System.out.println("QUERY RESULT:\n\t" + rt);
+			//System.out.println("QUERY RESULT:\n\t" + rt);
 			PtoDETuple ptode = (PtoDETuple)rt;
 			ParticularReference pr = ptode.getReferent();
 			if (pr instanceof Iui) {
@@ -71,19 +73,29 @@ public class RtsIuiLookupInstruction extends RtsVariableAssignmentInstruction {
 				String handle = seq.next();
 				if (checkInstantiationofUniversal(variables, handle, currentIui)) {
 					System.out.println("ID is of type: " + handle);
+					//Now from here get a pair of handles for relationship, universal from seq
+					//we want to find all the PtoP tuples with currentIui, and for each one...
+					// ...get the other Iuis and see if any of them instantiate the universal
+					while (seq.hasNext()) {
+						String relHandle = seq.next();
+						String univHandle = seq.next();
+						currentIui = getRelatedUuiOfType(relHandle, univHandle, currentIui, variables);
+					}
+					valueIui = currentIui;
 				} else {
 					System.err.println("Referent of ID is not of ID type: " + handle);
 				}
-				
 			}
 		}
 		
-		
-		TupleQuery getPtoP = new TupleQuery();
-		
-		TupleQuery getPtoP2 = new TupleQuery();
-		TupleQuery getPtoU2 = new TupleQuery();
-		return false;
+		if (valueIui != null) {
+			RtsTemplateVariable<Iui> newVar = new RtsTemplateVariable<Iui>(this.varName);
+			newVar.setValue(valueIui);
+			System.out.println("Setting " + this.varName + " to value of " + valueIui);
+			variables.put(this.varName, newVar);
+		}
+
+		return true;
 	}
 
 	private boolean checkInstantiationofUniversal(Map<String, RtsTemplateVariable> variables, String handle,
@@ -101,6 +113,7 @@ public class RtsIuiLookupInstruction extends RtsVariableAssignmentInstruction {
 		} else {
 			System.err.println("ERROR: Unable to obtain Uui for handle " + handle);
 		}
+		//System.out.println("IS INSTANCE OF?"  + isInstanceOf);
 		return isInstanceOf;
 	}
 
@@ -138,5 +151,43 @@ public class RtsIuiLookupInstruction extends RtsVariableAssignmentInstruction {
 			System.err.println("Can't find handle " + handle + " for universal in RtsIuiLookupInstruction.");
 		}
 		return uui;
+	}
+	
+	private Iui getRelatedUuiOfType(String relHandle, String univHandle, Iui startIui, Map<String, RtsTemplateVariable> variables) {
+		Iui iui = null;
+		URI relUri = getRelationshipUri(relHandle, variables);
+		ArrayList<ParticularReference> p = new ArrayList<ParticularReference>();
+		p.add(startIui);
+		System.out.println("checking " + startIui + " " + relHandle + " some instance of " + univHandle);
+	
+		TupleQuery ptopQuery = new TupleQuery();
+		ptopQuery.setRelationshipURI(relUri);
+		ptopQuery.addType(RtsTupleType.PTOPTUPLE);
+		ptopQuery.setP(p);
+		Set<RtsTuple> ptopResult = db.runQuery(ptopQuery);
+		//System.out.println("PtoPResult size = " + ptopResult.size());
+		for (RtsTuple rt : ptopResult) {
+			PtoPTuple ptop = (PtoPTuple)rt;
+			List<ParticularReference> tupleP = ptop.getAllParticulars();
+			for (ParticularReference pr: tupleP) {
+				if (!pr.equals(startIui) && pr instanceof Iui) {
+					//System.out.println("Checking related particular " + pr);
+					Iui checkIui = (Iui)pr;
+					if (checkInstantiationofUniversal(variables, univHandle, checkIui)) {
+						//System.out.print("checkIui = "  + checkIui);
+						if (iui == null) {
+							iui = checkIui;
+							//System.out.println(", iui=" + iui);
+						} else {
+							System.err.println("WARNING: got more than one IUI instance of " + univHandle + 
+									" related by " + relHandle + ".  Ignoring " + checkIui.toString());
+						}
+					}
+				}
+			}
+		}
+		//System.out.println("\tGOT: "  + iui);
+		
+		return iui;
 	}
 }

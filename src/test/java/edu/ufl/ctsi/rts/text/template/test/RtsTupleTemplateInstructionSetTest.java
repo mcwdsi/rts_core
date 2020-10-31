@@ -92,11 +92,11 @@ public class RtsTupleTemplateInstructionSetTest implements DataEventSubscriber {
 		referentTrackingEtlRecords("./src/main/resources/pcornet_demographics_template_instruction_set.txt", 
 				"./src/main/resources/dummy-demographics-records.txt", dfs,
 				"./src/test/resources//test-data-events-generated.out", globals, cdm, "DEMOGRAPHIC", ",");
-		/*
-		referentTrackingEtlRecords("./src/main/resources/pcornet_provider_template_instruction_set.txt", 
-				"./src/main/resources/dummy-provider-records.txt", "./src/test/resources//test-tuple-generation-provider.out",
-				"./src/test/resources//test-data-events-generated-provider.out", globals, cdm, "PROVIDER", ",");
 		
+		referentTrackingEtlRecords("./src/main/resources/pcornet_provider_template_instruction_set.txt", 
+				"./src/main/resources/dummy-provider-records.txt", dfs,
+				"./src/test/resources//test-data-events-generated-provider.out", globals, cdm, "PROVIDER", ",");
+		/*
 		referentTrackingEtlRecords("./src/main/resources/language-instruction-set.txt", 
 				"./src/main/resources/iso-639-language-individuals-to-process.txt", "./src/test/resources//test-tuple-generation-language.out",
 				"./src/test/resources//test-data-events-generated-language.out", globals, null, null, "\t");
