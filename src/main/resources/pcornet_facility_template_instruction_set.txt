@@ -47,14 +47,18 @@ D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-2]|I|CR|Null|
 
 IUIt-3 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[healthcare-facility]|[OMRSE]|[tr-1]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-3]|I|CR|Null|
+IUIt-4 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-3]|[pcornet-facility-id]|[PCOROWL][tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-4]|I|CR|Null|
 
 # PtoP relations for FACILITYID
 
 # lookup IUI for ENCOUNTERID that was assigned from encounter table.
 # If it's not there, then create it and register a UP error (i.e., ENCOUNTERID is unjustifiably present here in FACILITY table if it is not also present in ENCOUNTER table)
 IUIp-4 = [lookup-iui, ENCOUNTER.ENCOUNTERID, denotes, healthcare-encounter]
-IUIt-4 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[occurs-in]|[BFO]|iui=[IUIp-4], iui=[IUIp-2]|[tr-2]
-D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-4]|I|CR|Null|
+IUIt-5 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[occurs-in]|[BFO]|iui=[IUIp-4], iui=[IUIp-2]|[tr-2]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-5]|I|CR|Null|
+IUIt-6 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[denotes]|[IAO]|iui=[IUIp-3], iui=[IUIp-2]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-6]|I|CR|Null|
 
 
 # SECTION for FACILITY_LOCATION
@@ -62,21 +66,21 @@ D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-4]|I|CR|Null|
 
 # Assignment templates, which begin by assigning template IUIs.
 # new-iui is instruction to create a new IUI
-IUIt-5 = [new-iui]
-IUIt-6 = [new-iui]
+IUIt-7 = [new-iui]
+IUIt-8 = [new-iui]
 # assign IUI to the geographic where the facility is located
 @IM FACILITY_LOCATION
-IUIp-5 = A|[IUIt-1]~[IUIp-1]|[timestamp-1]|[new-iui]  
+IUIp-5 = A|[IUIt-7]~[IUIp-1]|[timestamp-1]|[new-iui]  
 # assign IUI to the id of the geographic where the facility location
 @LV FACILITY_LOCATION
-IUIp-6 = A|[IUIt-2]~[IUIp-1]|[timestamp-1]|[new-iui]
+IUIp-6 = A|[IUIt-8]~[IUIp-1]|[timestamp-1]|[new-iui]
 
 # Instantiations for FACILITY_LOCATION
 
-IUIt-7 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-5]|[geographical-region]|[GEO]|[tr-1]
-D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-7]|I|CR|Null|
+IUIt-9 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-5]|[geographical-region]|[GEO]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-9]|I|CR|Null|
 
 # PtoP relations for FACILITY_LOCATION
 
-IUIt-8 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[located-in]|[RO]|iui=[IUIp-2], iui=[IUIp-5]|[tr-1]
-D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-8]|I|CR|Null|
+IUIt-10 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[located-in]|[RO]|iui=[IUIp-2], iui=[IUIp-5]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-10]|I|CR|Null|
