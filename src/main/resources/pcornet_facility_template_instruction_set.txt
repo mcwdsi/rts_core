@@ -1,0 +1,82 @@
+#FACILITY table (derived from ENCOUNTER table)
+# Note: PCORnet groups fields related to the facility in which the encounter occurred into the ENCOUNTER table. We
+# have split that table into two--one that includes the fields for the facility and one that includes all other fields
+# within the ENCOUNTER table
+
+#configuration / arguments input into the process
+#IUI of the database from which the source data derives
+IUIp-1 = $1             
+
+#ISO8601 timestamp to associate with time of IUI assignment               
+timestamp-1 = $2	     
+
+#IUI of the user running this process
+IUIp-16 = $3		   
+
+#ISO8601 timestamp to associate with time of template insertion  
+timestamp-2 = $4
+
+# ------
+# some temporal references we’ll need later
+# ------
+#interval over which the facility has been an instance of 'healthcare facility'
+tr-1 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
+#interval over which the encounter denoted by IUIp-4 occurs
+tr-2 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
+
+
+# SECTION for FACILITYID
+
+
+# Assignment templates, which begin by assigning template IUIs.
+# new-iui is instruction to create a new IUI
+IUIt-1 = [new-iui]
+IUIt-2 = [new-iui]
+# assign IUI to the facility that this encounter table row is about
+@IM FACILITYID
+IUIp-2 = A|[IUIt-1]~[IUIp-1]|[timestamp-1]|[new-iui]  
+# assign IUI to the id of the facility
+@LV FACILITYID
+IUIp-3 = A|[IUIt-2]~[IUIp-1]|[timestamp-1]|[new-iui]
+
+# for now, not storing D tuples' IUIs for later use
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-1]|I|CR|Null|   
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-2]|I|CR|Null|
+
+# Instantiations for FACILITYID
+
+IUIt-3 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[healthcare-facility]|[OMRSE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-3]|I|CR|Null|
+
+# PtoP relations for FACILITYID
+
+# lookup IUI for ENCOUNTERID that was assigned from encounter table.
+# If it's not there, then create it and register a UP error (i.e., ENCOUNTERID is unjustifiably present here in FACILITY table if it is not also present in ENCOUNTER table)
+IUIp-4 = [lookup-iui, ENCOUNTER.ENCOUNTERID, denotes, healthcare-encounter]
+IUIt-4 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[occurs-in]|[BFO]|iui=[IUIp-4], iui=[IUIp-2]|[tr-2]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-4]|I|CR|Null|
+
+
+# SECTION for FACILITY_LOCATION
+
+
+# Assignment templates, which begin by assigning template IUIs.
+# new-iui is instruction to create a new IUI
+IUIt-5 = [new-iui]
+IUIt-6 = [new-iui]
+# assign IUI to the geographic where the facility is located
+@IM FACILITY_LOCATION
+IUIp-5 = A|[IUIt-1]~[IUIp-1]|[timestamp-1]|[new-iui]  
+# assign IUI to the id of the geographic where the facility location
+@LV FACILITY_LOCATION
+IUIp-6 = A|[IUIt-2]~[IUIp-1]|[timestamp-1]|[new-iui]
+
+# Instantiations for FACILITY_LOCATION
+
+IUIt-7 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-5]|[geographical-region]|[GEO]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-7]|I|CR|Null|
+
+# PtoP relations for FACILITY_LOCATION
+
+IUIt-8 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[located-in]|[RO]|iui=[IUIp-2], iui=[IUIp-5]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-8]|I|CR|Null|
