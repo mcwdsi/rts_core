@@ -29,6 +29,7 @@ public class RtsIuiLookupInstruction extends RtsVariableAssignmentInstruction {
 	public RtsIuiLookupInstruction(RtsStore db, String varName, CommonDataModelField fieldValue, List<String> lookupSequence) {
 		super(varName);
 		this.cdmField = fieldValue;
+		System.out.println("this.cdmField=" +  this.cdmField.toString());
 		this.lookupSequence = new ArrayList<String>();
 		for (String s : lookupSequence)
 			this.lookupSequence.add(s.trim());

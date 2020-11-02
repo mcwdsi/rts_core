@@ -368,15 +368,14 @@ public class RtsTemplateInstructionListPseudoCompiler {
 		else if (lookup != null) {
 			System.out.println("Lookup IUI instruction: " + lookup);
 			String[] flds = lookup.split(Pattern.quote(","));
-			String tableFieldTxt = flds[1];
-			System.out.println("Table and field: " + tableFieldTxt);
-			String[] tableField = tableFieldTxt.split(Pattern.quote("."));
-			System.out.println("after split length is " + tableField.length + ", first entry is: "+ tableField[0]);
-			CommonDataModelField lookupField = cdm.getTableByName(tableField[0]).getFieldByName(tableField[1]);
+			CommonDataModelTable ct = cdm.getTableByName(this.tableName);
+			System.out.println("flds[1] = " + flds[1].trim());
+			CommonDataModelField cf = ct.getFieldByName(flds[1].trim());
+			System.out.println("cf = " + cf);
+			CommonDataModelField lookupField = cf;
 			ArrayList<String> lookupSequence = new ArrayList<String>();
-			lookupSequence.add(tableField[1]);
 			for (int i=2; i<flds.length; i++) {
-				lookupSequence.add(flds[i]);
+				lookupSequence.add(flds[i].trim());
 			}
 			//need to send the varName, the lookupField, the lookupSequence
 			//anything else?
