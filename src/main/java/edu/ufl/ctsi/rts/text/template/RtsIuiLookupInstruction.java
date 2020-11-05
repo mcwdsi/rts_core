@@ -159,14 +159,16 @@ public class RtsIuiLookupInstruction extends RtsVariableAssignmentInstruction {
 		URI relUri = getRelationshipUri(relHandle, variables);
 		ArrayList<ParticularReference> p = new ArrayList<ParticularReference>();
 		p.add(startIui);
-		System.out.println("checking " + startIui + " " + relHandle + " some instance of " + univHandle);
+		//System.out.println("checking " + startIui + " " + relHandle + " some instance of " + univHandle);
 	
 		TupleQuery ptopQuery = new TupleQuery();
 		ptopQuery.setRelationshipURI(relUri);
 		ptopQuery.addType(RtsTupleType.PTOPTUPLE);
 		ptopQuery.setP(p);
+		//System.out.println("executing query...");
 		Set<RtsTuple> ptopResult = db.runQuery(ptopQuery);
-		//System.out.println("PtoPResult size = " + ptopResult.size());
+		//System.out.println("done.");
+		System.out.println("PtoPResult size = " + ptopResult.size());
 		for (RtsTuple rt : ptopResult) {
 			PtoPTuple ptop = (PtoPTuple)rt;
 			List<ParticularReference> tupleP = ptop.getAllParticulars();
