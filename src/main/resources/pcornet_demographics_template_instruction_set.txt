@@ -15,7 +15,7 @@ IUIp-16 = $3
 timestamp-2 = $4	 
 
 #ISO8601 timestamp to associate with time by which DEMOGRAPHIC table existed in its entirety
-timestamp-3 = $5  
+timestamp-3 = $5   
 
 # SECTION FOR BIRTH DATE IN PCORnet CDM DEMOGRAPHIC TABLE
 

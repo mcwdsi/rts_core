@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.print.attribute.standard.PDLOverrideSupported;
+
 import edu.uams.dbmi.rts.ParticularReference;
 import edu.uams.dbmi.rts.iui.Iui;
 import edu.uams.dbmi.rts.persist.RtsStore;
@@ -55,7 +57,7 @@ public class RtsIuiLookupInstruction extends RtsVariableAssignmentInstruction {
 			// check that iupNext1 has a PtoU tuple with uui = next in sequence
 			// and so on until sequence is exhausted, the last iuipNextn is the IUI you want, so set the variable value to that IUI and add 
 			// the variable to variables.
-		Iterator<String> seq = lookupSequence.iterator();
+		
 		if (inst == null) initializeInst(variables);
 		
 		Iui valueIui = null;
@@ -64,14 +66,20 @@ public class RtsIuiLookupInstruction extends RtsVariableAssignmentInstruction {
 		String fieldEntry=fieldsAndSysVariables.get(cdmField.getFieldOrderInTable());
 		getPtoDe.setData(fieldEntry.getBytes());
 		Set<RtsTuple> pdeResult = db.runQuery(getPtoDe);
-		//System.out.println("result size: " + pdeResult.size());
+		System.out.println("result size: " + pdeResult.size());
+		/*if (pdeResult.size() == 0) {
+			getPtoDe.setData(fieldEntry.toLowerCase().getBytes());
+			pdeResult = db.runQuery(getPtoDe);
+		}*/
 		for (RtsTuple rt : pdeResult) {
+			Iterator<String> seq = lookupSequence.iterator();
 			//System.out.println("QUERY RESULT:\n\t" + rt);
 			PtoDETuple ptode = (PtoDETuple)rt;
 			ParticularReference pr = ptode.getReferent();
 			if (pr instanceof Iui) {
 				Iui currentIui = (Iui)pr;
 				String handle = seq.next();
+				System.out.println("currentIui=" + currentIui.toString());
 				if (checkInstantiationofUniversal(variables, handle, currentIui)) {
 					System.out.println("ID is of type: " + handle);
 					//Now from here get a pair of handles for relationship, universal from seq
@@ -84,7 +92,7 @@ public class RtsIuiLookupInstruction extends RtsVariableAssignmentInstruction {
 					}
 					valueIui = currentIui;
 				} else {
-					System.err.println("Referent of ID is not of ID type: " + handle);
+					System.err.println("Referent of ID=" + fieldEntry + " is not of ID type: " + handle);
 				}
 			}
 		}

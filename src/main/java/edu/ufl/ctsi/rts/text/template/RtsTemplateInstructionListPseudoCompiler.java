@@ -349,9 +349,12 @@ public class RtsTemplateInstructionListPseudoCompiler {
 				iuiVar.setValue(iui);
 				globalVariables.add(iuiVar);
 			} catch (IllegalArgumentException iae) {
-				RtsTemplateVariable<String> tsVar = new RtsTemplateVariable<String>(varName);
+				System.out.println("\t"  + globalArg);
+				RtsReassignValueInstruction inst = new RtsReassignValueInstruction(varName, globalArg);
+				currentInstructionList.addInstruction(inst);
+				/*RtsTemplateVariable<String> tsVar = new RtsTemplateVariable<String>(varName);
 				tsVar.setValue(globalArg);
-				globalVariables.add(tsVar);
+				globalVariables.add(tsVar);*/
 			}
 		}
 		

@@ -1,9 +1,4 @@
-IUIp-1=2E9D69DC-4ABA-4E99-B93C-30582825CE09
 tmax=26f1052b-311d-43b1-9abc-b4e2edd1b283
-timestamp-1=2018-09-30T18:58:30.000
-timestamp-2=2018-09-30T18:58:30.000
-timestamp-3=2019-07-31T12:00:00Z
-IUIp-16=49F0EA65-7E61-463C-ABD7-4FF0BC994852
 BFO=e7006ddd-3075-46db-bec2-fad5a5f0b513
 NCBI=d7a93fcb-72ca-4d89-a1ae-328f33138fbf
 PATO=1E14E355-F963-4B43-924D-812C321D3B34
@@ -74,3 +69,4 @@ healthcare-facility=http://purl.obolibrary.org/obo/OMRSE_00000102
 geographical_region=http://purl.obolibrary.org/obo/GEO_000000372
 located-in=http://purl.obolibrary.org/obo/RO_0001025
 GEO=6A81516D-1B5C-4EF5-8D6A-3E9FB9362E4E
+personal-name=http://purl.obolibrary.org/obo/IAO_0020015
