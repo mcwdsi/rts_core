@@ -494,6 +494,12 @@ public class RtsTupleFactory {
 		 *     3. Some other IUI that refers to some calendaring or other naming system for temporal
 		 *          regions.  Could be Hebrew calendar, Julian calendar, for example.
 		 */
+		if (contentFields.size()<3) {
+			System.err.println("Too few content fields: " + contentFields.size());
+			for (String s:contentFields) {
+				System.err.println("\t" + s);
+			}
+		}
 		String nsIuiTxt = contentFields.get(2);
 		Iui nsIui = Iui.createFromString(nsIuiTxt);	
 		

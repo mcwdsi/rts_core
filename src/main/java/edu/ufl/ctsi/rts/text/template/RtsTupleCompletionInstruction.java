@@ -117,7 +117,12 @@ public class RtsTupleCompletionInstruction extends RtsTemplateInstruction {
 				String command = refInfo[1].substring(1, refInfo[1].length()-1).trim();
 				//System.out.println(command);
 				
-				String varValue = variables.get(command).getValue().toString();
+				RtsTemplateVariable var = variables.get(command);
+				if (var==null) System.err.println("no variable value for " + command);
+				Object varVal = var.getValue();
+				if (varVal == null) System.err.println("variable for " + command + " has null value.");
+				
+				String varValue = varVal.toString();
 				String substitution = refInfo[0].trim() + "=" + varValue;
 				//System.out.println("Substitution = " + substitution);
 				contentBlock.add(substitution);
