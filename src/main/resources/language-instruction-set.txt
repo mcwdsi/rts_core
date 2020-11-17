@@ -6,6 +6,7 @@ IUIp-1 = $1
 
 # timestamp-1 - the time of all the assigning/asserting
 timestamp-1 = $2
+timestamp-2 = $2
 
 # tr-1 is the interval over which the language has existed
 tr-1 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be

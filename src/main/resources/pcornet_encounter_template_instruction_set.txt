@@ -54,7 +54,7 @@ D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-5]|I|CR|Null|
 
 # based on SOURCE field, lookup IUI of patient role for the encounter.  If there is no source field, then we assume patient just has one patient role total.
 # If it's not there then create it, and save it based on SOURCE.  If SOURCE not present, then we assume just one patient role per person
-IUIp-5 = [lookup-iui, PATID, pcornet-patient-id, denotes, human, bearer-of, patient-role]
+IUIp-5 = [lookup-iui, PATID, pcornet-patient-id, denotes, human, bearer-of, healthcare-patient-role]
 
 # lookup IUI for PROVIDERID that was assigned from demographic table.
 # If it's not there, then create it and register a UP error (i.e., PATID is unjustifiably present here in ENCOUNTER table if it is not also present in DEMOGRAPHIC table)

@@ -1,0 +1,118 @@
+# USPS 5 digit ZIP file 
+
+#configuration / arguments input into the process
+#IUI of the database from which the source data derives
+IUIp-1 = $1             
+
+#ISO8601 timestamp to associate with time of IUI assignment               
+timestamp-1 = $2	     
+
+#IUI of the user running this process
+IUIp-16 = $3		   
+
+#ISO8601 timestamp to associate with time of template insertion  
+timestamp-2 = $4	 
+
+#ISO8601 timestamp to associate with time by which ZIP file existed in its entirety
+timestamp-3 = $5  
+
+# IUI of file we are processing 
+IUIp-17 = $6
+
+#### ZIP code itself as identifier
+# temporal interval over which ZIP has existed
+tr-1 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
+
+# assign IUI to ZIP
+IUIt-1 = [new-iui]
+IUIp-2 = A|[IUIt-1]~[IUIp-1]|[timestamp-1]|[new-iui]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-1]|I|CR|Null|
+
+# ZIP is instance of ZIP
+IUIt-2 = U|[new-iui]~[IUIp-1]|[timestamp-1]|[instance-of]|[BFO]|[IUIp-2]|[zip-code]|[IAO]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-2]|I|CR|Null|
+
+# Store text of ZIP in PtoDE tuple
+IUIt-91 = [new-iui]
+E|[IUIt-91]~[IUIp-1]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-2]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%1
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-91]|I|CR|Null|
+
+#### Aggregate of postal delivery routes denoted by ZIP
+# we assume the aggregate and the ZIP that denotes it exist over same interval
+# assign IUI to aggregate of routes
+IUIt-3 = [new-iui]
+IUIp-3 = A|[IUIt-3]~[IUIp-1]|[timestamp-1]|[new-iui]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-3]|I|CR|Null|
+
+# aggregate is instance of aggregate of postal delivery routes
+IUIt-4 = U|[new-iui]~[IUIp-1]|[timestamp-1]|[instance-of]|[BFO]|[IUIp-3]|[postal-delivery-route]|[IAO]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-4]|I|CR|Null|
+
+# ZIP denotes aggregate of routes
+IUIt-5 = P|[new-iui]~[IUIp-1]|[timestamp-1]|[denotes]|[IAO]|iui=[IUIp-2], iui=[IUIp-3]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-5]|I|CR|Null|
+
+#### Aggregate of realizable entities the aggregate of routes is about
+# temporal interval over which aggregates exist
+tr-2 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
+
+# assign IUI to some aggregate of realizable entities
+IUIt-6 = [new-iui]
+IUIp-4 = A|[IUIt-6]~[IUIp-1]|[timestamp-1]|[new-iui]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-6]|I|CR|Null|
+
+# aggregate of realizables is instance of realizable entity
+IUIt-7 = U|[new-iui]~[IUIp-1]|[timestamp-1]|[instance-of]|[BFO]|[IUIp-4]|[realizable-entity]|[BFO]|[tr-2]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-7]|I|CR|Null|
+
+# aggregate of routes is about aggregate of realizables
+IUIt-8 = P|[new-iui]~[IUIp-1]|[timestamp-1]|[is-about]|[IAO]|iui=[IUIp-3], iui=[IUIp-4]|[tr-2]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-8]|I|CR|Null|
+
+### process of realizing aggregate of realizables
+# temporal interval onto which process projects
+tr-3 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
+
+# assign IUI to process
+IUIt-9 = [new-iui]
+IUIp-5 = A|[IUIt-9]~[IUIp-1]|[timestamp-1]|[new-iui]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-9]|I|CR|Null|
+
+# process is instance of planned process
+IUIt-10 = U|[new-iui]~[IUIp-1]|[timestamp-1]|[instance-of]|[BFO]|[IUIp-5]|[planned-process]|[BFO]|[tr-3]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-10]|I|CR|Null|
+
+# process realizes aggregate of realizables at its projection interval
+IUIt-11 = P|[new-iui]~[IUIp-1]|[timestamp-1]|[realizes]|[BFO]|iui=[IUIp-5], iui=[IUIp-4]|[tr-2]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|
+
+# process occupies tr-3
+IUIt-16 = P|[new-iui]~[IUIp-1]|[timestamp-1]|[occupies-temporal-region]|[BFO]|iui=[IUIp-5],tref=[tr-3]|[BFO]|[tr-3]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-16]|I|CR|Null|
+
+### geographical region in which process occurrs
+# temporal interval onto which process projects
+tr-4 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
+
+# assign IUI to region
+IUIt-12 = [new-iui]
+IUIp-6 = A|[IUIt-12]~[IUIp-1]|[timestamp-1]|[new-iui]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-12]|I|CR|Null|
+
+# region is instance of geographical region
+IUIt-14 = U|[new-iui]~[IUIp-1]|[timestamp-1]|[instance-of]|[BFO]|[IUIp-6]|[geographical-region]|[GEO]|[tr-4]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-14]|I|CR|Null|
+
+# process occurs in region
+IUIt-15 = P|[new-iui]~[IUIp-1]|[timestamp-1]|[occurs-in]|[BFO]|iui=[IUIp-5], iui=[IUIp-6]|[tr-4]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-15]|I|CR|Null|
+
+# ZIP is about -- but does not denote -- the region
+IUIt-16 = P|[new-iui]~[IUIp-1]|[timestamp-1]|[is-about]|[IAO]|iui=[IUIp-2], iui=[IUIp-6]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-16]|I|CR|Null|
+
+###############  INFORMATION SIDE
+
+# ZIP is member part of file from which the data came
+#IUIt-13 = P|[new-iui]~[IUIp-1]|[timestamp-1]|[bfo-part-of]|[RO]|iui=[IUIp-2], iui=[IUIp-17]|[tr-1]
+#D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-13]|I|CR|Null|

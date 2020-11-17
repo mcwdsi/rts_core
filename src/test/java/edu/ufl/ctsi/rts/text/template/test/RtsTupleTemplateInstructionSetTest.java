@@ -55,13 +55,17 @@ public class RtsTupleTemplateInstructionSetTest implements DataEventSubscriber {
 		DataEventTypeCounterSubscriber sub4 = new DataEventTypeCounterSubscriber(DataEventType.CV);
 		DataEventMessageBoard.subscribe(sub4, new DataEventFilter(sub4.getDataEventType()));
 		
-		FileReader fr;
-		CommonDataModel cdm = null;
-		CommonDataModelReader cdmReader;
+		FileReader fr1, fr2;
+		CommonDataModel cdm1 = null, cdm2 = null;
+		CommonDataModelReader cdmReader1, cdmReader2;
 		try {
-			fr = new FileReader("./src/main/resources/pcornet_cdm_50_parseable_tab_delimited_text.txt");
-			cdmReader = new CommonDataModelReader(fr);
-			cdm = cdmReader.read();
+			fr1 = new FileReader("./src/main/resources/pcornet_cdm_50_oneflorida_modified_parseable_tab_delimited_text.txt");
+			cdmReader1 = new CommonDataModelReader(fr1);
+			cdm1 = cdmReader1.read();
+			
+			fr2 = new FileReader("./src/main/resources/usps_zip5_cdm_specification.txt");
+			cdmReader2 = new CommonDataModelReader(fr2);
+			cdm2 = cdmReader2.read();
 		} catch (FileNotFoundException e2) {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
@@ -95,24 +99,32 @@ public class RtsTupleTemplateInstructionSetTest implements DataEventSubscriber {
 		
 		DemoFileStore dfs = new DemoFileStore(fdir);
 		
+		referentTrackingEtlRecords("./src/main/resources/language-instruction-set.txt", 
+				"./src/main/resources/iso-639-language-individuals-to-process.txt", dfs,
+				"./src/test/resources//test-data-events-generated-language.out", globals, null, null, "\t");
+		
+		referentTrackingEtlRecords("./src/main/resources/usps-zip-file-instruction-set.txt", 
+				"./src/main/resources/dummy-zip-codes.txt", dfs,
+				"./src/test/resources//test-data-events-generated.out", globals, cdm2, "zipcode", ",");
 		
 		referentTrackingEtlRecords("./src/main/resources/pcornet_demographics_template_instruction_set.txt", 
 				"./src/main/resources/dummy-demographics-records.txt", dfs,
-				"./src/test/resources//test-data-events-generated.out", globals, cdm, "DEMOGRAPHIC", ",");
+				"./src/test/resources//test-data-events-generated.out", globals, cdm1, "DEMOGRAPHIC", ",");
 		
 		referentTrackingEtlRecords("./src/main/resources/pcornet_provider_template_instruction_set.txt", 
 				"./src/main/resources/dummy-provider-records.txt", dfs,
-				"./src/test/resources//test-data-events-generated-provider.out", globals, cdm, "PROVIDER", ",");
-		
+				"./src/test/resources//test-data-events-generated-provider.out", globals, cdm1, "PROVIDER", ",");
 		/*
-		referentTrackingEtlRecords("./src/main/resources/language-instruction-set.txt", 
-				"./src/main/resources/iso-639-language-individuals-to-process.txt", "./src/test/resources//test-tuple-generation-language.out",
-				"./src/test/resources//test-data-events-generated-language.out", globals, null, null, "\t");
+
+		*/
+		referentTrackingEtlRecords("./src/main/resources/pcornet_facility_template_instruction_set.txt", 
+				"./src/main/resources/dummy-facility-records.txt", dfs,
+				"./src/test/resources//test-data-events-generated-language.out", globals, cdm1, "FACILITY", "\t");
 		
 		referentTrackingEtlRecords("./src/main/resources/pcornet_encounter_template_instruction_set.txt", 
 				"./src/main/resources/dummy-encounter-records.txt", dfs,
-				"./src/test/resources//test-data-events-generated-language.out", globals, cdm, "ENCOUNTER", "\t");
-		*/
+				"./src/test/resources//test-data-events-generated-language.out", globals, cdm1, "ENCOUNTER", "\t");
+		
 		
 		CommonDataModel pBasic = new CommonDataModel("basic person. Just name.");
 		CommonDataModelTable pBasicTable = new CommonDataModelTable(pBasic, "person");
