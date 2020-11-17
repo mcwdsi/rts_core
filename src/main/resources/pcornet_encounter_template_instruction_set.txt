@@ -61,3 +61,8 @@ IUIp-5 = [lookup-iui, PATID, pcornet-patient-id, denotes, human, bearer-of, heal
 IUIp-6 = [lookup-iui, PROVIDERID, pcornet-provider-id, denotes, human]
 IUIt-7 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[participates-in]|[RO]|iui=[IUIp-6], iui=[IUIp-2]|[tr-3]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-7]|I|CR|Null|
+
+# lookup IUI for FACILITYID that was assigned from facility pseudotable
+IUIp-7 = [lookup-iui, FACILITYID, pcornet-facility-id, denotes, healthcare-facility]
+
+

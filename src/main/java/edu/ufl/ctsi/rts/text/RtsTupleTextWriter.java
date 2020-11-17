@@ -263,9 +263,6 @@ public class RtsTupleTextWriter {
 		 	we really only need to escape String data.  So other types of encoded Strings will also 
 		 	require escaping
 		 */
-		System.out.println(Charset.defaultCharset());
-		System.out.println(Charset.defaultCharset().name());
-		System.out.println(Charset.defaultCharset().displayName());
 		String data = new String(rtte.getData());
 		String dataForWriting = escapeData(data);
 		w.write(dataForWriting);

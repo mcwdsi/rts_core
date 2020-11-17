@@ -274,7 +274,7 @@ D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-152]|I|CR|Null|
 IUIt-172 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-102]|[date]|[APOLLO_SV]|[tr-101]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-172]|I|CR|Null|  
 #how to handle E template when field is blank?  Not put anything?  Declare it "null" somehow?  Also, we can trigger 
-#  logic when field is equal to value, but langauge doesn't allow us to condition on field not equal to null or <> ""
+#  logic when field is equal to value, but language doesn't allow us to condition on field not equal to null or <> ""
 if (%2 != "") 
 	IUIt-192 = [new-iui]
 	E|[IUIt-192]~[IUIp-1]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-102]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%2

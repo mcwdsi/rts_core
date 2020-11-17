@@ -48,11 +48,15 @@ IUIt-4 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-3]|[pcorne
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-3]|I|CR|Null|
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-4]|I|CR|Null|
 
+# Store the value of the FACILITYID in PtoDE tuple
+IUIt-5 = [new-iui]
+E|[IUIt-5]~[IUIp-1]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-3]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%2
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-5]|I|CR|Null|
+
 # PtoP relationship for FACILITYID
 # The facility identifier denotes the facility
 IUIt-6 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[denotes]|[IAO]|iui=[IUIp-3], iui=[IUIp-2]|[tr-1]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-6]|I|CR|Null|
-
 
 # SECTION for FACILITY_LOCATION
 
@@ -66,3 +70,219 @@ IUIp-5 = [lookup-iui, FACILITY_LOCATION, zip-code, is-about, geographical-region
 
 IUIt-10 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[located-in]|[RO]|iui=[IUIp-2], iui=[IUIp-5]|[tr-1]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-10]|I|CR|Null|
+
+# SECTION for FACILITY_TYPE.  For now we just handle the unique values of this field used in the UF Health 10K patient subset.
+
+if (%3 == "AMBULATORY_CARE_SITE_OTHER")
+IUIt-11 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[outpatient-clinic-facility]|[OMRSE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|
+@CV FACILITY_TYPE
+
+else if (%3 == "AMBULATORY_SURGERY_CENTER")
+IUIt-11 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[ambulatory-surgery-facility]|[OMRSE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|
+@CV FACILITY_TYPE
+
+#DIALYSIS_UNIT_HOSPITAL
+else if (%3 == "EMERGENCY_DEPARTMENT_HOSPITAL")
+IUIt-11 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[ed-facility]|[OMRSE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|
+@CV FACILITY_TYPE
+
+else if (%3 == "FREE_STANDING_AMBULATORY_SURGERY_FACILITY")
+IUIt-11 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[ambulatory-surgery-facility]|[OMRSE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|
+@CV FACILITY_TYPE
+
+#FREE_STANDING_LABORATORY_FACILITY
+
+else if (%3 == "HOSPITAL_AMBULATORY_SURGERY_FACILITY")
+IUIt-11 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[ambulatory-surgery-facility]|[OMRSE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|
+@CV FACILITY_TYPE
+
+else if (%3 == "HOSPITAL_BASED_OUTPATIENT_CLINIC_OR_DEPARTMENT_OTHER")
+IUIt-11 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[outpatient-clinic-facility]|[OMRSE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|
+@CV FACILITY_TYPE
+
+else if (%3 == "HOSPITAL_BIRTHING_CENTER")
+IUIt-11 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[hospital-facility]|[OMRSE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|
+@CV FACILITY_TYPE
+
+else if (%3 == "HOSPITAL_CHILDRENS")
+IUIt-11 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[hospital-facility]|[OMRSE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|
+@CV FACILITY_TYPE
+
+else if (%3 == "HOSPITAL_COMMUNITY")
+IUIt-11 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[hospital-facility]|[OMRSE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|
+@CV FACILITY_TYPE
+
+else if (%3 == "HOSPITAL_LONG_TERM_CARE")
+IUIt-11 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[hospital-facility]|[OMRSE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|
+@CV FACILITY_TYPE
+
+else if (%3 == "HOSPITAL_OUTPATIENT_ALLERGY_CLINIC")
+IUIt-11 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[outpatient-clinic-facility]|[OMRSE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|
+@CV FACILITY_TYPE
+
+else if (%3 == "HOSPITAL_OUTPATIENT_DENTAL_CLINIC")
+IUIt-11 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[outpatient-clinic-facility]|[OMRSE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|
+@CV FACILITY_TYPE
+
+else if (%3 == "HOSPITAL_OUTPATIENT_DERMATOLOGY_CLINIC")
+IUIt-11 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[outpatient-clinic-facility]|[OMRSE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|
+@CV FACILITY_TYPE
+
+else if (%3 == "HOSPITAL_OUTPATIENT_ENDOCRINOLOGY_CLINIC")
+IUIt-11 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[outpatient-clinic-facility]|[OMRSE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|
+@CV FACILITY_TYPE
+
+else if (%3 == "HOSPITAL_OUTPATIENT_FAMILY_MEDICINE_CLINIC")
+IUIt-11 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[outpatient-clinic-facility]|[OMRSE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|
+@CV FACILITY_TYPE
+
+else if (%3 == "HOSPITAL_OUTPATIENT_GASTROENTEROLOGY_CLINIC")
+IUIt-11 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[outpatient-clinic-facility]|[OMRSE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|
+@CV FACILITY_TYPE
+
+else if (%3 == "HOSPITAL_OUTPATIENT_GENERAL_SURGERY_CLINIC")
+IUIt-11 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[outpatient-clinic-facility]|[OMRSE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|
+@CV FACILITY_TYPE
+
+else if (%3 == "HOSPITAL_OUTPATIENT_GERIATRIC_HEALTH_CENTER")
+IUIt-11 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[outpatient-clinic-facility]|[OMRSE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|
+@CV FACILITY_TYPE
+
+else if (%3 == "HOSPITAL_OUTPATIENT_GYNECOLOGY_CLINIC")
+IUIt-11 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[outpatient-clinic-facility]|[OMRSE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|
+@CV FACILITY_TYPE
+
+else if (%3 == "HOSPITAL_OUTPATIENT_HEMATOLOGY_CLINIC")
+IUIt-11 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[outpatient-clinic-facility]|[OMRSE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|
+@CV FACILITY_TYPE
+
+else if (%3 == "HOSPITAL_OUTPATIENT_INFECTIOUS_DISEASE_CLINIC")
+IUIt-11 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[outpatient-clinic-facility]|[OMRSE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|
+@CV FACILITY_TYPE
+
+else if (%3 == "HOSPITAL_OUTPATIENT_MENTAL_HEALTH_CENTER")
+IUIt-11 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[outpatient-clinic-facility]|[OMRSE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|
+@CV FACILITY_TYPE
+
+else if (%3 == "HOSPITAL_OUTPATIENT_NEUROLOGY_CLINIC")
+IUIt-11 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[outpatient-clinic-facility]|[OMRSE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|
+@CV FACILITY_TYPE
+
+else if (%3 == "HOSPITAL_OUTPATIENT_OBSTETRICAL_CLINIC")
+IUIt-11 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[outpatient-clinic-facility]|[OMRSE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|
+@CV FACILITY_TYPE
+
+else if (%3 == "HOSPITAL_OUTPATIENT_ONCOLOGY_CLINIC")
+IUIt-11 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[outpatient-clinic-facility]|[OMRSE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|
+@CV FACILITY_TYPE
+
+else if (%3 == "HOSPITAL_OUTPATIENT_OPHTHALMOLOGY_CLINIC")
+IUIt-11 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[outpatient-clinic-facility]|[OMRSE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|
+@CV FACILITY_TYPE
+
+else if (%3 == "HOSPITAL_OUTPATIENT_ORTHOPEDICS_CLINIC")
+IUIt-11 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[outpatient-clinic-facility]|[OMRSE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|
+@CV FACILITY_TYPE
+
+else if (%3 == "HOSPITAL_OUTPATIENT_PAIN_CLINIC")
+IUIt-11 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[outpatient-clinic-facility]|[OMRSE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|
+@CV FACILITY_TYPE
+
+else if (%3 == "HOSPITAL_OUTPATIENT_PEDIATRIC_CLINIC")
+IUIt-11 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[outpatient-clinic-facility]|[OMRSE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|
+@CV FACILITY_TYPE
+
+else if (%3 == "HOSPITAL_OUTPATIENT_PERIPHERAL_VASCULAR_CLINIC")
+IUIt-11 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[outpatient-clinic-facility]|[OMRSE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|
+@CV FACILITY_TYPE
+
+else if (%3 == "HOSPITAL_OUTPATIENT_REHABILITATION_CLINIC")
+IUIt-11 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[outpatient-clinic-facility]|[OMRSE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|
+@CV FACILITY_TYPE
+
+else if (%3 == "HOSPITAL_OUTPATIENT_RESPIRATORY_DISEASE_CLINIC")
+IUIt-11 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[outpatient-clinic-facility]|[OMRSE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|
+@CV FACILITY_TYPE
+
+else if (%3 == "HOSPITAL_OUTPATIENT_RHEUMATOLOGY_CLINIC")
+IUIt-11 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[outpatient-clinic-facility]|[OMRSE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|
+@CV FACILITY_TYPE
+
+else if (%3 == "HOSPITAL_OUTPATIENT_UROLOGY_CLINIC")
+IUIt-11 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[outpatient-clinic-facility]|[OMRSE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|
+@CV FACILITY_TYPE
+
+else if (%3 == "HOSPITAL_PSYCHIATRIC")
+IUIt-11 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[hospital-facility]|[OMRSE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|
+@CV FACILITY_TYPE
+
+#HOSPITAL_RADIOLOGY_FACILITY
+
+else if (%3 == "HOSPITAL_REHABILITATION")
+IUIt-11 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[hospital-facility]|[OMRSE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|
+@CV FACILITY_TYPE
+
+else if (%3 == "HOSPITAL_TRAUMA_CENTER")
+IUIt-11 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[hospital-facility]|[OMRSE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|
+@CV FACILITY_TYPE
+
+else if (%3 == "NI")
+@UA FACILITY_TYPE
+
+else if (%3 == "NULL")
+@UA FACILITY_TYPE
+
+else if (%3 == "OT")
+@UA FACILITY_TYPE
+
+else if (%3 == "PRIVATE_PHYSICIANS_GROUP_OFFICE")
+IUIt-11 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[outpatient-clinic-facility]|[OMRSE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|
+@CV FACILITY_TYPE
+
+else if (%3 == "SKILLED_NURSING_FACILITY")
+IUIt-11 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[skilled-nursing-facility]|[OMRSE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|
+@CV FACILITY_TYPE
+
+else if (%3 == "UN")
+@UA FACILITY_TYPE
+
+endif

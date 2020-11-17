@@ -374,8 +374,8 @@ public class RtsTemplateInstructionListPseudoCompiler {
 			CommonDataModelTable ct = cdm.getTableByName(this.tableName);
 			System.out.println("flds[1] = " + flds[1].trim());
 			CommonDataModelField cf = ct.getFieldByName(flds[1].trim());
-			System.out.println("ct = " + ct);
-			System.out.println("cf = " + cf);
+			//System.out.println("ct = " + ct);
+			//System.out.println("cf = " + cf);
 			CommonDataModelField lookupField = cf;
 			ArrayList<String> lookupSequence = new ArrayList<String>();
 			for (int i=2; i<flds.length; i++) {
