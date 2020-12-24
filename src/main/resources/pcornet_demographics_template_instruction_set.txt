@@ -15,7 +15,7 @@ IUIp-16 = $3
 timestamp-2 = $4	 
 
 #ISO8601 timestamp to associate with time by which DEMOGRAPHIC table existed in its entirety
-timestamp-3 = $5   
+timestamp-3 = $5
 
 # SECTION FOR BIRTH DATE IN PCORnet CDM DEMOGRAPHIC TABLE
 
@@ -23,15 +23,23 @@ timestamp-3 = $5
 # new-iui is instruction to create a new IUI
 IUIt-1 = [new-iui]
 IUIt-2 = [new-iui]
+IUIt-30 = [new-iui]
 # assign IUI to the person that this demographic row is about
 @IM PATID
 @LV PATID
-IUIp-2 = A|[IUIt-1]~[IUIp-1]|[timestamp-1]|[new-iui]  
+IUIp-2 = A|[IUIt-1]~[IUIp-16]|[timestamp-1]|[new-iui]  
 # assign IUI to the birth of the person
-IUIp-3 = A|[IUIt-2]~[IUIp-1]|[timestamp-1]|[new-iui]
+IUIp-3 = A|[IUIt-2]~[IUIp-16]|[timestamp-1]|[new-iui]
+# assign IUI to the patient role. In the future, we'll have to flex it based on the SOURCE field, creating a different patient role per SOURCE.
+#   Of course, for patients with a SOURCE of LNK, we'll have to defer to the linkage table, creating one patient role per source.  Then we'll
+#   likely have to extend the lookup to go off PATID and SOURCE when retrieving the patient role when processing ENCOUNTER table.
+#   But for moonshine aim 4 for now, we're just using all UFH patients, so SOURCE is implied.
+@IM PATID
+IUIp-10 = A|[IUIt-30]~[IUIp-16]|[timestamp-1]|[new-iui]
 # for now, not storing D tuple’s IUI for later use
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-1]|I|CR|Null|   
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-2]|I|CR|Null|
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-30]|I|CR|Null|
 
 #some temporal references we’ll need later
 #interval over which person has been instance of human being
@@ -42,24 +50,39 @@ tr-2 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
 T~[timestamp-2]|[temporal-instant]|d4af5c9a-47ba-4bf4-9bae-f13a8ed6455e
 #temporal instant at which person was born.  
 tr-4 = T~[new-iui]|[temporal-instant]|d4af5c9a-47ba-4bf4-9bae-f13a8ed6455e
+#temporal interval over which the patient role has existed
+tr-30 = T~[new-iui]|[temporal-interval]|d4af5c9a-47ba-4bf4-9bae-f13a8ed6455e
 
 # person is an instance of human being
-IUIt-4 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[human]|[NCBI]|[tr-1]
+IUIt-4 = U|[new-iui]~[IUIp-16]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[human]|[NCBI]|[tr-1]
 # person's birth is an instance of birth
-IUIt-5 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-3]|[birth]|[UBERON]|[tmax]
-
+IUIt-5 = U|[new-iui]~[IUIp-16]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-3]|[birth]|[UBERON]|[tr-4]
+# patient role is an instance of patient role
+IUIt-31 = U|[new-iui]~[IUIp-16]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-10]|[healthcare-patient-role]|[OMRSE]|[tr-30]
 IUIt-7= [new-iui]
 IUIt-9 = [new-iui]
 IUIt-10 = [new-iui]
+IUIt-32 = [new-iui]
+IUIt-33 = [new-iui]
 
 # tr-5 is day of birth.  We'll assert in subsequent PtoP templates that the instant of birth (tr-4) is during the day of birth (tr-5)
 tr-5 = T~%2|[temporal-interval]|d4af5c9a-47ba-4bf4-9bae-f13a8ed6455e
 # person is participant in his birth
-P|[IUIt-7]~[IUIp-1]|[timestamp-2]|[actively-participates-in]|[RO]|iui=[IUIp-2], iui=[IUIp-3]|[tr-4]
+P|[IUIt-7]~[IUIp-16]|[timestamp-2]|[actively-participates-in]|[RO]|iui=[IUIp-2], iui=[IUIp-3]|[tr-4]
 # the birth occupies a temporal instant (tr-4)
-P|[IUIt-9]~[IUIp-1]|[timestamp-2]|[occupies-temporal-region]|[BFO]|iui=[IUIp-3], tref=[tr-4]|[tmax]
+P|[IUIt-9]~[IUIp-16]|[timestamp-2]|[occupies-temporal-region]|[BFO]|iui=[IUIp-3], tref=[tr-4]|[tr-4]
 # the birth is during the day of birth
-P|[IUIt-10]~[IUIp-1]|[timestamp-2]|[during]|[RO]|tref=[tr-4], tref=[tr-5]|[tmax]
+P|[IUIt-10]~[IUIp-16]|[timestamp-2]|[during]|[RO]|tref=[tr-4], tref=[tr-5]|[tr-4]
+# the person is the bearer of his/her patient role
+P|[IUIt-32]~[IUIp-16]|[timestamp-2]|[bearer-of]|[BFO]|iui=[IUIp-2], iui=[IUIp-10]|[tr-30]
+# the time of the person's existence starts-before the time of the patient role
+P|[IUIt-33]~[IUIp-16]|[timestamp-2]|[starts-before]|[RO]|tref=[tr-1], tref=[tr-30]|[tr-30]
+
+# assign IUI to person's lifecycle.  For possible use in other tables.  Instantiate it and relate it.
+IUIt-34 = [new-iui]
+IUIp-6 = A|[IUIt-34]~[IUIp-16]|[timestamp-1]|[new-iui]
+IUIt-35 = U|[new-iui]~[IUIp-16]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-6]|[life-cycle]|[UBERON]|[tr-1]
+IUIt-36 = P|[new-iui]~[IUIp-16]|[timestamp-2]|[actively-participates-in]|[RO]|iui=[IUIp-2], iui=[IUIp-6]|[tr-1]
 
 # metadata tuples 
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-4]|I|CR|Null|
@@ -67,45 +90,48 @@ D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-5]|I|CR|Null|
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-7]|I|CR|Null|
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-9]|I|CR|Null|
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-10]|I|CR|Null|
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-31]|I|CR|Null|
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-32]|I|CR|Null|
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-33]|I|CR|Null|
 
 # SECTION FOR SEX IN PCORnet CDM DEMOGRAPHIC TABLE
 
 if (%4 =="M") 
 	IUIt-3 = [new-iui]
-	IUIp-4 = A|[IUIt-3]~[IUIp-1]|[timestamp-1]|[new-iui]
+	IUIp-4 = A|[IUIt-3]~[IUIp-16]|[timestamp-1]|[new-iui]
 	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-3]|I|CR|Null|
 	IUIt-6 = [new-iui]
-	U|[IUIt-6]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-4]|[male-sex]|[PATO]|[tr-2]
+	U|[IUIt-6]~[IUIp-16]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-4]|[male-sex]|[PATO]|[tr-2]
 	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-6]|I|CR|Null|
 @CV SEX
 
 else if (%4 == "F")
 	IUIt-3 = [new-iui]
-	IUIp-4 = A|[IUIt-3]~[IUIp-1]|[timestamp-1]|[new-iui]
+	IUIp-4 = A|[IUIt-3]~[IUIp-16]|[timestamp-1]|[new-iui]
 	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-3]|I|CR|Null|
 	IUIt-6 = [new-iui]
-	U|[IUIt-6]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-4]|[female-sex]|[PATO]|[tr-2]
+	U|[IUIt-6]~[IUIp-16]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-4]|[female-sex]|[PATO]|[tr-2]
 	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-6]|I|CR|Null|
 @CV SEX
 
 else if (%4=="A")
 	IUIt-3 = [new-iui]
-	IUIp-4 = A|[IUIt-3]~[IUIp-1]|[timestamp-1]|[new-iui]
+	IUIp-4 = A|[IUIt-3]~[IUIp-16]|[timestamp-1]|[new-iui]
 	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-3]|I|CR|Null|
 	IUIt-6 = [new-iui]
-	U|[IUIt-6]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-4]|[intersex]|[PATO]|[tr-2]
+	U|[IUIt-6]~[IUIp-16]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-4]|[intersex]|[PATO]|[tr-2]
 	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-6]|I|CR|Null|
 @CV SEX
 
 else if (%4 == "OT") 
 	IUIt-3 = [new-iui]
-	IUIp-4 = A|[IUIt-3]~[IUIp-1]|[timestamp-1]|[new-iui]
+	IUIp-4 = A|[IUIt-3]~[IUIp-16]|[timestamp-1]|[new-iui]
 	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-3]|I|CR|Null|
 	IUIt-6 = [new-iui]
-	U|[IUIt-6]~[IUIp-1]|[timestamp-2]|<-!-http://purl.obolibrary.org/obo/OBO_REL#_instance_of>|[BFO]|[IUIp-4]|[male-sex]|[PATO]|[tr-2]
+	U|[IUIt-6]~[IUIp-16]|[timestamp-2]|<-!-http://purl.obolibrary.org/obo/OBO_REL#_instance_of>|[BFO]|[IUIp-4]|[male-sex]|[PATO]|[tr-2]
 	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-6]|I|CR|Null|
 	IUIt-17 = [new-iui]
-	U|[IUIt-17]~[IUIp-1]|[timestamp-2]|<-!-http://purl.obolibrary.org/obo/OBO_REL#_instance_of>|[BFO]|[IUIp-4]|[female-sex]|[PATO]|[tr-2]
+	U|[IUIt-17]~[IUIp-16]|[timestamp-2]|<-!-http://purl.obolibrary.org/obo/OBO_REL#_instance_of>|[BFO]|[IUIp-4]|[female-sex]|[PATO]|[tr-2]
 	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-17]|I|CR|Null|
 @CV SEX
 @UA SEX
@@ -122,7 +148,7 @@ endif
 
 IUIt-8 = [new-iui]
 # person is bearer of his sex quality
-P|[IUIt-8]~[IUIp-1]|[timestamp-2]|[bearer-of]|[RO]|iui=[IUIp-2], iui=[IUIp-4]|[tr-2]
+P|[IUIt-8]~[IUIp-16]|[timestamp-2]|[bearer-of]|[RO]|iui=[IUIp-2], iui=[IUIp-4]|[tr-2]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-8]|I|CR|Null|
 
 
@@ -130,13 +156,13 @@ D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-8]|I|CR|Null|
 
 if (%7=="Y")
 	IUIt-15 = [new-iui]
-	P|[IUIt-15]~[IUIp-1]|[timestamp-2]|[member-of]|[RO]|iui=[IUIp-2], iui=[HISPANIC]|[tr-4]
+	P|[IUIt-15]~[IUIp-16]|[timestamp-2]|[member-of]|[RO]|iui=[IUIp-2], iui=[HISPANIC]|[tr-4]
 	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-15]|I|CR|Null|
 @CV HISPANIC  
 
 else if (%7=="N")
 	IUIt-15 = [new-iui]
-	P|[IUIt-15]~[IUIp-1]|[timestamp-2]|[!member-of]|[RO]|iui=[IUIp-2], iui=[HISPANIC]|[tr-4]
+	P|[IUIt-15]~[IUIp-16]|[timestamp-2]|[!member-of]|[RO]|iui=[IUIp-2], iui=[HISPANIC]|[tr-4]
 	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-15]|I|CR|Null|
 @CV HISPANIC
 endif
@@ -145,31 +171,31 @@ endif
 
 if (%8=="01")
 	IUIt-16 = [new-iui]
-	P|[IUIt-16]~[IUIp-1]|[timestamp-2]|[member-of]|[RO]|iui=[IUIp-2], iui=[AMERICAN_INDIAN_BY_ANCESTRY]|[tr-4]
+	P|[IUIt-16]~[IUIp-16]|[timestamp-2]|[member-of]|[RO]|iui=[IUIp-2], iui=[AMERICAN_INDIAN_BY_ANCESTRY]|[tr-4]
 	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-16]|I|CR|Null|
 @CV RACE  
 
 else if (%8=="02")
 	IUIt-16 = [new-iui]
-	P|[IUIt-16]~[IUIp-1]|[timestamp-2]|[member-of]|[RO]|iui=[IUIp-2], iui=[ASIAN_BY_ANCESTRY]|[tr-4]
+	P|[IUIt-16]~[IUIp-16]|[timestamp-2]|[member-of]|[RO]|iui=[IUIp-2], iui=[ASIAN_BY_ANCESTRY]|[tr-4]
 	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-16]|I|CR|Null|
 @CV RACE
 
 else if (%8=="03")
 	IUIt-16 = [new-iui]
-	P|[IUIt-16]~[IUIp-1]|[timestamp-2]|[member-of]|[RO]|iui=[IUIp-2], iui=[BLACK_BY_ANCESTRY]|[tr-4]
+	P|[IUIt-16]~[IUIp-16]|[timestamp-2]|[member-of]|[RO]|iui=[IUIp-2], iui=[BLACK_BY_ANCESTRY]|[tr-4]
 	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-16]|I|CR|Null|
 @CV RACE  
 
 else if (%8=="04")
 	IUIt-16 = [new-iui]
-	P|[IUIt-16]~[IUIp-1]|[timestamp-2]|[member-of]|[RO]|iui=[IUIp-2], iui=[HAWAIAN_BY_ANCESTRY]|[tr-4]
+	P|[IUIt-16]~[IUIp-16]|[timestamp-2]|[member-of]|[RO]|iui=[IUIp-2], iui=[HAWAIAN_BY_ANCESTRY]|[tr-4]
 	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-16]|I|CR|Null|
 @CV RACE  
 
 else if (%8=="05")
 	IUIt-16 = [new-iui]
-	P|[IUIt-16]~[IUIp-1]|[timestamp-2]|[member-of]|[RO]|iui=[IUIp-2], iui=[WHITE_BY_ANCESTRY]|[tr-4]
+	P|[IUIt-16]~[IUIp-16]|[timestamp-2]|[member-of]|[RO]|iui=[IUIp-2], iui=[WHITE_BY_ANCESTRY]|[tr-4]
 	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-16]|I|CR|Null|
 @CV RACE  
 
@@ -201,23 +227,23 @@ else if (%8 == "OT")
 # @UA RACE
 @CV RACE
 	IUIt-16 = [new-iui]
-	P|[IUIt-16]~[IUIp-1]|[timestamp-2]|[!member-of]|[RO]|iui=[IUIp-2], iui=[AMERICAN_INDIAN_BY_ANCESTRY]|[tr-4]
+	P|[IUIt-16]~[IUIp-16]|[timestamp-2]|[!member-of]|[RO]|iui=[IUIp-2], iui=[AMERICAN_INDIAN_BY_ANCESTRY]|[tr-4]
 	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-16]|I|CR|Null|
 
 	IUIt-71 = [new-iui]
-	P|[IUIt-71]~[IUIp-1]|[timestamp-2]|[!member-of]|[RO]|iui=[IUIp-2], iui=[ASIAN_BY_ANCESTRY]|[tr-4]
+	P|[IUIt-71]~[IUIp-16]|[timestamp-2]|[!member-of]|[RO]|iui=[IUIp-2], iui=[ASIAN_BY_ANCESTRY]|[tr-4]
 	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-71]|I|CR|Null|
 	
 	IUIt-18 = [new-iui]
-	P|[IUIt-18]~[IUIp-1]|[timestamp-2]|[!member-of]|[RO]|iui=[IUIp-2], iui=[BLACK_BY_ANCESTRY]|[tr-4]
+	P|[IUIt-18]~[IUIp-16]|[timestamp-2]|[!member-of]|[RO]|iui=[IUIp-2], iui=[BLACK_BY_ANCESTRY]|[tr-4]
 	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-18]|I|CR|Null|
 	
 	IUIt-19 = [new-iui]
-	P|[IUIt-19]~[IUIp-1]|[timestamp-2]|[!member-of]|[RO]|iui=[IUIp-2], iui=[HAWAIAN_BY_ANCESTRY]|[tr-4]
+	P|[IUIt-19]~[IUIp-16]|[timestamp-2]|[!member-of]|[RO]|iui=[IUIp-2], iui=[HAWAIAN_BY_ANCESTRY]|[tr-4]
 	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-19]|I|CR|Null|
 	
 	IUIt-20 = [new-iui]
-	P|[IUIt-20]~[IUIp-1]|[timestamp-2]|[!member-of]|[RO]|iui=[IUIp-2], iui=[WHITE_BY_ANCESTRY]|[tr-4]
+	P|[IUIt-20]~[IUIp-16]|[timestamp-2]|[!member-of]|[RO]|iui=[IUIp-2], iui=[WHITE_BY_ANCESTRY]|[tr-4]
 	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-20]|I|CR|Null|
 
 else
@@ -227,6 +253,50 @@ else
 
 endif
 
+## SECTION FOR PATIENT PREFERRED LANGUAGE 'SPOKEN' (scare quotes)
+## 
+# Assign IUI to person's linguistic competence for their preferred language
+IUIt-1000 = [new-iui]
+IUIp-1000 = A|[IUIt-1000]~[IUIp-16]|[timestamp-1]|[new-iui]
+@IM PAT_PREF_LANGUAGE_SPOKEN
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-1000]|I|CR|Null|
+# temporal region over which lingustic competence has existed
+tr-1000 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
+# Assert that it's an instance of linguistic competence
+IUIt-1001 = U|[new-iui]~[IUIp-16]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-1000]|[linguistic-competence]|[OMRSE]|[tr-1000]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-1001]|I|CR|Null|
+# Assert that person bearer-of their linguistic competence
+IUIt-1002 = P|[new-iui]~[IUIp-16]|[timestamp-2]|[bearer-of]|[BFO]|iui=[IUIp-2], iui=[IUIp-1000]|[tr-1000]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-1002]|I|CR|Null|
+
+# it's not a required field so we make sure it's not empty
+if (%10 == "NULL")
+@DV PAT_PREF_LANGUAGE_SPOKEN
+@UA PAT_PREF_LANGUAGE_SPOKEN
+
+else if (%10 == "UN")
+@UA PAT_PREF_LANGUAGE_SPOKEN
+
+else if (%10 == "NI")
+@UA PAT_PREF_LANGUAGE_SPOKEN
+
+else if (%10 == "OT")
+@UA PAT_PREF_LANGUAGE_SPOKEN
+
+else if (%10 != "")
+	IUIp-20 = [lookup-iui, PAT_PREF_LANGUAGE_SPOKEN, identifier, denotes, human-language]
+	# The person's linguistic competence is some form of parthood related to the language.
+	#   For now we will just use proper-continuant-part-of, but we recognize that others have proposed
+	#   various forms of "modal-part-of" relations in the literature, so we might be persuaded to 
+	#   update it once those types of relations are defined and fleshed out.
+	IUIt-1003 = P|[new-iui]~[IUIp-16]|[timestamp-2]|[proper-continuant-part-of]|[BFO]|iui=[IUIp-1000], iui=[IUIp-20]|[tr-1000]
+	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-1003]|I|CR|Null|
+	@CV PAT_PREF_LANGUAGE_SPOKEN
+
+else
+@UA PAT_PREF_LANGUAGE_SPOKEN
+
+endif
 
 # ---------------------------------------------------------------------------------------------------------------
 #
@@ -236,13 +306,13 @@ endif
 
 # assign IUI to the demographic record
 IUIt-100 = [new-iui]
-IUIp-100 = A|[IUIt-100]~[IUIp-1]|[timestamp-1]|[new-iui] 
+IUIp-100 = A|[IUIt-100]~[IUIp-16]|[timestamp-1]|[new-iui] 
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-100]|I|CR|Null|
 
 # temporal reference for life of record.  We assume that each field is part of the record for the life of the record.
 T~[timestamp-3]|[temporal-interval]|d4af5c9a-47ba-4bf4-9bae-f13a8ed6455e
 tr-101 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
-IUIt-150 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[during]|[RO]|tref=[timestamp-3], tref=[tr-101]|[tmax]
+IUIt-150 = P|[new-iui]~[IUIp-16]|[timestamp-2]|[during]|[RO]|tref=[timestamp-3], tref=[tr-101]|[tmax]
 
 #assign IUI to the PATID field of the demographic record
 # SECTION FOR PATID FIELD IN PCORnet CDM DEMOGRAPHIC TABLE
@@ -251,230 +321,234 @@ IUIt-150 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[during]|[RO]|tref=[timestamp-3], 
 tr-6 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
 IUIt-11 = [new-iui]
 # assign an IUI to the patid
-IUIp-5 = A|[IUIt-11]~[IUIp-1]|[timestamp-1]|[new-iui]
+IUIp-5 = A|[IUIt-11]~[IUIp-16]|[timestamp-1]|[new-iui]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|  
 # declare it to be an instance of PNO:identifier at tr-6
-IUIt-12 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-5]|[pcornet-patient-id]|[PCOROWL]|[tr-6]
+IUIt-12 = U|[new-iui]~[IUIp-16]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-5]|[pcornet-patient-id]|[PCOROWL]|[tr-6]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-12]|I|CR|Null|  
 # record the actual characters of the patid in a PtoDE template
 IUIt-14 = [new-iui]
-E|[IUIt-14]~[IUIp-1]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-5]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%1
+E|[IUIt-14]~[IUIp-16]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-5]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%1
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-14]|I|CR|Null|  
 # the PATID is part of the record
-IUIt-151 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-5], iui=[IUIp-100]|[tr-101]
+IUIt-151 = P|[new-iui]~[IUIp-16]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-5], iui=[IUIp-100]|[tr-101]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-151]|I|CR|Null|
 
 #assign IUI to the BIRTH_DATE field of the demographic record
 IUIt-102 = [new-iui]
-IUIp-102 = A|[IUIt-102]~[IUIp-1]|[timestamp-1]|[new-iui]
+IUIp-102 = A|[IUIt-102]~[IUIp-16]|[timestamp-1]|[new-iui]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-102]|I|CR|Null|
-IUIt-152 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-102], iui=[IUIp-100]|[tr-101]
+IUIt-152 = P|[new-iui]~[IUIp-16]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-102], iui=[IUIp-100]|[tr-101]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-152]|I|CR|Null|
 # declare it to be an instance of apollo_sv:date at tr-101
-IUIt-172 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-102]|[date]|[APOLLO_SV]|[tr-101]
+IUIt-172 = U|[new-iui]~[IUIp-16]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-102]|[date]|[APOLLO_SV]|[tr-101]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-172]|I|CR|Null|  
 #how to handle E template when field is blank?  Not put anything?  Declare it "null" somehow?  Also, we can trigger 
 #  logic when field is equal to value, but language doesn't allow us to condition on field not equal to null or <> ""
 if (%2 != "") 
 	IUIt-192 = [new-iui]
-	E|[IUIt-192]~[IUIp-1]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-102]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%2
+	E|[IUIt-192]~[IUIp-16]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-102]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%2
 	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-192]|I|CR|Null|
 endif
 
 #assign IUI to the BIRTH_TIME field of the demographic record
 IUIt-103 = [new-iui]
-IUIp-103 = A|[IUIt-103]~[IUIp-1]|[timestamp-1]|[new-iui]
+IUIp-103 = A|[IUIt-103]~[IUIp-16]|[timestamp-1]|[new-iui]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-103]|I|CR|Null|
-IUIt-153 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-103], iui=[IUIp-100]|[tr-101]
+IUIt-153 = P|[new-iui]~[IUIp-16]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-103], iui=[IUIp-100]|[tr-101]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-153]|I|CR|Null|
 # declare it to be an instance of iao:data item at tr-101
-IUIt-173 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-103]|[data-item]|[IAO]|[tr-101]
+IUIt-173 = U|[new-iui]~[IUIp-16]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-103]|[data-item]|[IAO]|[tr-101]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-173]|I|CR|Null|
 if (%3 != "") 
 	IUIt-193 = [new-iui]
-	E|[IUIt-193]~[IUIp-1]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-103]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%3
+	E|[IUIt-193]~[IUIp-16]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-103]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%3
 	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-193]|I|CR|Null|
 endif
 
 #assign IUI to the SEX field of the demographic record
 IUIt-104 = [new-iui]
-IUIp-104 = A|[IUIt-104]~[IUIp-1]|[timestamp-1]|[new-iui]
+IUIp-104 = A|[IUIt-104]~[IUIp-16]|[timestamp-1]|[new-iui]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-104]|I|CR|Null|
-IUIt-154 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-104], iui=[IUIp-100]|[tr-101]
+IUIt-154 = P|[new-iui]~[IUIp-16]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-104], iui=[IUIp-100]|[tr-101]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-154]|I|CR|Null|
-IUIt-174 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-104]|[data-item]|[IAO]|[tr-101]
+IUIt-174 = U|[new-iui]~[IUIp-16]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-104]|[data-item]|[IAO]|[tr-101]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-174]|I|CR|Null|
 if (%4 != "") 
 	IUIt-194 = [new-iui]
-	E|[IUIt-194]~[IUIp-1]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-104]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%4
+	E|[IUIt-194]~[IUIp-16]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-104]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%4
 	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-194]|I|CR|Null|
 endif
 
 #assign IUI to the SEXUAL_ORIENTATION field of the demographic record
 IUIt-105 = [new-iui]
-IUIp-105 = A|[IUIt-105]~[IUIp-1]|[timestamp-1]|[new-iui]
+IUIp-105 = A|[IUIt-105]~[IUIp-16]|[timestamp-1]|[new-iui]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-105]|I|CR|Null|
-IUIt-155 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-105], iui=[IUIp-100]|[tr-101]
+IUIt-155 = P|[new-iui]~[IUIp-16]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-105], iui=[IUIp-100]|[tr-101]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-155]|I|CR|Null|
-IUIt-175 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-105]|[data-item]|[IAO]|[tr-101]
+IUIt-175 = U|[new-iui]~[IUIp-16]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-105]|[data-item]|[IAO]|[tr-101]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-175]|I|CR|Null|
 if (%5 != "") 
 	IUIt-195 = [new-iui]
-	E|[IUIt-195]~[IUIp-1]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-105]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%5
+	E|[IUIt-195]~[IUIp-16]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-105]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%5
 	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-195]|I|CR|Null|
 endif
 
 #assign IUI to the GENDER_IDENTITY field of the demographic record
 IUIt-106 = [new-iui]
-IUIp-106 = A|[IUIt-106]~[IUIp-1]|[timestamp-1]|[new-iui]
+IUIp-106 = A|[IUIt-106]~[IUIp-16]|[timestamp-1]|[new-iui]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-106]|I|CR|Null|
-IUIt-156 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-106], iui=[IUIp-100]|[tr-101]
+IUIt-156 = P|[new-iui]~[IUIp-16]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-106], iui=[IUIp-100]|[tr-101]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-156]|I|CR|Null|
-IUIt-176 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-106]|[data-item]|[IAO]|[tr-101]
+IUIt-176 = U|[new-iui]~[IUIp-16]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-106]|[data-item]|[IAO]|[tr-101]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-176]|I|CR|Null|
 if (%6 != "") 
 	IUIt-196 = [new-iui]
-	E|[IUIt-196]~[IUIp-1]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-106]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%6
+	E|[IUIt-196]~[IUIp-16]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-106]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%6
 	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-196]|I|CR|Null|
 endif
 
 #assign IUI to the HISPANIC field of the demographic record
 IUIt-107 = [new-iui]
-IUIp-107 = A|[IUIt-107]~[IUIp-1]|[timestamp-1]|[new-iui]
+IUIp-107 = A|[IUIt-107]~[IUIp-16]|[timestamp-1]|[new-iui]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-107]|I|CR|Null|
-IUIt-157 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-107], iui=[IUIp-100]|[tr-101]
+IUIt-157 = P|[new-iui]~[IUIp-16]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-107], iui=[IUIp-100]|[tr-101]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-157]|I|CR|Null|
-IUIt-177 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-107]|[data-item]|[IAO]|[tr-101]
+IUIt-177 = U|[new-iui]~[IUIp-16]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-107]|[data-item]|[IAO]|[tr-101]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-177]|I|CR|Null|
 if (%7 != "") 
 	IUIt-197 = [new-iui]
-	E|[IUIt-197]~[IUIp-1]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-107]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%7
+	E|[IUIt-197]~[IUIp-16]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-107]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%7
 	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-197]|I|CR|Null|
 endif
 
 #assign IUI to the RACE field of the demographic record
 IUIt-108 = [new-iui]
-IUIp-108 = A|[IUIt-108]~[IUIp-1]|[timestamp-1]|[new-iui]
+IUIp-108 = A|[IUIt-108]~[IUIp-16]|[timestamp-1]|[new-iui]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-108]|I|CR|Null|
-IUIt-158 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-108], iui=[IUIp-100]|[tr-101]
+IUIt-158 = P|[new-iui]~[IUIp-16]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-108], iui=[IUIp-100]|[tr-101]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-158]|I|CR|Null|
-IUIt-178 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-108]|[data-item]|[IAO]|[tr-101]
+IUIt-178 = U|[new-iui]~[IUIp-16]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-108]|[data-item]|[IAO]|[tr-101]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-178]|I|CR|Null|
 if (%8 != "") 
 	IUIt-198 = [new-iui]
-	E|[IUIt-198]~[IUIp-1]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-108]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%8
+	E|[IUIt-198]~[IUIp-16]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-108]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%8
 	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-198]|I|CR|Null|
 endif
 
 #assign IUI to the BIOBANK_FLAG field of the demographic record
 IUIt-109 = [new-iui]
-IUIp-109 = A|[IUIt-109]~[IUIp-1]|[timestamp-1]|[new-iui]
+IUIp-109 = A|[IUIt-109]~[IUIp-16]|[timestamp-1]|[new-iui]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-109]|I|CR|Null|
-IUIt-159 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-109], iui=[IUIp-100]|[tr-101]
+IUIt-159 = P|[new-iui]~[IUIp-16]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-109], iui=[IUIp-100]|[tr-101]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-159]|I|CR|Null|
-IUIt-179 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-109]|[data-item]|[IAO]|[tr-101]
+IUIt-179 = U|[new-iui]~[IUIp-16]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-109]|[data-item]|[IAO]|[tr-101]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-179]|I|CR|Null|
 if (%9 != "") 
 	IUIt-199 = [new-iui]
-	E|[IUIt-199]~[IUIp-1]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-109]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%9
+	E|[IUIt-199]~[IUIp-16]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-109]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%9
 	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-199]|I|CR|Null|
 endif
 
 #assign IUI to the PAT_PREF_LANGUAGE_SPOKEN field of the demographic record
 IUIt-110 = [new-iui]
-IUIp-110 = A|[IUIt-110]~[IUIp-1]|[timestamp-1]|[new-iui]
+IUIp-110 = A|[IUIt-110]~[IUIp-16]|[timestamp-1]|[new-iui]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-110]|I|CR|Null|
-IUIt-160 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-110], iui=[IUIp-100]|[tr-101]
+IUIt-160 = P|[new-iui]~[IUIp-16]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-110], iui=[IUIp-100]|[tr-101]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-160]|I|CR|Null|
-IUIt-180 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-110]|[data-item]|[IAO]|[tr-101]
+IUIt-180 = U|[new-iui]~[IUIp-16]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-110]|[data-item]|[IAO]|[tr-101]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-180]|I|CR|Null|
 if (%10 != "") 
 	IUIt-200 = [new-iui]
-	E|[IUIt-200]~[IUIp-1]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-110]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%10
+	E|[IUIt-200]~[IUIp-16]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-110]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%10
 	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-200]|I|CR|Null|
+	IUIt-1010 = U|[new-iui]~[IUIp-16]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-110]|[pref-language-ice]|[IAO]|[tr-101]
+	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-1010]|I|CR|Null|
+	IUIt-1011 = P|[new-iui]~[IUIp-16]|[timestamp-2]|[is-about]|[IAO]|iui=[IUIp-110], iui=[IUIp-1000]|[tr-101]
+	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-1011]|I|CR|Null|
 endif
 
 #assign IUI to the RAW_SEX field of the demographic record
 IUIt-111 = [new-iui]
-IUIp-111 = A|[IUIt-111]~[IUIp-1]|[timestamp-1]|[new-iui]
+IUIp-111 = A|[IUIt-111]~[IUIp-16]|[timestamp-1]|[new-iui]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-111]|I|CR|Null|
-IUIt-161 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-111], iui=[IUIp-100]|[tr-101]
+IUIt-161 = P|[new-iui]~[IUIp-16]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-111], iui=[IUIp-100]|[tr-101]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-161]|I|CR|Null|
-IUIt-181 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-111]|[data-item]|[IAO]|[tr-101]
+IUIt-181 = U|[new-iui]~[IUIp-16]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-111]|[data-item]|[IAO]|[tr-101]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-181]|I|CR|Null|
 if (%11 != "") 
 	IUIt-201 = [new-iui]
-	E|[IUIt-201]~[IUIp-1]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-111]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%11
+	E|[IUIt-201]~[IUIp-16]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-111]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%11
 	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-201]|I|CR|Null|
 endif
 
 #assign IUI to the RAW_SEXUAL_ORIENTATION field of the demographic record
 IUIt-112 = [new-iui]
-IUIp-112 = A|[IUIt-112]~[IUIp-1]|[timestamp-1]|[new-iui]
+IUIp-112 = A|[IUIt-112]~[IUIp-16]|[timestamp-1]|[new-iui]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-112]|I|CR|Null|
-IUIt-162 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-112], iui=[IUIp-100]|[tr-101]
+IUIt-162 = P|[new-iui]~[IUIp-16]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-112], iui=[IUIp-100]|[tr-101]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-162]|I|CR|Null|
-IUIt-182 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-112]|[data-item]|[IAO]|[tr-101]
+IUIt-182 = U|[new-iui]~[IUIp-16]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-112]|[data-item]|[IAO]|[tr-101]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-182]|I|CR|Null|
 if (%12 != "") 
 	IUIt-202 = [new-iui]
-	E|[IUIt-202]~[IUIp-1]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-112]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%12
+	E|[IUIt-202]~[IUIp-16]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-112]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%12
 	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-202]|I|CR|Null|
 endif
 
 #assign IUI to the RAW_GENDER_IDENTITY field of the demographic record
 IUIt-113 = [new-iui]
-IUIp-113 = A|[IUIt-113]~[IUIp-1]|[timestamp-1]|[new-iui]
+IUIp-113 = A|[IUIt-113]~[IUIp-16]|[timestamp-1]|[new-iui]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-113]|I|CR|Null|
-IUIt-163 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-113], iui=[IUIp-100]|[tr-101]
+IUIt-163 = P|[new-iui]~[IUIp-16]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-113], iui=[IUIp-100]|[tr-101]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-163]|I|CR|Null|
-IUIt-183 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-113]|[data-item]|[IAO]|[tr-101]
+IUIt-183 = U|[new-iui]~[IUIp-16]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-113]|[data-item]|[IAO]|[tr-101]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-183]|I|CR|Null|
 if (%13 != "") 
 	IUIt-203 = [new-iui]
-	E|[IUIt-203]~[IUIp-1]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-113]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%13
+	E|[IUIt-203]~[IUIp-16]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-113]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%13
 	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-203]|I|CR|Null|
 endif
 
 #assign IUI to the RAW_HISPANIC field of the demographic record
 IUIt-114 = [new-iui]
-IUIp-114 = A|[IUIt-114]~[IUIp-1]|[timestamp-1]|[new-iui]
+IUIp-114 = A|[IUIt-114]~[IUIp-16]|[timestamp-1]|[new-iui]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-114]|I|CR|Null|
-IUIt-164 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-114], iui=[IUIp-100]|[tr-101]
+IUIt-164 = P|[new-iui]~[IUIp-16]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-114], iui=[IUIp-100]|[tr-101]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-164]|I|CR|Null|
-IUIt-184 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-114]|[data-item]|[IAO]|[tr-101]
+IUIt-184 = U|[new-iui]~[IUIp-16]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-114]|[data-item]|[IAO]|[tr-101]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-184]|I|CR|Null|
 if (%14 != "") 
 	IUIt-204 = [new-iui]
-	E|[IUIt-204]~[IUIp-1]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-114]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%14
+	E|[IUIt-204]~[IUIp-16]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-114]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%14
 	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-204]|I|CR|Null|
 endif
 
 #assign IUI to the RAW_RACE field of the demographic record
 IUIt-115 = [new-iui]
-IUIp-115 = A|[IUIt-115]~[IUIp-1]|[timestamp-1]|[new-iui]
+IUIp-115 = A|[IUIt-115]~[IUIp-16]|[timestamp-1]|[new-iui]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-115]|I|CR|Null|
-IUIt-165 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-115], iui=[IUIp-100]|[tr-101]
+IUIt-165 = P|[new-iui]~[IUIp-16]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-115], iui=[IUIp-100]|[tr-101]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-165]|I|CR|Null|
-IUIt-185 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-115]|[data-item]|[IAO]|[tr-101]
+IUIt-185 = U|[new-iui]~[IUIp-16]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-115]|[data-item]|[IAO]|[tr-101]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-185]|I|CR|Null|
 if (%15 != "") 
 	IUIt-205 = [new-iui]
-	E|[IUIt-205]~[IUIp-1]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-115]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%15
+	E|[IUIt-205]~[IUIp-16]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-115]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%15
 	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-205]|I|CR|Null|
 endif
 
 #assign IUI to the RAW_PAT_PREF_LANGUAGE_SPOKEN field of the demographic record
 IUIt-116 = [new-iui]
-IUIp-116 = A|[IUIt-116]~[IUIp-1]|[timestamp-1]|[new-iui]
+IUIp-116 = A|[IUIt-116]~[IUIp-16]|[timestamp-1]|[new-iui]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-116]|I|CR|Null|
-IUIt-166 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-116], iui=[IUIp-100]|[tr-101]
+IUIt-166 = P|[new-iui]~[IUIp-16]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-116], iui=[IUIp-100]|[tr-101]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-166]|I|CR|Null|
-IUIt-186 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-116]|[data-item]|[IAO]|[tr-101]
+IUIt-186 = U|[new-iui]~[IUIp-16]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-116]|[data-item]|[IAO]|[tr-101]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-186]|I|CR|Null|
 if (%16 != "") 
 	IUIt-206 = [new-iui]
-	E|[IUIt-206]~[IUIp-1]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-116]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%16
+	E|[IUIt-206]~[IUIp-16]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-116]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%16
 	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-206]|I|CR|Null|
 endif
 
@@ -485,27 +559,27 @@ endif
 # ---------------------------------------------------------------------------------------------------------------
 
 # the record is about the person (denoted by IUI-2, here)
-IUIt-500 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[is-about]|[IAO]|iui=[IUIp-100], iui=[IUIp-2]|[tr-101]
+IUIt-500 = P|[new-iui]~[IUIp-16]|[timestamp-2]|[is-about]|[IAO]|iui=[IUIp-100], iui=[IUIp-2]|[tr-101]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-500]|I|CR|Null|
 
 # the patid denotes the person (also denoted by IUI-2, here)
-IUIt-13 = P|[new-iui]~[IUIp-1]|[timestamp-2]|<http://purl.obolibrary.org/obo/IAO_0000219>|[IAO]|iui=[IUIp-5], iui=[IUIp-2]|[tr-6]
+IUIt-13 = P|[new-iui]~[IUIp-16]|[timestamp-2]|<http://purl.obolibrary.org/obo/IAO_0000219>|[IAO]|iui=[IUIp-5], iui=[IUIp-2]|[tr-6]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-13]|I|CR|Null| 
 
 # the birth date field (IUIp-102) denotes the temporal interval during which birth occurred (tr-5)
-IUIt-501 =  P|[new-iui]~[IUIp-1]|[timestamp-2]|<http://purl.obolibrary.org/obo/IAO_0000219>|[PNO]|iui=[IUIp-102], tref=[tr-5]|[tr-101]
+IUIt-501 =  P|[new-iui]~[IUIp-16]|[timestamp-2]|<http://purl.obolibrary.org/obo/IAO_0000219>|[PNO]|iui=[IUIp-102], tref=[tr-5]|[tr-101]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-501]|I|CR|Null|
 
 # the birth date field (IUIp-102) is about the person's birth (IUIp-3) 
-IUIt-502 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[is-about]|[IAO]|iui=[IUIp-102], iui=[IUIp-3]|[tr-101]
+IUIt-502 = P|[new-iui]~[IUIp-16]|[timestamp-2]|[is-about]|[IAO]|iui=[IUIp-102], iui=[IUIp-3]|[tr-101]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-502]|I|CR|Null|
 
 # the sex field (IUIp-104) is about the person's phenotypic sex quality (IUIp-4) (but it DOES NOT denote it, because millions of people have the same value)
-IUIt-503 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[is-about]|[IAO]|iui=[IUIp-104], iui=[IUIp-4]|[tr-101]
+IUIt-503 = P|[new-iui]~[IUIp-16]|[timestamp-2]|[is-about]|[IAO]|iui=[IUIp-104], iui=[IUIp-4]|[tr-101]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-503]|I|CR|Null|
 
 # the raw sex field (IUIp-111) is about the person's phenotypic sex quality (but does not denote it, because it does not uniquely identify it with an identifier)
-IUIt-504 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[is-about]|[IAO]|iui=[IUIp-111], iui=[IUIp-4]|[tr-101]
+IUIt-504 = P|[new-iui]~[IUIp-16]|[timestamp-2]|[is-about]|[IAO]|iui=[IUIp-111], iui=[IUIp-4]|[tr-101]
 D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-504]|I|CR|Null|
 
 # we could use template IUIs to say that the race field is about the PtoP tuple that connects person to racial category.  Ditto for Hispanic.

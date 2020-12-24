@@ -54,7 +54,7 @@ public class RtsTemplateInstructionListExecutor {
 			}
 			if (shouldExecute) {
 				System.out.println("Executing " + instList.getConditionFieldNum() + 
-					" = " + instList.getConditionFieldValue() + "  (" + fields + ")");
+					"  " + instList.getConditionComparator() + " " + instList.getConditionFieldValue() + "  (" + fields + ")");
 				for (RtsAbstractInstruction instruction : instList) {
 					//System.out.println("\tProcessing instruction " + instruction);
 					instruction.execute(fieldsAndSysVariables, localVariables);

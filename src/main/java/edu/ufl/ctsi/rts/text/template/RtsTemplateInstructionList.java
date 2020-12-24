@@ -90,8 +90,13 @@ public class RtsTemplateInstructionList implements Iterable<RtsAbstractInstructi
 		else return condition.getFieldValue();
 	}
 
+	public String getConditionComparator() {
+		if (condition == null) return "";
+		else return condition.getComparator();
+	}
+
 	public int size() {
-		return instructions.size();
+		return instructions.size()+annotationInstructions.size();
 	}
 
 	public void markBlockAsExecuted() {

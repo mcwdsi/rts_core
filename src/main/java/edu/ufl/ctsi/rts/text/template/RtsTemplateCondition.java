@@ -30,4 +30,8 @@ public class RtsTemplateCondition {
 	public String getFieldValue() {
 		return fieldVal;
 	}
+
+	public String getComparator() {
+		return this.comparator;
+	}
 }
