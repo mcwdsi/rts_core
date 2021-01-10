@@ -1,23 +1,31 @@
 package edu.uams.dbmi.rts.persist.demofilestore;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
+import edu.uams.dbmi.rts.ParticularReference;
 import edu.uams.dbmi.rts.RtsDeclaration;
 import edu.uams.dbmi.rts.iui.Iui;
 import edu.uams.dbmi.rts.persist.RtsStore;
 import edu.uams.dbmi.rts.query.TupleQuery;
 import edu.uams.dbmi.rts.time.TemporalRegion;
+import edu.uams.dbmi.rts.tuple.PtoDETuple;
+import edu.uams.dbmi.rts.tuple.PtoPTuple;
 import edu.uams.dbmi.rts.tuple.RtsTuple;
 import edu.uams.dbmi.rts.tuple.RtsTupleType;
+import edu.uams.dbmi.rts.uui.Uui;
 
 import edu.ufl.ctsi.rts.text.*;
 
@@ -207,5 +215,72 @@ public class DemoFileStore implements RtsStore {
 			e.printStackTrace();
 		} 
 		return success;
+	}
+
+	@Override
+	public Set<ParticularReference> getReferentsByTypeAndDesignatorType(Uui referentType, Uui designatorType, String designatorTxt) {
+		//HashSet<Iui> foundIuis = new HashSet<Iui>();
+		Set<Iui> designatorIuis = getDesignatorsByExactMatch(designatorTxt);
+		Set<Iui> dIuisOfType = filterIuisByType(designatorIuis, referentType);
+		return getDenotesTargetsOfIuis(dIuisOfType);
+	}
+
+	protected Set<Iui> getDesignatorsByExactMatch(String text) {
+		TupleQuery tq = new TupleQuery();
+		tq.addType(RtsTupleType.PTODETUPLE);
+		tq.setData(text.getBytes());
+		Set<RtsTuple> rts = this.runQuery(tq);
+		HashSet<Iui> dIuis = new HashSet<Iui>();
+		for (RtsTuple rt : rts) {
+			PtoDETuple de = (PtoDETuple)rt;
+			dIuis.add((Iui)de.getReferent());
+		}
+		return dIuis;
+	}
+
+	protected Set<Iui> filterIuisByType(Set<Iui> iuis, Uui type) {
+		HashSet<Iui> filteredIuis = new HashSet<Iui>();
+		try {
+			URI instanceOfUri = new URI("http://purl.obolibrary.org/obo/OBO_REL#_instance_of");
+			for (Iui i : iuis) {
+				TupleQuery tq = new TupleQuery();
+				tq.addType(RtsTupleType.PTOUTUPLE);
+				tq.setReferentIui(i);
+				tq.setUniversalUui(type);
+				tq.setRelationshipURI(instanceOfUri);
+				Set<RtsTuple> rts = this.runQuery(tq);
+				if (rts.size() > 0) filteredIuis.add(i);
+			}		
+		} catch (URISyntaxException use) {
+			use.printStackTrace();
+		}
+		return filteredIuis;
+	}
+
+	protected Set<ParticularReference> getDenotesTargetsOfIuis(Set<Iui> dIuis) {
+		HashSet<ParticularReference> targetReferences = new HashSet<ParticularReference>();
+		for (Iui i : dIuis) {
+			TupleQuery tq = new TupleQuery();
+			tq.addType(RtsTupleType.PTOPTUPLE);
+			ArrayList<ParticularReference> iuiList = new ArrayList<ParticularReference>();
+			iuiList.add(i);
+			tq.setP(iuiList);
+			try {
+				URI denotesUri = new URI("http://purl.obolibrary.org/obo/IAO_0000219");
+				tq.setRelationshipURI(denotesUri);
+				Set<RtsTuple> rts = this.runQuery(tq);
+				for (RtsTuple rt : rts) {
+					PtoPTuple ptop = (PtoPTuple)rt;
+					List<ParticularReference> p = ptop.getAllParticulars();
+					Iui first = (Iui)p.get(0);
+					if (i.equals(first)) {
+						targetReferences.add(p.get(1));
+					}
+				}
+			} catch (URISyntaxException use) {
+				use.printStackTrace();
+			}
+		}
+		return targetReferences;
 	}
 }

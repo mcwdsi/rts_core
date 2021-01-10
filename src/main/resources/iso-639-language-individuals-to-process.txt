@@ -1,368 +1,368 @@
-language name	iso 639-2t	iso 639-2b	iso 639-1	iri
-Rajasthani	raj	raj		http://purl.obolibrary.org/obo/OMRSE_00000812
-Karelian	krl	krl		http://purl.obolibrary.org/obo/OMRSE_00000711
-Hebrew	heb	heb	he	http://purl.obolibrary.org/obo/OMRSE_00000657
-Afar	aar	aar	aa	http://purl.obolibrary.org/obo/OMRSE_00000507
-Gayo	gay	gay		http://purl.obolibrary.org/obo/OMRSE_00000633
-Erzya	myv	myv		http://purl.obolibrary.org/obo/OMRSE_00000765
-Tumbuka	tum	tum		http://purl.obolibrary.org/obo/OMRSE_00000887
-Ewondo	ewo	ewo		http://purl.obolibrary.org/obo/OMRSE_00000615
-Fulah	ful	ful	ff	http://purl.obolibrary.org/obo/OMRSE_00000630
-Cebuano	ceb	ceb		http://purl.obolibrary.org/obo/OMRSE_00000565
-Tereno	ter	ter		http://purl.obolibrary.org/obo/OMRSE_00000868
-Czech	ces	cze	cs	http://purl.obolibrary.org/obo/OMRSE_00000566
-Yakut	sah	sah		http://purl.obolibrary.org/obo/OMRSE_00000823
-Ekajuk	eka	eka		http://purl.obolibrary.org/obo/OMRSE_00000607
-Zhuang	zha	zha	za	http://purl.obolibrary.org/obo/OMRSE_00000919
-Lower Sorbian	dsb	dsb		http://purl.obolibrary.org/obo/OMRSE_00000599
-Ganda	lug	lug	lg	http://purl.obolibrary.org/obo/OMRSE_00000732
-Timne	tem	tem		http://purl.obolibrary.org/obo/OMRSE_00000867
-Mongolian	mon	mon	mn	http://purl.obolibrary.org/obo/OMRSE_00000760
-Waray	war	war		http://purl.obolibrary.org/obo/OMRSE_00000905
-Lozi	loz	loz		http://purl.obolibrary.org/obo/OMRSE_00000728
-Arawak	arw	arw		http://purl.obolibrary.org/obo/OMRSE_00000530
-Dargwa	dar	dar		http://purl.obolibrary.org/obo/OMRSE_00000591
-Maithili	mai	mai		http://purl.obolibrary.org/obo/OMRSE_00000741
-Chipewyan	chp	chp		http://purl.obolibrary.org/obo/OMRSE_00000576
-Hupa	hup	hup		http://purl.obolibrary.org/obo/OMRSE_00000667
-Wolaitta	wal	wal		http://purl.obolibrary.org/obo/OMRSE_00000904
-Zenaga	zen	zen		http://purl.obolibrary.org/obo/OMRSE_00000917
-Northern Sami	sme	sme	se	http://purl.obolibrary.org/obo/OMRSE_00000838
-Kashmiri	kas	kas	ks	http://purl.obolibrary.org/obo/OMRSE_00000692
-Moksha	mdf	mdf		http://purl.obolibrary.org/obo/OMRSE_00000749
-Kpelle	kpe	kpe		http://purl.obolibrary.org/obo/OMRSE_00000709
-Braj	bra	bra		http://purl.obolibrary.org/obo/OMRSE_00000555
-Fanti	fat	fat		http://purl.obolibrary.org/obo/OMRSE_00000619
-Fon	fon	fon		http://purl.obolibrary.org/obo/OMRSE_00000623
-Malayalam	mal	mal	ml	http://purl.obolibrary.org/obo/OMRSE_00000743
-Afrikaans	afr	afr	af	http://purl.obolibrary.org/obo/OMRSE_00000514
-Mossi	mos	mos		http://purl.obolibrary.org/obo/OMRSE_00000761
-Hiri Motu	hmo	hmo	ho	http://purl.obolibrary.org/obo/OMRSE_00000663
-Bengali	ben	ben	bn	http://purl.obolibrary.org/obo/OMRSE_00000547
-Samoan	smo	smo	sm	http://purl.obolibrary.org/obo/OMRSE_00000841
-Zaza	zza	zza		http://purl.obolibrary.org/obo/OMRSE_00000922
-Inari Sami	smn	smn		http://purl.obolibrary.org/obo/OMRSE_00000840
-Mohawk	moh	moh		http://purl.obolibrary.org/obo/OMRSE_00000759
-Herero	her	her	hz	http://purl.obolibrary.org/obo/OMRSE_00000658
-Xhosa	xho	xho	xh	http://purl.obolibrary.org/obo/OMRSE_00000910
-Pohnpeian	pon	pon		http://purl.obolibrary.org/obo/OMRSE_00000807
-Mandingo	man	man		http://purl.obolibrary.org/obo/OMRSE_00000744
-Nyankole	nyn	nyn		http://purl.obolibrary.org/obo/OMRSE_00000787
-Greek, Modern (1453‚Äì)	ell	gre	el	http://purl.obolibrary.org/obo/OMRSE_00000608
-Kirghiz	kir	kir	ky	http://purl.obolibrary.org/obo/OMRSE_00000702
-Cheyenne	chy	chy		http://purl.obolibrary.org/obo/OMRSE_00000580
-Chamorro	cha	cha	ch	http://purl.obolibrary.org/obo/OMRSE_00000567
-Romanian	ron	rum	ro	http://purl.obolibrary.org/obo/OMRSE_00000817
-Tswana	tsn	tsn	tn	http://purl.obolibrary.org/obo/OMRSE_00000884
-Gwich'in	gwi	gwi		http://purl.obolibrary.org/obo/OMRSE_00000652
-Iloko	ilo	ilo		http://purl.obolibrary.org/obo/OMRSE_00000675
-Tonga (Nyasa)	tog	tog		http://purl.obolibrary.org/obo/OMRSE_00000880
-Irish	gle	gle	ga	http://purl.obolibrary.org/obo/OMRSE_00000639
-Sranan Tongo	srn	srn		http://purl.obolibrary.org/obo/OMRSE_00000851
-Macedonian	mkd	mac	mk	http://purl.obolibrary.org/obo/OMRSE_00000737
-Bulgarian	bul	bul	bg	http://purl.obolibrary.org/obo/OMRSE_00000559
-Southern Sami	sma	sma		http://purl.obolibrary.org/obo/OMRSE_00000837
-Sichuan Yi	iii	iii	ii	http://purl.obolibrary.org/obo/OMRSE_00000672
-Lao	lao	lao	lo	http://purl.obolibrary.org/obo/OMRSE_00000720
-Achinese	ace	ace		http://purl.obolibrary.org/obo/OMRSE_00000509
-Venda	ven	ven	ve	http://purl.obolibrary.org/obo/OMRSE_00000900
-Efik	efi	efi		http://purl.obolibrary.org/obo/OMRSE_00000605
-Kanuri	kau	kau	kr	http://purl.obolibrary.org/obo/OMRSE_00000693
-Twi	twi	twi	tw	http://purl.obolibrary.org/obo/OMRSE_00000890
-Tlingit	tli	tli		http://purl.obolibrary.org/obo/OMRSE_00000878
-Swiss German	gsw	gsw		http://purl.obolibrary.org/obo/OMRSE_00000650
-Cornish	cor	cor	kw	http://purl.obolibrary.org/obo/OMRSE_00000583
-Kabyle	kab	kab		http://purl.obolibrary.org/obo/OMRSE_00000687
-Divehi	div	div	dv	http://purl.obolibrary.org/obo/OMRSE_00000597
-Norwegian	nor	nor	no	http://purl.obolibrary.org/obo/OMRSE_00000781
-Icelandic	isl	ice	is	http://purl.obolibrary.org/obo/OMRSE_00000670
-Central Khmer	khm	khm	km	http://purl.obolibrary.org/obo/OMRSE_00000698
-Votic	vot	vot		http://purl.obolibrary.org/obo/OMRSE_00000903
-Romany	rom	rom		http://purl.obolibrary.org/obo/OMRSE_00000816
-Hindi	hin	hin	hi	http://purl.obolibrary.org/obo/OMRSE_00000660
-Upper Sorbian	hsb	hsb		http://purl.obolibrary.org/obo/OMRSE_00000665
-Dogrib	dgr	dgr		http://purl.obolibrary.org/obo/OMRSE_00000595
-Chichewa	nya	nya	ny	http://purl.obolibrary.org/obo/OMRSE_00000785
-Nepali	nep	nep	ne	http://purl.obolibrary.org/obo/OMRSE_00000773
-Mandar	mdr	mdr		http://purl.obolibrary.org/obo/OMRSE_00000750
-Amharic	amh	amh	am	http://purl.obolibrary.org/obo/OMRSE_00000521
-Nyoro	nyo	nyo		http://purl.obolibrary.org/obo/OMRSE_00000788
-Luxembourgish	ltz	ltz	lb	http://purl.obolibrary.org/obo/OMRSE_00000729
-Cherokee	chr	chr		http://purl.obolibrary.org/obo/OMRSE_00000577
-Marathi	mar	mar	mr	http://purl.obolibrary.org/obo/OMRSE_00000746
-Syriac	syr	syr		http://purl.obolibrary.org/obo/OMRSE_00000862
-Breton	bre	bre	br	http://purl.obolibrary.org/obo/OMRSE_00000556
-Mari	chm	chm		http://purl.obolibrary.org/obo/OMRSE_00000573
-Oriya	ori	ori	or	http://purl.obolibrary.org/obo/OMRSE_00000792
-Blin	byn	byn		http://purl.obolibrary.org/obo/OMRSE_00000561
-Nogai	nog	nog		http://purl.obolibrary.org/obo/OMRSE_00000779
-Galibi Carib	car	car		http://purl.obolibrary.org/obo/OMRSE_00000563
-Wolof	wol	wol	wo	http://purl.obolibrary.org/obo/OMRSE_00000908
-Tigrinya	tir	tir	ti	http://purl.obolibrary.org/obo/OMRSE_00000874
-Rundi	run	run	rn	http://purl.obolibrary.org/obo/OMRSE_00000818
-Malay	msa	may	ms	http://purl.obolibrary.org/obo/OMRSE_00000748
-Acoli	ach	ach		http://purl.obolibrary.org/obo/OMRSE_00000510
-Karachay-Balkar	krc	krc		http://purl.obolibrary.org/obo/OMRSE_00000710
-Assamese	asm	asm	as	http://purl.obolibrary.org/obo/OMRSE_00000531
-Kuanyama	kua	kua	kj	http://purl.obolibrary.org/obo/OMRSE_00000713
-Faroese	fao	fao	fo	http://purl.obolibrary.org/obo/OMRSE_00000617
-Lahnda	lah	lah		http://purl.obolibrary.org/obo/OMRSE_00000718
-Panjabi	pan	pan	pa	http://purl.obolibrary.org/obo/OMRSE_00000800
-Minangkabau	min	min		http://purl.obolibrary.org/obo/OMRSE_00000754
-Northern Frisian	frr	frr		http://purl.obolibrary.org/obo/OMRSE_00000627
-Friulian	fur	fur		http://purl.obolibrary.org/obo/OMRSE_00000631
-Albanian	sqi	alb	sq	http://purl.obolibrary.org/obo/OMRSE_00000518
-Angika	anp	anp		http://purl.obolibrary.org/obo/OMRSE_00000523
-Azerbaijani	aze	aze	az	http://purl.obolibrary.org/obo/OMRSE_00000537
-Lithuanian	lit	lit	lt	http://purl.obolibrary.org/obo/OMRSE_00000726
-Japanese	jpn	jpn	ja	http://purl.obolibrary.org/obo/OMRSE_00000683
-Marshallese	mah	mah	mh	http://purl.obolibrary.org/obo/OMRSE_00000740
-Southern Altai	alt	alt		http://purl.obolibrary.org/obo/OMRSE_00000520
-Duala	dua	dua		http://purl.obolibrary.org/obo/OMRSE_00000600
-Hmong	hmn	hmn		http://purl.obolibrary.org/obo/OMRSE_00000662
-Manchu	mnc	mnc		http://purl.obolibrary.org/obo/OMRSE_00000757
-Rarotongan	rar	rar		http://purl.obolibrary.org/obo/OMRSE_00000814
-Ainu	ain	ain		http://purl.obolibrary.org/obo/OMRSE_00000515
-Somali	som	som	so	http://purl.obolibrary.org/obo/OMRSE_00000847
-Bosnian	bos	bos	bs	http://purl.obolibrary.org/obo/OMRSE_00000554
-Belarusian	bel	bel	be	http://purl.obolibrary.org/obo/OMRSE_00000545
-Nzima	nzi	nzi		http://purl.obolibrary.org/obo/OMRSE_00000789
-Filipino	fil	fil		http://purl.obolibrary.org/obo/OMRSE_00000621
-Bikol	bik	bik		http://purl.obolibrary.org/obo/OMRSE_00000549
-Lezghian	lez	lez		http://purl.obolibrary.org/obo/OMRSE_00000723
-N'Ko	nqo	nqo		http://purl.obolibrary.org/obo/OMRSE_00000782
-Corsican	cos	cos	co	http://purl.obolibrary.org/obo/OMRSE_00000584
-Tahitian	tah	tah	ty	http://purl.obolibrary.org/obo/OMRSE_00000863
-Kalaallisut	kal	kal	kl	http://purl.obolibrary.org/obo/OMRSE_00000689
-Tigre	tig	tig		http://purl.obolibrary.org/obo/OMRSE_00000873
-Tetum	tet	tet		http://purl.obolibrary.org/obo/OMRSE_00000869
-Mi'kmaq	mic	mic		http://purl.obolibrary.org/obo/OMRSE_00000753
-Kinyarwanda	kin	kin	rw	http://purl.obolibrary.org/obo/OMRSE_00000701
-Crimean Tatar	crh	crh		http://purl.obolibrary.org/obo/OMRSE_00000586
-Sandawe	sad	sad		http://purl.obolibrary.org/obo/OMRSE_00000821
-Aragonese	arg	arg	an	http://purl.obolibrary.org/obo/OMRSE_00000526
-Caddo	cad	cad		http://purl.obolibrary.org/obo/OMRSE_00000562
-Beja	bej	bej		http://purl.obolibrary.org/obo/OMRSE_00000544
-Zuni	zun	zun		http://purl.obolibrary.org/obo/OMRSE_00000921
-Sundanese	sun	sun	su	http://purl.obolibrary.org/obo/OMRSE_00000856
-Shan	shn	shn		http://purl.obolibrary.org/obo/OMRSE_00000832
-Madurese	mad	mad		http://purl.obolibrary.org/obo/OMRSE_00000738
-Limburgan	lim	lim	li	http://purl.obolibrary.org/obo/OMRSE_00000724
-Dogri	doi	doi		http://purl.obolibrary.org/obo/OMRSE_00000598
-Haida	hai	hai		http://purl.obolibrary.org/obo/OMRSE_00000653
-Swedish	swe	swe	sv	http://purl.obolibrary.org/obo/OMRSE_00000860
-Javanese	jav	jav	jv	http://purl.obolibrary.org/obo/OMRSE_00000681
-Abkhazian	abk	abk	ab	http://purl.obolibrary.org/obo/OMRSE_00000508
-Osage	osa	osa		http://purl.obolibrary.org/obo/OMRSE_00000794
-Occitan (post 1500)	oci	oci	oc	http://purl.obolibrary.org/obo/OMRSE_00000790
-Hawaiian	haw	haw		http://purl.obolibrary.org/obo/OMRSE_00000656
-Bashkir	bak	bak	ba	http://purl.obolibrary.org/obo/OMRSE_00000538
-Chinook jargon	chn	chn		http://purl.obolibrary.org/obo/OMRSE_00000574
-Chuukese	chk	chk		http://purl.obolibrary.org/obo/OMRSE_00000572
-Serer	srr	srr		http://purl.obolibrary.org/obo/OMRSE_00000853
-Gujarati	guj	guj	gu	http://purl.obolibrary.org/obo/OMRSE_00000651
-Bokm√•l , Norwegian	nob	nob	nb	http://purl.obolibrary.org/obo/OMRSE_00000778
-Polish	pol	pol	pl	http://purl.obolibrary.org/obo/OMRSE_00000806
-Guarani	grn	grn	gn	http://purl.obolibrary.org/obo/OMRSE_00000649
-Judeo-Persian	jpr	jpr		http://purl.obolibrary.org/obo/OMRSE_00000684
-Dutch	nld	dut	nl	http://purl.obolibrary.org/obo/OMRSE_00000602
-Malagasy	mlg	mlg	mg	http://purl.obolibrary.org/obo/OMRSE_00000755
-French	fra	fre	fr	http://purl.obolibrary.org/obo/OMRSE_00000624
-Iban	iba	iba		http://purl.obolibrary.org/obo/OMRSE_00000668
-Akan	aka	aka	ak	http://purl.obolibrary.org/obo/OMRSE_00000516
-Persian	fas	per	fa	http://purl.obolibrary.org/obo/OMRSE_00000618
-Neapolitan	nap	nap		http://purl.obolibrary.org/obo/OMRSE_00000766
-Igbo	ibo	ibo	ig	http://purl.obolibrary.org/obo/OMRSE_00000669
-Ukrainian	ukr	ukr	uk	http://purl.obolibrary.org/obo/OMRSE_00000895
-Basque	eus	baq	eu	http://purl.obolibrary.org/obo/OMRSE_00000542
-Vietnamese	vie	vie	vi	http://purl.obolibrary.org/obo/OMRSE_00000901
-Asturian	ast	ast		http://purl.obolibrary.org/obo/OMRSE_00000532
-Pampanga	pam	pam		http://purl.obolibrary.org/obo/OMRSE_00000799
-Umbundu	umb	umb		http://purl.obolibrary.org/obo/OMRSE_00000896
-Indonesian	ind	ind	id	http://purl.obolibrary.org/obo/OMRSE_00000677
-Siksika	bla	bla		http://purl.obolibrary.org/obo/OMRSE_00000552
-Tonga (Tonga Islands)	ton	ton	to	http://purl.obolibrary.org/obo/OMRSE_00000881
-Arabic	ara	ara	ar	http://purl.obolibrary.org/obo/OMRSE_00000524
-Rapanui	rap	rap		http://purl.obolibrary.org/obo/OMRSE_00000813
-Basa	bas	bas		http://purl.obolibrary.org/obo/OMRSE_00000543
-Awadhi	awa	awa		http://purl.obolibrary.org/obo/OMRSE_00000535
-Ewe	ewe	ewe	ee	http://purl.obolibrary.org/obo/OMRSE_00000614
-Maori	mri	mao	mi	http://purl.obolibrary.org/obo/OMRSE_00000745
-Sukuma	suk	suk		http://purl.obolibrary.org/obo/OMRSE_00000855
-Tsonga	tso	tso	ts	http://purl.obolibrary.org/obo/OMRSE_00000885
-Kikuyu	kik	kik	ki	http://purl.obolibrary.org/obo/OMRSE_00000700
-Makasar	mak	mak		http://purl.obolibrary.org/obo/OMRSE_00000742
-Niuean	niu	niu		http://purl.obolibrary.org/obo/OMRSE_00000776
-Ga	gaa	gaa		http://purl.obolibrary.org/obo/OMRSE_00000632
-Luba-Lulua	lua	lua		http://purl.obolibrary.org/obo/OMRSE_00000730
-Washo	was	was		http://purl.obolibrary.org/obo/OMRSE_00000906
-Masai	mas	mas		http://purl.obolibrary.org/obo/OMRSE_00000747
-Bislama	bis	bis	bi	http://purl.obolibrary.org/obo/OMRSE_00000551
-Danish	dan	dan	da	http://purl.obolibrary.org/obo/OMRSE_00000590
-Lule Sami	smj	smj		http://purl.obolibrary.org/obo/OMRSE_00000839
-Lushai	lus	lus		http://purl.obolibrary.org/obo/OMRSE_00000736
-Gorontalo	gor	gor		http://purl.obolibrary.org/obo/OMRSE_00000645
-Slave (Athapascan)	den	den		http://purl.obolibrary.org/obo/OMRSE_00000593
-Ossetian	oss	oss	os	http://purl.obolibrary.org/obo/OMRSE_00000795
-Eastern Frisian	frs	frs		http://purl.obolibrary.org/obo/OMRSE_00000628
-Navajo	nav	nav	nv	http://purl.obolibrary.org/obo/OMRSE_00000768
-Estonian	est	est	et	http://purl.obolibrary.org/obo/OMRSE_00000613
-Mongo	lol	lol		http://purl.obolibrary.org/obo/OMRSE_00000727
-Ingush	inh	inh		http://purl.obolibrary.org/obo/OMRSE_00000678
-Kutenai	kut	kut		http://purl.obolibrary.org/obo/OMRSE_00000716
-Luiseno	lui	lui		http://purl.obolibrary.org/obo/OMRSE_00000733
-Judeo-Arabic	jrb	jrb		http://purl.obolibrary.org/obo/OMRSE_00000685
-Kurukh	kru	kru		http://purl.obolibrary.org/obo/OMRSE_00000712
-Kumyk	kum	kum		http://purl.obolibrary.org/obo/OMRSE_00000714
-Manx	glv	glv	gv	http://purl.obolibrary.org/obo/OMRSE_00000641
-Burmese	mya	bur	my	http://purl.obolibrary.org/obo/OMRSE_00000560
-Aromanian	rup	rup		http://purl.obolibrary.org/obo/OMRSE_00000819
-Bambara	bam	bam	bm	http://purl.obolibrary.org/obo/OMRSE_00000540
-Luba-Katanga	lub	lub	lu	http://purl.obolibrary.org/obo/OMRSE_00000731
-Tokelau	tkl	tkl		http://purl.obolibrary.org/obo/OMRSE_00000876
-Baluchi	bal	bal		http://purl.obolibrary.org/obo/OMRSE_00000539
-Kamba	kam	kam		http://purl.obolibrary.org/obo/OMRSE_00000690
-Papiamento	pap	pap		http://purl.obolibrary.org/obo/OMRSE_00000801
-Marwari	mwr	mwr		http://purl.obolibrary.org/obo/OMRSE_00000764
-Dyula	dyu	dyu		http://purl.obolibrary.org/obo/OMRSE_00000603
-Haitian	hat	hat	ht	http://purl.obolibrary.org/obo/OMRSE_00000654
-Scots	sco	sco		http://purl.obolibrary.org/obo/OMRSE_00000829
-Gbaya	gba	gba		http://purl.obolibrary.org/obo/OMRSE_00000634
-Croatian	hrv	hrv	hr	http://purl.obolibrary.org/obo/OMRSE_00000664
-Sindhi	snd	snd	sd	http://purl.obolibrary.org/obo/OMRSE_00000844
-Kashubian	csb	csb		http://purl.obolibrary.org/obo/OMRSE_00000587
-Buriat	bua	bua		http://purl.obolibrary.org/obo/OMRSE_00000557
-Swati	ssw	ssw	ss	http://purl.obolibrary.org/obo/OMRSE_00000854
-Turkish	tur	tur	tr	http://purl.obolibrary.org/obo/OMRSE_00000888
-Choctaw	cho	cho		http://purl.obolibrary.org/obo/OMRSE_00000575
-Italian	ita	ita	it	http://purl.obolibrary.org/obo/OMRSE_00000680
-Telugu	tel	tel	te	http://purl.obolibrary.org/obo/OMRSE_00000866
-Kosraean	kos	kos		http://purl.obolibrary.org/obo/OMRSE_00000708
-Tuvalu	tvl	tvl		http://purl.obolibrary.org/obo/OMRSE_00000889
-Standard Moroccan Tamazight	zgh	zgh		http://purl.obolibrary.org/obo/OMRSE_00000918
-Cree	cre	cre	cr	http://purl.obolibrary.org/obo/OMRSE_00000585
-Kara-Kalpak	kaa	kaa		http://purl.obolibrary.org/obo/OMRSE_00000686
-Balinese	ban	ban		http://purl.obolibrary.org/obo/OMRSE_00000541
-Fijian	fij	fij	fj	http://purl.obolibrary.org/obo/OMRSE_00000620
-Adyghe	ady	ady		http://purl.obolibrary.org/obo/OMRSE_00000512
-Uighur	uig	uig	ug	http://purl.obolibrary.org/obo/OMRSE_00000894
-Ladino	lad	lad		http://purl.obolibrary.org/obo/OMRSE_00000717
-Udmurt	udm	udm		http://purl.obolibrary.org/obo/OMRSE_00000892
-Grebo	grb	grb		http://purl.obolibrary.org/obo/OMRSE_00000647
-Turkmen	tuk	tuk	tk	http://purl.obolibrary.org/obo/OMRSE_00000886
-Selkup	sel	sel		http://purl.obolibrary.org/obo/OMRSE_00000830
-Romansh	roh	roh	rm	http://purl.obolibrary.org/obo/OMRSE_00000815
-Catalan	cat	cat	ca	http://purl.obolibrary.org/obo/OMRSE_00000564
-Inuktitut	iku	iku	iu	http://purl.obolibrary.org/obo/OMRSE_00000673
-Creek	mus	mus		http://purl.obolibrary.org/obo/OMRSE_00000762
-Tsimshian	tsi	tsi		http://purl.obolibrary.org/obo/OMRSE_00000883
-Hausa	hau	hau	ha	http://purl.obolibrary.org/obo/OMRSE_00000655
-Sinhala	sin	sin	si	http://purl.obolibrary.org/obo/OMRSE_00000834
-Mirandese	mwl	mwl		http://purl.obolibrary.org/obo/OMRSE_00000763
-Magahi	mag	mag		http://purl.obolibrary.org/obo/OMRSE_00000739
-Gilbertese	gil	gil		http://purl.obolibrary.org/obo/OMRSE_00000637
-Walloon	wln	wln	wa	http://purl.obolibrary.org/obo/OMRSE_00000907
-Ojibwa	oji	oji	oj	http://purl.obolibrary.org/obo/OMRSE_00000791
-Georgian	kat	geo	ka	http://purl.obolibrary.org/obo/OMRSE_00000635
-Yoruba	yor	yor	yo	http://purl.obolibrary.org/obo/OMRSE_00000914
-Ndebele, South	nbl	nbl	nr	http://purl.obolibrary.org/obo/OMRSE_00000769
-Chinese	zho	chi	zh	http://purl.obolibrary.org/obo/OMRSE_00000571
-Hungarian	hun	hun	hu	http://purl.obolibrary.org/obo/OMRSE_00000666
-Komi	kom	kom	kv	http://purl.obolibrary.org/obo/OMRSE_00000705
-Tajik	tgk	tgk	tg	http://purl.obolibrary.org/obo/OMRSE_00000870
-Urdu	urd	urd	ur	http://purl.obolibrary.org/obo/OMRSE_00000897
-Ndonga	ndo	ndo	ng	http://purl.obolibrary.org/obo/OMRSE_00000771
-Low German	nds	nds		http://purl.obolibrary.org/obo/OMRSE_00000772
-Susu	sus	sus		http://purl.obolibrary.org/obo/OMRSE_00000857
-Gaelic	gla	gla	gd	http://purl.obolibrary.org/obo/OMRSE_00000638
-Aymara	aym	aym	ay	http://purl.obolibrary.org/obo/OMRSE_00000536
-Nepal Bhasa	new	new		http://purl.obolibrary.org/obo/OMRSE_00000774
-Mende	men	men		http://purl.obolibrary.org/obo/OMRSE_00000751
-Uzbek	uzb	uzb	uz	http://purl.obolibrary.org/obo/OMRSE_00000898
-Thai	tha	tha	th	http://purl.obolibrary.org/obo/OMRSE_00000872
-Zulu	zul	zul	zu	http://purl.obolibrary.org/obo/OMRSE_00000920
-Fang	fan	fan		http://purl.obolibrary.org/obo/OMRSE_00000616
-Soninke	snk	snk		http://purl.obolibrary.org/obo/OMRSE_00000845
-Pedi	nso	nso		http://purl.obolibrary.org/obo/OMRSE_00000783
-Tok Pisin	tpi	tpi		http://purl.obolibrary.org/obo/OMRSE_00000882
-Sicilian	scn	scn		http://purl.obolibrary.org/obo/OMRSE_00000828
-Kazakh	kaz	kaz	kk	http://purl.obolibrary.org/obo/OMRSE_00000695
-Tibetan	bod	tib	bo	http://purl.obolibrary.org/obo/OMRSE_00000553
-Tuvinian	tyv	tyv		http://purl.obolibrary.org/obo/OMRSE_00000891
-Inupiaq	ipk	ipk	ik	http://purl.obolibrary.org/obo/OMRSE_00000679
-Avaric	ava	ava	av	http://purl.obolibrary.org/obo/OMRSE_00000533
-Kurdish	kur	kur	ku	http://purl.obolibrary.org/obo/OMRSE_00000715
-Tagalog	tgl	tgl	tl	http://purl.obolibrary.org/obo/OMRSE_00000871
-Yapese	yap	yap		http://purl.obolibrary.org/obo/OMRSE_00000912
-Konkani	kok	kok		http://purl.obolibrary.org/obo/OMRSE_00000704
-Tamil	tam	tam	ta	http://purl.obolibrary.org/obo/OMRSE_00000864
-Russian	rus	rus	ru	http://purl.obolibrary.org/obo/OMRSE_00000820
-Zapotec	zap	zap		http://purl.obolibrary.org/obo/OMRSE_00000915
-Nias	nia	nia		http://purl.obolibrary.org/obo/OMRSE_00000775
-Yiddish	yid	yid	yi	http://purl.obolibrary.org/obo/OMRSE_00000913
-Welsh	cym	wel	cy	http://purl.obolibrary.org/obo/OMRSE_00000588
-Chechen	che	che	ce	http://purl.obolibrary.org/obo/OMRSE_00000569
-Slovenian	slv	slv	sl	http://purl.obolibrary.org/obo/OMRSE_00000836
-Lunda	lun	lun		http://purl.obolibrary.org/obo/OMRSE_00000734
-Vai	vai	vai		http://purl.obolibrary.org/obo/OMRSE_00000899
-Sango	sag	sag	sg	http://purl.obolibrary.org/obo/OMRSE_00000822
-Dinka	din	din		http://purl.obolibrary.org/obo/OMRSE_00000596
-Sardinian	srd	srd	sc	http://purl.obolibrary.org/obo/OMRSE_00000850
-Maltese	mlt	mlt	mt	http://purl.obolibrary.org/obo/OMRSE_00000756
-Dzongkha	dzo	dzo	dz	http://purl.obolibrary.org/obo/OMRSE_00000604
-Mapudungun	arn	arn		http://purl.obolibrary.org/obo/OMRSE_00000528
-Bemba	bem	bem		http://purl.obolibrary.org/obo/OMRSE_00000546
-Latvian	lav	lav	lv	http://purl.obolibrary.org/obo/OMRSE_00000722
-Tamashek	tmh	tmh		http://purl.obolibrary.org/obo/OMRSE_00000879
-Portuguese	por	por	pt	http://purl.obolibrary.org/obo/OMRSE_00000808
-Bhojpuri	bho	bho		http://purl.obolibrary.org/obo/OMRSE_00000548
-Lingala	lin	lin	ln	http://purl.obolibrary.org/obo/OMRSE_00000725
-Sidamo	sid	sid		http://purl.obolibrary.org/obo/OMRSE_00000833
-Yao	yao	yao		http://purl.obolibrary.org/obo/OMRSE_00000911
-Western Frisian	fry	fry	fy	http://purl.obolibrary.org/obo/OMRSE_00000629
-Hiligaynon	hil	hil		http://purl.obolibrary.org/obo/OMRSE_00000659
-Ndebele, North	nde	nde	nd	http://purl.obolibrary.org/obo/OMRSE_00000770
-Armenian	hye	arm	hy	http://purl.obolibrary.org/obo/OMRSE_00000527
-Santali	sat	sat		http://purl.obolibrary.org/obo/OMRSE_00000827
-Nyamwezi	nym	nym		http://purl.obolibrary.org/obo/OMRSE_00000786
-Palauan	pau	pau		http://purl.obolibrary.org/obo/OMRSE_00000802
-Buginese	bug	bug		http://purl.obolibrary.org/obo/OMRSE_00000558
-Kimbundu	kmb	kmb		http://purl.obolibrary.org/obo/OMRSE_00000703
-Serbian	srp	srp	sr	http://purl.obolibrary.org/obo/OMRSE_00000852
-Pangasinan	pag	pag		http://purl.obolibrary.org/obo/OMRSE_00000797
-Norwegian Nynorsk	nno	nno	nn	http://purl.obolibrary.org/obo/OMRSE_00000777
-Slovak	slk	slo	sk	http://purl.obolibrary.org/obo/OMRSE_00000835
-English	eng	eng	en	http://purl.obolibrary.org/obo/OMRSE_00000610
-Delaware	del	del		http://purl.obolibrary.org/obo/OMRSE_00000592
-Shona	sna	sna	sn	http://purl.obolibrary.org/obo/OMRSE_00000843
-Tiv	tiv	tiv		http://purl.obolibrary.org/obo/OMRSE_00000875
-Gondi	gon	gon		http://purl.obolibrary.org/obo/OMRSE_00000644
-Kalmyk	xal	xal		http://purl.obolibrary.org/obo/OMRSE_00000909
-Sasak	sas	sas		http://purl.obolibrary.org/obo/OMRSE_00000826
-Kannada	kan	kan	kn	http://purl.obolibrary.org/obo/OMRSE_00000691
-Swahili	swa	swa	sw	http://purl.obolibrary.org/obo/OMRSE_00000859
-Nauru	nau	nau	na	http://purl.obolibrary.org/obo/OMRSE_00000767
-Aleut	ale	ale		http://purl.obolibrary.org/obo/OMRSE_00000519
-Chuvash	chv	chv	cv	http://purl.obolibrary.org/obo/OMRSE_00000579
-Lamba	lam	lam		http://purl.obolibrary.org/obo/OMRSE_00000719
-Luo (Kenya and Tanzania)	luo	luo		http://purl.obolibrary.org/obo/OMRSE_00000735
-Spanish	spa	spa	es	http://purl.obolibrary.org/obo/OMRSE_00000849
-Bini	bin	bin		http://purl.obolibrary.org/obo/OMRSE_00000550
-Adangme	ada	ada		http://purl.obolibrary.org/obo/OMRSE_00000511
-Tatar	tat	tat	tt	http://purl.obolibrary.org/obo/OMRSE_00000865
-Quechua	que	que	qu	http://purl.obolibrary.org/obo/OMRSE_00000811
-Khasi	kha	kha		http://purl.obolibrary.org/obo/OMRSE_00000697
-Oromo	orm	orm	om	http://purl.obolibrary.org/obo/OMRSE_00000793
-Korean	kor	kor	ko	http://purl.obolibrary.org/obo/OMRSE_00000707
-Kabardian	kbd	kbd		http://purl.obolibrary.org/obo/OMRSE_00000696
-Sotho, Southern	sot	sot	st	http://purl.obolibrary.org/obo/OMRSE_00000848
-Kongo	kon	kon	kg	http://purl.obolibrary.org/obo/OMRSE_00000706
-Manipuri	mni	mni		http://purl.obolibrary.org/obo/OMRSE_00000758
-German	deu	ger	de	http://purl.obolibrary.org/obo/OMRSE_00000594
-Arapaho	arp	arp		http://purl.obolibrary.org/obo/OMRSE_00000529
-Skolt Sami	sms	sms		http://purl.obolibrary.org/obo/OMRSE_00000842
-Kachin	kac	kac		http://purl.obolibrary.org/obo/OMRSE_00000688
-Dakota	dak	dak		http://purl.obolibrary.org/obo/OMRSE_00000589
-Finnish	fin	fin	fi	http://purl.obolibrary.org/obo/OMRSE_00000622
-Galician	glg	glg	gl	http://purl.obolibrary.org/obo/OMRSE_00000640
-Pushto	pus	pus	ps	http://purl.obolibrary.org/obo/OMRSE_00000810
+language name	iso 639-2t	iso 639-2b	iso 639-1	iri	ISO 639-2T
+Rajasthani	raj	raj		http://purl.obolibrary.org/obo/OMRSE_00000812	RAJ
+Karelian	krl	krl		http://purl.obolibrary.org/obo/OMRSE_00000711	KRL
+Hebrew	heb	heb	he	http://purl.obolibrary.org/obo/OMRSE_00000657	HEB
+Afar	aar	aar	aa	http://purl.obolibrary.org/obo/OMRSE_00000507	AAR
+Gayo	gay	gay		http://purl.obolibrary.org/obo/OMRSE_00000633	GAY
+Erzya	myv	myv		http://purl.obolibrary.org/obo/OMRSE_00000765	MYV
+Tumbuka	tum	tum		http://purl.obolibrary.org/obo/OMRSE_00000887	TUM
+Ewondo	ewo	ewo		http://purl.obolibrary.org/obo/OMRSE_00000615	EWO
+Fulah	ful	ful	ff	http://purl.obolibrary.org/obo/OMRSE_00000630	FUL
+Cebuano	ceb	ceb		http://purl.obolibrary.org/obo/OMRSE_00000565	CEB
+Tereno	ter	ter		http://purl.obolibrary.org/obo/OMRSE_00000868	TER
+Czech	ces	cze	cs	http://purl.obolibrary.org/obo/OMRSE_00000566	CES
+Yakut	sah	sah		http://purl.obolibrary.org/obo/OMRSE_00000823	SAH
+Ekajuk	eka	eka		http://purl.obolibrary.org/obo/OMRSE_00000607	EKA
+Zhuang	zha	zha	za	http://purl.obolibrary.org/obo/OMRSE_00000919	ZHA
+Lower Sorbian	dsb	dsb		http://purl.obolibrary.org/obo/OMRSE_00000599	DSB
+Ganda	lug	lug	lg	http://purl.obolibrary.org/obo/OMRSE_00000732	LUG
+Timne	tem	tem		http://purl.obolibrary.org/obo/OMRSE_00000867	TEM
+Mongolian	mon	mon	mn	http://purl.obolibrary.org/obo/OMRSE_00000760	MON
+Waray	war	war		http://purl.obolibrary.org/obo/OMRSE_00000905	WAR
+Lozi	loz	loz		http://purl.obolibrary.org/obo/OMRSE_00000728	LOZ
+Arawak	arw	arw		http://purl.obolibrary.org/obo/OMRSE_00000530	ARW
+Dargwa	dar	dar		http://purl.obolibrary.org/obo/OMRSE_00000591	DAR
+Maithili	mai	mai		http://purl.obolibrary.org/obo/OMRSE_00000741	MAI
+Chipewyan	chp	chp		http://purl.obolibrary.org/obo/OMRSE_00000576	CHP
+Hupa	hup	hup		http://purl.obolibrary.org/obo/OMRSE_00000667	HUP
+Wolaitta	wal	wal		http://purl.obolibrary.org/obo/OMRSE_00000904	WAL
+Zenaga	zen	zen		http://purl.obolibrary.org/obo/OMRSE_00000917	ZEN
+Northern Sami	sme	sme	se	http://purl.obolibrary.org/obo/OMRSE_00000838	SME
+Kashmiri	kas	kas	ks	http://purl.obolibrary.org/obo/OMRSE_00000692	KAS
+Moksha	mdf	mdf		http://purl.obolibrary.org/obo/OMRSE_00000749	MDF
+Kpelle	kpe	kpe		http://purl.obolibrary.org/obo/OMRSE_00000709	KPE
+Braj	bra	bra		http://purl.obolibrary.org/obo/OMRSE_00000555	BRA
+Fanti	fat	fat		http://purl.obolibrary.org/obo/OMRSE_00000619	FAT
+Fon	fon	fon		http://purl.obolibrary.org/obo/OMRSE_00000623	FON
+Malayalam	mal	mal	ml	http://purl.obolibrary.org/obo/OMRSE_00000743	MAL
+Afrikaans	afr	afr	af	http://purl.obolibrary.org/obo/OMRSE_00000514	AFR
+Mossi	mos	mos		http://purl.obolibrary.org/obo/OMRSE_00000761	MOS
+Hiri Motu	hmo	hmo	ho	http://purl.obolibrary.org/obo/OMRSE_00000663	HMO
+Bengali	ben	ben	bn	http://purl.obolibrary.org/obo/OMRSE_00000547	BEN
+Samoan	smo	smo	sm	http://purl.obolibrary.org/obo/OMRSE_00000841	SMO
+Zaza	zza	zza		http://purl.obolibrary.org/obo/OMRSE_00000922	ZZA
+Inari Sami	smn	smn		http://purl.obolibrary.org/obo/OMRSE_00000840	SMN
+Mohawk	moh	moh		http://purl.obolibrary.org/obo/OMRSE_00000759	MOH
+Herero	her	her	hz	http://purl.obolibrary.org/obo/OMRSE_00000658	HER
+Xhosa	xho	xho	xh	http://purl.obolibrary.org/obo/OMRSE_00000910	XHO
+Pohnpeian	pon	pon		http://purl.obolibrary.org/obo/OMRSE_00000807	PON
+Mandingo	man	man		http://purl.obolibrary.org/obo/OMRSE_00000744	MAN
+Nyankole	nyn	nyn		http://purl.obolibrary.org/obo/OMRSE_00000787	NYN
+Greek, Modern (1453‚Äì)	ell	gre	el	http://purl.obolibrary.org/obo/OMRSE_00000608	ELL
+Kirghiz	kir	kir	ky	http://purl.obolibrary.org/obo/OMRSE_00000702	KIR
+Cheyenne	chy	chy		http://purl.obolibrary.org/obo/OMRSE_00000580	CHY
+Chamorro	cha	cha	ch	http://purl.obolibrary.org/obo/OMRSE_00000567	CHA
+Romanian	ron	rum	ro	http://purl.obolibrary.org/obo/OMRSE_00000817	RON
+Tswana	tsn	tsn	tn	http://purl.obolibrary.org/obo/OMRSE_00000884	TSN
+Gwich'in	gwi	gwi		http://purl.obolibrary.org/obo/OMRSE_00000652	GWI
+Iloko	ilo	ilo		http://purl.obolibrary.org/obo/OMRSE_00000675	ILO
+Tonga (Nyasa)	tog	tog		http://purl.obolibrary.org/obo/OMRSE_00000880	TOG
+Irish	gle	gle	ga	http://purl.obolibrary.org/obo/OMRSE_00000639	GLE
+Sranan Tongo	srn	srn		http://purl.obolibrary.org/obo/OMRSE_00000851	SRN
+Macedonian	mkd	mac	mk	http://purl.obolibrary.org/obo/OMRSE_00000737	MKD
+Bulgarian	bul	bul	bg	http://purl.obolibrary.org/obo/OMRSE_00000559	BUL
+Southern Sami	sma	sma		http://purl.obolibrary.org/obo/OMRSE_00000837	SMA
+Sichuan Yi	iii	iii	ii	http://purl.obolibrary.org/obo/OMRSE_00000672	III
+Lao	lao	lao	lo	http://purl.obolibrary.org/obo/OMRSE_00000720	LAO
+Achinese	ace	ace		http://purl.obolibrary.org/obo/OMRSE_00000509	ACE
+Venda	ven	ven	ve	http://purl.obolibrary.org/obo/OMRSE_00000900	VEN
+Efik	efi	efi		http://purl.obolibrary.org/obo/OMRSE_00000605	EFI
+Kanuri	kau	kau	kr	http://purl.obolibrary.org/obo/OMRSE_00000693	KAU
+Twi	twi	twi	tw	http://purl.obolibrary.org/obo/OMRSE_00000890	TWI
+Tlingit	tli	tli		http://purl.obolibrary.org/obo/OMRSE_00000878	TLI
+Swiss German	gsw	gsw		http://purl.obolibrary.org/obo/OMRSE_00000650	GSW
+Cornish	cor	cor	kw	http://purl.obolibrary.org/obo/OMRSE_00000583	COR
+Kabyle	kab	kab		http://purl.obolibrary.org/obo/OMRSE_00000687	KAB
+Divehi	div	div	dv	http://purl.obolibrary.org/obo/OMRSE_00000597	DIV
+Norwegian	nor	nor	no	http://purl.obolibrary.org/obo/OMRSE_00000781	NOR
+Icelandic	isl	ice	is	http://purl.obolibrary.org/obo/OMRSE_00000670	ISL
+Central Khmer	khm	khm	km	http://purl.obolibrary.org/obo/OMRSE_00000698	KHM
+Votic	vot	vot		http://purl.obolibrary.org/obo/OMRSE_00000903	VOT
+Romany	rom	rom		http://purl.obolibrary.org/obo/OMRSE_00000816	ROM
+Hindi	hin	hin	hi	http://purl.obolibrary.org/obo/OMRSE_00000660	HIN
+Upper Sorbian	hsb	hsb		http://purl.obolibrary.org/obo/OMRSE_00000665	HSB
+Dogrib	dgr	dgr		http://purl.obolibrary.org/obo/OMRSE_00000595	DGR
+Chichewa	nya	nya	ny	http://purl.obolibrary.org/obo/OMRSE_00000785	NYA
+Nepali	nep	nep	ne	http://purl.obolibrary.org/obo/OMRSE_00000773	NEP
+Mandar	mdr	mdr		http://purl.obolibrary.org/obo/OMRSE_00000750	MDR
+Amharic	amh	amh	am	http://purl.obolibrary.org/obo/OMRSE_00000521	AMH
+Nyoro	nyo	nyo		http://purl.obolibrary.org/obo/OMRSE_00000788	NYO
+Luxembourgish	ltz	ltz	lb	http://purl.obolibrary.org/obo/OMRSE_00000729	LTZ
+Cherokee	chr	chr		http://purl.obolibrary.org/obo/OMRSE_00000577	CHR
+Marathi	mar	mar	mr	http://purl.obolibrary.org/obo/OMRSE_00000746	MAR
+Syriac	syr	syr		http://purl.obolibrary.org/obo/OMRSE_00000862	SYR
+Breton	bre	bre	br	http://purl.obolibrary.org/obo/OMRSE_00000556	BRE
+Mari	chm	chm		http://purl.obolibrary.org/obo/OMRSE_00000573	CHM
+Oriya	ori	ori	or	http://purl.obolibrary.org/obo/OMRSE_00000792	ORI
+Blin	byn	byn		http://purl.obolibrary.org/obo/OMRSE_00000561	BYN
+Nogai	nog	nog		http://purl.obolibrary.org/obo/OMRSE_00000779	NOG
+Galibi Carib	car	car		http://purl.obolibrary.org/obo/OMRSE_00000563	CAR
+Wolof	wol	wol	wo	http://purl.obolibrary.org/obo/OMRSE_00000908	WOL
+Tigrinya	tir	tir	ti	http://purl.obolibrary.org/obo/OMRSE_00000874	TIR
+Rundi	run	run	rn	http://purl.obolibrary.org/obo/OMRSE_00000818	RUN
+Malay	msa	may	ms	http://purl.obolibrary.org/obo/OMRSE_00000748	MSA
+Acoli	ach	ach		http://purl.obolibrary.org/obo/OMRSE_00000510	ACH
+Karachay-Balkar	krc	krc		http://purl.obolibrary.org/obo/OMRSE_00000710	KRC
+Assamese	asm	asm	as	http://purl.obolibrary.org/obo/OMRSE_00000531	ASM
+Kuanyama	kua	kua	kj	http://purl.obolibrary.org/obo/OMRSE_00000713	KUA
+Faroese	fao	fao	fo	http://purl.obolibrary.org/obo/OMRSE_00000617	FAO
+Lahnda	lah	lah		http://purl.obolibrary.org/obo/OMRSE_00000718	LAH
+Panjabi	pan	pan	pa	http://purl.obolibrary.org/obo/OMRSE_00000800	PAN
+Minangkabau	min	min		http://purl.obolibrary.org/obo/OMRSE_00000754	MIN
+Northern Frisian	frr	frr		http://purl.obolibrary.org/obo/OMRSE_00000627	FRR
+Friulian	fur	fur		http://purl.obolibrary.org/obo/OMRSE_00000631	FUR
+Albanian	sqi	alb	sq	http://purl.obolibrary.org/obo/OMRSE_00000518	SQI
+Angika	anp	anp		http://purl.obolibrary.org/obo/OMRSE_00000523	ANP
+Azerbaijani	aze	aze	az	http://purl.obolibrary.org/obo/OMRSE_00000537	AZE
+Lithuanian	lit	lit	lt	http://purl.obolibrary.org/obo/OMRSE_00000726	LIT
+Japanese	jpn	jpn	ja	http://purl.obolibrary.org/obo/OMRSE_00000683	JPN
+Marshallese	mah	mah	mh	http://purl.obolibrary.org/obo/OMRSE_00000740	MAH
+Southern Altai	alt	alt		http://purl.obolibrary.org/obo/OMRSE_00000520	ALT
+Duala	dua	dua		http://purl.obolibrary.org/obo/OMRSE_00000600	DUA
+Hmong	hmn	hmn		http://purl.obolibrary.org/obo/OMRSE_00000662	HMN
+Manchu	mnc	mnc		http://purl.obolibrary.org/obo/OMRSE_00000757	MNC
+Rarotongan	rar	rar		http://purl.obolibrary.org/obo/OMRSE_00000814	RAR
+Ainu	ain	ain		http://purl.obolibrary.org/obo/OMRSE_00000515	AIN
+Somali	som	som	so	http://purl.obolibrary.org/obo/OMRSE_00000847	SOM
+Bosnian	bos	bos	bs	http://purl.obolibrary.org/obo/OMRSE_00000554	BOS
+Belarusian	bel	bel	be	http://purl.obolibrary.org/obo/OMRSE_00000545	BEL
+Nzima	nzi	nzi		http://purl.obolibrary.org/obo/OMRSE_00000789	NZI
+Filipino	fil	fil		http://purl.obolibrary.org/obo/OMRSE_00000621	FIL
+Bikol	bik	bik		http://purl.obolibrary.org/obo/OMRSE_00000549	BIK
+Lezghian	lez	lez		http://purl.obolibrary.org/obo/OMRSE_00000723	LEZ
+N'Ko	nqo	nqo		http://purl.obolibrary.org/obo/OMRSE_00000782	NQO
+Corsican	cos	cos	co	http://purl.obolibrary.org/obo/OMRSE_00000584	COS
+Tahitian	tah	tah	ty	http://purl.obolibrary.org/obo/OMRSE_00000863	TAH
+Kalaallisut	kal	kal	kl	http://purl.obolibrary.org/obo/OMRSE_00000689	KAL
+Tigre	tig	tig		http://purl.obolibrary.org/obo/OMRSE_00000873	TIG
+Tetum	tet	tet		http://purl.obolibrary.org/obo/OMRSE_00000869	TET
+Mi'kmaq	mic	mic		http://purl.obolibrary.org/obo/OMRSE_00000753	MIC
+Kinyarwanda	kin	kin	rw	http://purl.obolibrary.org/obo/OMRSE_00000701	KIN
+Crimean Tatar	crh	crh		http://purl.obolibrary.org/obo/OMRSE_00000586	CRH
+Sandawe	sad	sad		http://purl.obolibrary.org/obo/OMRSE_00000821	SAD
+Aragonese	arg	arg	an	http://purl.obolibrary.org/obo/OMRSE_00000526	ARG
+Caddo	cad	cad		http://purl.obolibrary.org/obo/OMRSE_00000562	CAD
+Beja	bej	bej		http://purl.obolibrary.org/obo/OMRSE_00000544	BEJ
+Zuni	zun	zun		http://purl.obolibrary.org/obo/OMRSE_00000921	ZUN
+Sundanese	sun	sun	su	http://purl.obolibrary.org/obo/OMRSE_00000856	SUN
+Shan	shn	shn		http://purl.obolibrary.org/obo/OMRSE_00000832	SHN
+Madurese	mad	mad		http://purl.obolibrary.org/obo/OMRSE_00000738	MAD
+Limburgan	lim	lim	li	http://purl.obolibrary.org/obo/OMRSE_00000724	LIM
+Dogri	doi	doi		http://purl.obolibrary.org/obo/OMRSE_00000598	DOI
+Haida	hai	hai		http://purl.obolibrary.org/obo/OMRSE_00000653	HAI
+Swedish	swe	swe	sv	http://purl.obolibrary.org/obo/OMRSE_00000860	SWE
+Javanese	jav	jav	jv	http://purl.obolibrary.org/obo/OMRSE_00000681	JAV
+Abkhazian	abk	abk	ab	http://purl.obolibrary.org/obo/OMRSE_00000508	ABK
+Osage	osa	osa		http://purl.obolibrary.org/obo/OMRSE_00000794	OSA
+Occitan (post 1500)	oci	oci	oc	http://purl.obolibrary.org/obo/OMRSE_00000790	OCI
+Hawaiian	haw	haw		http://purl.obolibrary.org/obo/OMRSE_00000656	HAW
+Bashkir	bak	bak	ba	http://purl.obolibrary.org/obo/OMRSE_00000538	BAK
+Chinook jargon	chn	chn		http://purl.obolibrary.org/obo/OMRSE_00000574	CHN
+Chuukese	chk	chk		http://purl.obolibrary.org/obo/OMRSE_00000572	CHK
+Serer	srr	srr		http://purl.obolibrary.org/obo/OMRSE_00000853	SRR
+Gujarati	guj	guj	gu	http://purl.obolibrary.org/obo/OMRSE_00000651	GUJ
+Bokm√•l , Norwegian	nob	nob	nb	http://purl.obolibrary.org/obo/OMRSE_00000778	NOB
+Polish	pol	pol	pl	http://purl.obolibrary.org/obo/OMRSE_00000806	POL
+Guarani	grn	grn	gn	http://purl.obolibrary.org/obo/OMRSE_00000649	GRN
+Judeo-Persian	jpr	jpr		http://purl.obolibrary.org/obo/OMRSE_00000684	JPR
+Dutch	nld	dut	nl	http://purl.obolibrary.org/obo/OMRSE_00000602	NLD
+Malagasy	mlg	mlg	mg	http://purl.obolibrary.org/obo/OMRSE_00000755	MLG
+French	fra	fre	fr	http://purl.obolibrary.org/obo/OMRSE_00000624	FRA
+Iban	iba	iba		http://purl.obolibrary.org/obo/OMRSE_00000668	IBA
+Akan	aka	aka	ak	http://purl.obolibrary.org/obo/OMRSE_00000516	AKA
+Persian	fas	per	fa	http://purl.obolibrary.org/obo/OMRSE_00000618	FAS
+Neapolitan	nap	nap		http://purl.obolibrary.org/obo/OMRSE_00000766	NAP
+Igbo	ibo	ibo	ig	http://purl.obolibrary.org/obo/OMRSE_00000669	IBO
+Ukrainian	ukr	ukr	uk	http://purl.obolibrary.org/obo/OMRSE_00000895	UKR
+Basque	eus	baq	eu	http://purl.obolibrary.org/obo/OMRSE_00000542	EUS
+Vietnamese	vie	vie	vi	http://purl.obolibrary.org/obo/OMRSE_00000901	VIE
+Asturian	ast	ast		http://purl.obolibrary.org/obo/OMRSE_00000532	AST
+Pampanga	pam	pam		http://purl.obolibrary.org/obo/OMRSE_00000799	PAM
+Umbundu	umb	umb		http://purl.obolibrary.org/obo/OMRSE_00000896	UMB
+Indonesian	ind	ind	id	http://purl.obolibrary.org/obo/OMRSE_00000677	IND
+Siksika	bla	bla		http://purl.obolibrary.org/obo/OMRSE_00000552	BLA
+Tonga (Tonga Islands)	ton	ton	to	http://purl.obolibrary.org/obo/OMRSE_00000881	TON
+Arabic	ara	ara	ar	http://purl.obolibrary.org/obo/OMRSE_00000524	ARA
+Rapanui	rap	rap		http://purl.obolibrary.org/obo/OMRSE_00000813	RAP
+Basa	bas	bas		http://purl.obolibrary.org/obo/OMRSE_00000543	BAS
+Awadhi	awa	awa		http://purl.obolibrary.org/obo/OMRSE_00000535	AWA
+Ewe	ewe	ewe	ee	http://purl.obolibrary.org/obo/OMRSE_00000614	EWE
+Maori	mri	mao	mi	http://purl.obolibrary.org/obo/OMRSE_00000745	MRI
+Sukuma	suk	suk		http://purl.obolibrary.org/obo/OMRSE_00000855	SUK
+Tsonga	tso	tso	ts	http://purl.obolibrary.org/obo/OMRSE_00000885	TSO
+Kikuyu	kik	kik	ki	http://purl.obolibrary.org/obo/OMRSE_00000700	KIK
+Makasar	mak	mak		http://purl.obolibrary.org/obo/OMRSE_00000742	MAK
+Niuean	niu	niu		http://purl.obolibrary.org/obo/OMRSE_00000776	NIU
+Ga	gaa	gaa		http://purl.obolibrary.org/obo/OMRSE_00000632	GAA
+Luba-Lulua	lua	lua		http://purl.obolibrary.org/obo/OMRSE_00000730	LUA
+Washo	was	was		http://purl.obolibrary.org/obo/OMRSE_00000906	WAS
+Masai	mas	mas		http://purl.obolibrary.org/obo/OMRSE_00000747	MAS
+Bislama	bis	bis	bi	http://purl.obolibrary.org/obo/OMRSE_00000551	BIS
+Danish	dan	dan	da	http://purl.obolibrary.org/obo/OMRSE_00000590	DAN
+Lule Sami	smj	smj		http://purl.obolibrary.org/obo/OMRSE_00000839	SMJ
+Lushai	lus	lus		http://purl.obolibrary.org/obo/OMRSE_00000736	LUS
+Gorontalo	gor	gor		http://purl.obolibrary.org/obo/OMRSE_00000645	GOR
+Slave (Athapascan)	den	den		http://purl.obolibrary.org/obo/OMRSE_00000593	DEN
+Ossetian	oss	oss	os	http://purl.obolibrary.org/obo/OMRSE_00000795	OSS
+Eastern Frisian	frs	frs		http://purl.obolibrary.org/obo/OMRSE_00000628	FRS
+Navajo	nav	nav	nv	http://purl.obolibrary.org/obo/OMRSE_00000768	NAV
+Estonian	est	est	et	http://purl.obolibrary.org/obo/OMRSE_00000613	EST
+Mongo	lol	lol		http://purl.obolibrary.org/obo/OMRSE_00000727	LOL
+Ingush	inh	inh		http://purl.obolibrary.org/obo/OMRSE_00000678	INH
+Kutenai	kut	kut		http://purl.obolibrary.org/obo/OMRSE_00000716	KUT
+Luiseno	lui	lui		http://purl.obolibrary.org/obo/OMRSE_00000733	LUI
+Judeo-Arabic	jrb	jrb		http://purl.obolibrary.org/obo/OMRSE_00000685	JRB
+Kurukh	kru	kru		http://purl.obolibrary.org/obo/OMRSE_00000712	KRU
+Kumyk	kum	kum		http://purl.obolibrary.org/obo/OMRSE_00000714	KUM
+Manx	glv	glv	gv	http://purl.obolibrary.org/obo/OMRSE_00000641	GLV
+Burmese	mya	bur	my	http://purl.obolibrary.org/obo/OMRSE_00000560	MYA
+Aromanian	rup	rup		http://purl.obolibrary.org/obo/OMRSE_00000819	RUP
+Bambara	bam	bam	bm	http://purl.obolibrary.org/obo/OMRSE_00000540	BAM
+Luba-Katanga	lub	lub	lu	http://purl.obolibrary.org/obo/OMRSE_00000731	LUB
+Tokelau	tkl	tkl		http://purl.obolibrary.org/obo/OMRSE_00000876	TKL
+Baluchi	bal	bal		http://purl.obolibrary.org/obo/OMRSE_00000539	BAL
+Kamba	kam	kam		http://purl.obolibrary.org/obo/OMRSE_00000690	KAM
+Papiamento	pap	pap		http://purl.obolibrary.org/obo/OMRSE_00000801	PAP
+Marwari	mwr	mwr		http://purl.obolibrary.org/obo/OMRSE_00000764	MWR
+Dyula	dyu	dyu		http://purl.obolibrary.org/obo/OMRSE_00000603	DYU
+Haitian	hat	hat	ht	http://purl.obolibrary.org/obo/OMRSE_00000654	HAT
+Scots	sco	sco		http://purl.obolibrary.org/obo/OMRSE_00000829	SCO
+Gbaya	gba	gba		http://purl.obolibrary.org/obo/OMRSE_00000634	GBA
+Croatian	hrv	hrv	hr	http://purl.obolibrary.org/obo/OMRSE_00000664	HRV
+Sindhi	snd	snd	sd	http://purl.obolibrary.org/obo/OMRSE_00000844	SND
+Kashubian	csb	csb		http://purl.obolibrary.org/obo/OMRSE_00000587	CSB
+Buriat	bua	bua		http://purl.obolibrary.org/obo/OMRSE_00000557	BUA
+Swati	ssw	ssw	ss	http://purl.obolibrary.org/obo/OMRSE_00000854	SSW
+Turkish	tur	tur	tr	http://purl.obolibrary.org/obo/OMRSE_00000888	TUR
+Choctaw	cho	cho		http://purl.obolibrary.org/obo/OMRSE_00000575	CHO
+Italian	ita	ita	it	http://purl.obolibrary.org/obo/OMRSE_00000680	ITA
+Telugu	tel	tel	te	http://purl.obolibrary.org/obo/OMRSE_00000866	TEL
+Kosraean	kos	kos		http://purl.obolibrary.org/obo/OMRSE_00000708	KOS
+Tuvalu	tvl	tvl		http://purl.obolibrary.org/obo/OMRSE_00000889	TVL
+Standard Moroccan Tamazight	zgh	zgh		http://purl.obolibrary.org/obo/OMRSE_00000918	ZGH
+Cree	cre	cre	cr	http://purl.obolibrary.org/obo/OMRSE_00000585	CRE
+Kara-Kalpak	kaa	kaa		http://purl.obolibrary.org/obo/OMRSE_00000686	KAA
+Balinese	ban	ban		http://purl.obolibrary.org/obo/OMRSE_00000541	BAN
+Fijian	fij	fij	fj	http://purl.obolibrary.org/obo/OMRSE_00000620	FIJ
+Adyghe	ady	ady		http://purl.obolibrary.org/obo/OMRSE_00000512	ADY
+Uighur	uig	uig	ug	http://purl.obolibrary.org/obo/OMRSE_00000894	UIG
+Ladino	lad	lad		http://purl.obolibrary.org/obo/OMRSE_00000717	LAD
+Udmurt	udm	udm		http://purl.obolibrary.org/obo/OMRSE_00000892	UDM
+Grebo	grb	grb		http://purl.obolibrary.org/obo/OMRSE_00000647	GRB
+Turkmen	tuk	tuk	tk	http://purl.obolibrary.org/obo/OMRSE_00000886	TUK
+Selkup	sel	sel		http://purl.obolibrary.org/obo/OMRSE_00000830	SEL
+Romansh	roh	roh	rm	http://purl.obolibrary.org/obo/OMRSE_00000815	ROH
+Catalan	cat	cat	ca	http://purl.obolibrary.org/obo/OMRSE_00000564	CAT
+Inuktitut	iku	iku	iu	http://purl.obolibrary.org/obo/OMRSE_00000673	IKU
+Creek	mus	mus		http://purl.obolibrary.org/obo/OMRSE_00000762	MUS
+Tsimshian	tsi	tsi		http://purl.obolibrary.org/obo/OMRSE_00000883	TSI
+Hausa	hau	hau	ha	http://purl.obolibrary.org/obo/OMRSE_00000655	HAU
+Sinhala	sin	sin	si	http://purl.obolibrary.org/obo/OMRSE_00000834	SIN
+Mirandese	mwl	mwl		http://purl.obolibrary.org/obo/OMRSE_00000763	MWL
+Magahi	mag	mag		http://purl.obolibrary.org/obo/OMRSE_00000739	MAG
+Gilbertese	gil	gil		http://purl.obolibrary.org/obo/OMRSE_00000637	GIL
+Walloon	wln	wln	wa	http://purl.obolibrary.org/obo/OMRSE_00000907	WLN
+Ojibwa	oji	oji	oj	http://purl.obolibrary.org/obo/OMRSE_00000791	OJI
+Georgian	kat	geo	ka	http://purl.obolibrary.org/obo/OMRSE_00000635	KAT
+Yoruba	yor	yor	yo	http://purl.obolibrary.org/obo/OMRSE_00000914	YOR
+Ndebele, South	nbl	nbl	nr	http://purl.obolibrary.org/obo/OMRSE_00000769	NBL
+Chinese	zho	chi	zh	http://purl.obolibrary.org/obo/OMRSE_00000571	ZHO
+Hungarian	hun	hun	hu	http://purl.obolibrary.org/obo/OMRSE_00000666	HUN
+Komi	kom	kom	kv	http://purl.obolibrary.org/obo/OMRSE_00000705	KOM
+Tajik	tgk	tgk	tg	http://purl.obolibrary.org/obo/OMRSE_00000870	TGK
+Urdu	urd	urd	ur	http://purl.obolibrary.org/obo/OMRSE_00000897	URD
+Ndonga	ndo	ndo	ng	http://purl.obolibrary.org/obo/OMRSE_00000771	NDO
+Low German	nds	nds		http://purl.obolibrary.org/obo/OMRSE_00000772	NDS
+Susu	sus	sus		http://purl.obolibrary.org/obo/OMRSE_00000857	SUS
+Gaelic	gla	gla	gd	http://purl.obolibrary.org/obo/OMRSE_00000638	GLA
+Aymara	aym	aym	ay	http://purl.obolibrary.org/obo/OMRSE_00000536	AYM
+Nepal Bhasa	new	new		http://purl.obolibrary.org/obo/OMRSE_00000774	NEW
+Mende	men	men		http://purl.obolibrary.org/obo/OMRSE_00000751	MEN
+Uzbek	uzb	uzb	uz	http://purl.obolibrary.org/obo/OMRSE_00000898	UZB
+Thai	tha	tha	th	http://purl.obolibrary.org/obo/OMRSE_00000872	THA
+Zulu	zul	zul	zu	http://purl.obolibrary.org/obo/OMRSE_00000920	ZUL
+Fang	fan	fan		http://purl.obolibrary.org/obo/OMRSE_00000616	FAN
+Soninke	snk	snk		http://purl.obolibrary.org/obo/OMRSE_00000845	SNK
+Pedi	nso	nso		http://purl.obolibrary.org/obo/OMRSE_00000783	NSO
+Tok Pisin	tpi	tpi		http://purl.obolibrary.org/obo/OMRSE_00000882	TPI
+Sicilian	scn	scn		http://purl.obolibrary.org/obo/OMRSE_00000828	SCN
+Kazakh	kaz	kaz	kk	http://purl.obolibrary.org/obo/OMRSE_00000695	KAZ
+Tibetan	bod	tib	bo	http://purl.obolibrary.org/obo/OMRSE_00000553	BOD
+Tuvinian	tyv	tyv		http://purl.obolibrary.org/obo/OMRSE_00000891	TYV
+Inupiaq	ipk	ipk	ik	http://purl.obolibrary.org/obo/OMRSE_00000679	IPK
+Avaric	ava	ava	av	http://purl.obolibrary.org/obo/OMRSE_00000533	AVA
+Kurdish	kur	kur	ku	http://purl.obolibrary.org/obo/OMRSE_00000715	KUR
+Tagalog	tgl	tgl	tl	http://purl.obolibrary.org/obo/OMRSE_00000871	TGL
+Yapese	yap	yap		http://purl.obolibrary.org/obo/OMRSE_00000912	YAP
+Konkani	kok	kok		http://purl.obolibrary.org/obo/OMRSE_00000704	KOK
+Tamil	tam	tam	ta	http://purl.obolibrary.org/obo/OMRSE_00000864	TAM
+Russian	rus	rus	ru	http://purl.obolibrary.org/obo/OMRSE_00000820	RUS
+Zapotec	zap	zap		http://purl.obolibrary.org/obo/OMRSE_00000915	ZAP
+Nias	nia	nia		http://purl.obolibrary.org/obo/OMRSE_00000775	NIA
+Yiddish	yid	yid	yi	http://purl.obolibrary.org/obo/OMRSE_00000913	YID
+Welsh	cym	wel	cy	http://purl.obolibrary.org/obo/OMRSE_00000588	CYM
+Chechen	che	che	ce	http://purl.obolibrary.org/obo/OMRSE_00000569	CHE
+Slovenian	slv	slv	sl	http://purl.obolibrary.org/obo/OMRSE_00000836	SLV
+Lunda	lun	lun		http://purl.obolibrary.org/obo/OMRSE_00000734	LUN
+Vai	vai	vai		http://purl.obolibrary.org/obo/OMRSE_00000899	VAI
+Sango	sag	sag	sg	http://purl.obolibrary.org/obo/OMRSE_00000822	SAG
+Dinka	din	din		http://purl.obolibrary.org/obo/OMRSE_00000596	DIN
+Sardinian	srd	srd	sc	http://purl.obolibrary.org/obo/OMRSE_00000850	SRD
+Maltese	mlt	mlt	mt	http://purl.obolibrary.org/obo/OMRSE_00000756	MLT
+Dzongkha	dzo	dzo	dz	http://purl.obolibrary.org/obo/OMRSE_00000604	DZO
+Mapudungun	arn	arn		http://purl.obolibrary.org/obo/OMRSE_00000528	ARN
+Bemba	bem	bem		http://purl.obolibrary.org/obo/OMRSE_00000546	BEM
+Latvian	lav	lav	lv	http://purl.obolibrary.org/obo/OMRSE_00000722	LAV
+Tamashek	tmh	tmh		http://purl.obolibrary.org/obo/OMRSE_00000879	TMH
+Portuguese	por	por	pt	http://purl.obolibrary.org/obo/OMRSE_00000808	POR
+Bhojpuri	bho	bho		http://purl.obolibrary.org/obo/OMRSE_00000548	BHO
+Lingala	lin	lin	ln	http://purl.obolibrary.org/obo/OMRSE_00000725	LIN
+Sidamo	sid	sid		http://purl.obolibrary.org/obo/OMRSE_00000833	SID
+Yao	yao	yao		http://purl.obolibrary.org/obo/OMRSE_00000911	YAO
+Western Frisian	fry	fry	fy	http://purl.obolibrary.org/obo/OMRSE_00000629	FRY
+Hiligaynon	hil	hil		http://purl.obolibrary.org/obo/OMRSE_00000659	HIL
+Ndebele, North	nde	nde	nd	http://purl.obolibrary.org/obo/OMRSE_00000770	NDE
+Armenian	hye	arm	hy	http://purl.obolibrary.org/obo/OMRSE_00000527	HYE
+Santali	sat	sat		http://purl.obolibrary.org/obo/OMRSE_00000827	SAT
+Nyamwezi	nym	nym		http://purl.obolibrary.org/obo/OMRSE_00000786	NYM
+Palauan	pau	pau		http://purl.obolibrary.org/obo/OMRSE_00000802	PAU
+Buginese	bug	bug		http://purl.obolibrary.org/obo/OMRSE_00000558	BUG
+Kimbundu	kmb	kmb		http://purl.obolibrary.org/obo/OMRSE_00000703	KMB
+Serbian	srp	srp	sr	http://purl.obolibrary.org/obo/OMRSE_00000852	SRP
+Pangasinan	pag	pag		http://purl.obolibrary.org/obo/OMRSE_00000797	PAG
+Norwegian Nynorsk	nno	nno	nn	http://purl.obolibrary.org/obo/OMRSE_00000777	NNO
+Slovak	slk	slo	sk	http://purl.obolibrary.org/obo/OMRSE_00000835	SLK
+English	eng	eng	en	http://purl.obolibrary.org/obo/OMRSE_00000610	ENG
+Delaware	del	del		http://purl.obolibrary.org/obo/OMRSE_00000592	DEL
+Shona	sna	sna	sn	http://purl.obolibrary.org/obo/OMRSE_00000843	SNA
+Tiv	tiv	tiv		http://purl.obolibrary.org/obo/OMRSE_00000875	TIV
+Gondi	gon	gon		http://purl.obolibrary.org/obo/OMRSE_00000644	GON
+Kalmyk	xal	xal		http://purl.obolibrary.org/obo/OMRSE_00000909	XAL
+Sasak	sas	sas		http://purl.obolibrary.org/obo/OMRSE_00000826	SAS
+Kannada	kan	kan	kn	http://purl.obolibrary.org/obo/OMRSE_00000691	KAN
+Swahili	swa	swa	sw	http://purl.obolibrary.org/obo/OMRSE_00000859	SWA
+Nauru	nau	nau	na	http://purl.obolibrary.org/obo/OMRSE_00000767	NAU
+Aleut	ale	ale		http://purl.obolibrary.org/obo/OMRSE_00000519	ALE
+Chuvash	chv	chv	cv	http://purl.obolibrary.org/obo/OMRSE_00000579	CHV
+Lamba	lam	lam		http://purl.obolibrary.org/obo/OMRSE_00000719	LAM
+Luo (Kenya and Tanzania)	luo	luo		http://purl.obolibrary.org/obo/OMRSE_00000735	LUO
+Spanish	spa	spa	es	http://purl.obolibrary.org/obo/OMRSE_00000849	SPA
+Bini	bin	bin		http://purl.obolibrary.org/obo/OMRSE_00000550	BIN
+Adangme	ada	ada		http://purl.obolibrary.org/obo/OMRSE_00000511	ADA
+Tatar	tat	tat	tt	http://purl.obolibrary.org/obo/OMRSE_00000865	TAT
+Quechua	que	que	qu	http://purl.obolibrary.org/obo/OMRSE_00000811	QUE
+Khasi	kha	kha		http://purl.obolibrary.org/obo/OMRSE_00000697	KHA
+Oromo	orm	orm	om	http://purl.obolibrary.org/obo/OMRSE_00000793	ORM
+Korean	kor	kor	ko	http://purl.obolibrary.org/obo/OMRSE_00000707	KOR
+Kabardian	kbd	kbd		http://purl.obolibrary.org/obo/OMRSE_00000696	KBD
+Sotho, Southern	sot	sot	st	http://purl.obolibrary.org/obo/OMRSE_00000848	SOT
+Kongo	kon	kon	kg	http://purl.obolibrary.org/obo/OMRSE_00000706	KON
+Manipuri	mni	mni		http://purl.obolibrary.org/obo/OMRSE_00000758	MNI
+German	deu	ger	de	http://purl.obolibrary.org/obo/OMRSE_00000594	DEU
+Arapaho	arp	arp		http://purl.obolibrary.org/obo/OMRSE_00000529	ARP
+Skolt Sami	sms	sms		http://purl.obolibrary.org/obo/OMRSE_00000842	SMS
+Kachin	kac	kac		http://purl.obolibrary.org/obo/OMRSE_00000688	KAC
+Dakota	dak	dak		http://purl.obolibrary.org/obo/OMRSE_00000589	DAK
+Finnish	fin	fin	fi	http://purl.obolibrary.org/obo/OMRSE_00000622	FIN
+Galician	glg	glg	gl	http://purl.obolibrary.org/obo/OMRSE_00000640	GLG
+Pushto	pus	pus	ps	http://purl.obolibrary.org/obo/OMRSE_00000810	PUS

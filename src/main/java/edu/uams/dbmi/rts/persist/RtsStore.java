@@ -16,11 +16,13 @@ package edu.uams.dbmi.rts.persist;
 
 import java.util.Set;
 
+import edu.uams.dbmi.rts.ParticularReference;
 import edu.uams.dbmi.rts.RtsDeclaration;
 import edu.uams.dbmi.rts.iui.Iui;
 import edu.uams.dbmi.rts.query.TupleQuery;
 import edu.uams.dbmi.rts.tuple.RtsTuple;
 import edu.uams.dbmi.rts.tuple.RtsTupleType;
+import edu.uams.dbmi.rts.uui.Uui;
 
 /**
  * This interface specifies the contract of an entity that persists Referent
@@ -69,6 +71,22 @@ public interface RtsStore {
 	 * @return an Iui not found in the store
 	 */
 	public Iui getAvailableIui();
+
+	/**
+	  * An extremely common need is to lookup an IUI for an entity via 
+	  *  a designator of a particular type.  For example, lookup a person
+	  *  by their name, some identifier, etc.
+	  *
+	  * This method therefore takes a UUI for the type of the designator,
+	  *  a UUI for the type of entity designated, and the actual string
+	  *  by which the designator is concretized.  It returns a set of IUIs
+	  *  whereby each IUI in the list denotes an entity asserted to be
+	  *  of a type denoted by the first UUI, and that is denoted by 
+	  *  some entity asserted to be of a type denoted by the second UUI,
+	  *  and that is concretized using a string that is an exact 
+	  *  match to the string provided.
+	  */
+	public abstract Set<ParticularReference> getReferentsByTypeAndDesignatorType(Uui referentType, Uui designatorType, String designatorTxt);
 
 	/**
 	 * runs a query given the Tuple parameters
