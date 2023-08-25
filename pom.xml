@@ -4,8 +4,7 @@
   <artifactId>rts_core</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <properties>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
+     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <build>
     <testResources>
@@ -19,10 +18,9 @@
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.3</version>
+        <version>3.8.1</version>
         <configuration>
-          <source/>
-          <target/>
+         <release>20</release>
         </configuration>
       </plugin>
     </plugins>
