@@ -1,0 +1,249 @@
+#PCORnet Common Data Model version 5
+#PROVIDER table
+
+#configuration / arguments input into the process
+#IUI of the database from which the source data derives
+IUIp-1 = $1             
+
+#ISO8601 timestamp to associate with time of IUI assignment               
+timestamp-1 = $2	     
+
+#IUI of the user running this process
+IUIp-16 = $3		   
+
+#ISO8601 timestamp to associate with time of template insertion  
+timestamp-2 = $4	
+
+timestamp-3 = $5
+
+# ------
+# some temporal references we’ll need later
+# ------
+#interval over which person has been instance of human being
+tr-1 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
+#interval over which person has been bearer of his/her phenotypic sex
+tr-2 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
+#interval over which the person's provider role has existed
+tr-3 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
+#temporal instant for time of assertion
+T~[timestamp-2]|[temporal-instant]|d4af5c9a-47ba-4bf4-9bae-f13a8ed6455e   
+
+# SECTION FOR PROVIDERID
+
+# Assignment templates, which begin by assigning template IUIs.
+# new-iui is instruction to create a new IUI
+IUIt-1 = [new-iui]
+# assign IUI to the person that this provider table row is about
+@IM PROVIDERID
+IUIp-2 = A|[IUIt-1]~[IUIp-1]|[timestamp-1]|[new-iui]  
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-1]|I|CR|Null|
+
+# assign IUI to the person's provider role.  At some point, we'll want to 
+#   disambiguate providers across data sources (most likely using NPI), in
+#   which case, we'll assign a different provider role for each source, 
+#   with the likely exception of Medicaid data.  But for now, we just 
+#   assume that each row in the provider table is a different person, to
+#   get started, and until we learn more about some of the oddities in 
+#   NPIs (e.g., one NPI appears in 15 rows of the provider table, 9 of which
+#   come from one source)
+IUIt-2 = [new-iui]
+IUIp-3 = A|[IUIt-2]~[IUIp-1]|[timestamp-1]|[new-iui]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-2]|I|CR|Null|
+
+# instantiations
+IUIt-4 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[human]|[NCBI]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-4]|I|CR|Null|
+IUIt-5 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-3]|[healthcare-provider]|[OMRSE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-5]|I|CR|Null|
+
+# relationships
+# the provider is the bearer of his/her provider role
+IUIt-6 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[bearer-of]|[BFO]|iui=[IUIp-2],iui=[IUIp-3]|[tr-3]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-6]|I|CR|Null|
+
+# SECTION FOR PROVIDER_SEX field
+# assign IUI to the person's phenotypic sex quality.
+IUIt-3 = [new-iui]
+IUIp-4 = A|[IUIt-3]~[IUIp-1]|[timestamp-1]|[new-iui]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-3]|I|CR|Null|
+
+# instantiations
+# it's an instance of phenotypic sex quality
+@IM PROVIDER_SEX
+IUIt-7 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-4]|[phenotypic-sex-quality]|[PATO]|[tr-2]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-7]|I|CR|Null|
+# based on the value of the field, it's more specifically an instance of 
+#  something else (and possibly not an instance of other things)
+
+# relationships
+# the provider is the bearer of his/her phenotypic sex quality
+IUIt-11 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[bearer-of]|[BFO]|iui=[IUIp-2],iui=[IUIp-4]|[tr-2]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|
+
+if (%2 =="M") 
+	IUIt-8 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-4]|[male-sex]|[PATO]|[tr-2]
+	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-8]|I|CR|Null|
+@CV PROVIDER_SEX
+
+else if (%2 == "F")
+	IUIt-8 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-4]|[female-sex]|[PATO]|[tr-2]
+	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-8]|I|CR|Null|
+@CV PROVIDER_SEX
+
+else if (%2=="A")
+	IUIt-8 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-4]|[intersex]|[PATO]|[tr-2]
+	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-8]|I|CR|Null|
+@CV PROVIDER_SEX
+
+else if (%2 == "OT") 
+	IUIt-8 = U|[new-iui]~[IUIp-1]|[timestamp-2]|<-!-http://purl.obolibrary.org/obo/OBO_REL#_instance_of>|[BFO]|[IUIp-4]|[male-sex]|[PATO]|[tr-2]
+	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-8]|I|CR|Null|
+	IUIt-9 = U|[new-iui]~[IUIp-1]|[timestamp-2]|<-!-http://purl.obolibrary.org/obo/OBO_REL#_instance_of>|[BFO]|[IUIp-4]|[female-sex]|[PATO]|[tr-2]
+	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-9]|I|CR|Null|
+@CV PROVIDER_SEX
+@UA PROVIDER_SEX
+
+else if (%2=="") 
+#comment
+@UA PROVIDER_SEX
+
+else 
+#comment
+@DV PROVIDER_SEX
+
+endif
+
+# relationships
+IUIt-10 = [new-iui]
+# person is bearer of his sex quality
+P|[IUIt-10]~[IUIp-1]|[timestamp-2]|[bearer-of]|[RO]|iui=[IUIp-2], iui=[IUIp-4]|[tr-2]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-10]|I|CR|Null|
+
+# -----------------------------------------------------------------
+#
+#	Handling the information side
+#
+# -----------------------------------------------------------------
+# assign IUI to the entire record
+IUIt-100 = [new-iui]
+IUIp-100 = A|[IUIt-100]~[IUIp-1]|[timestamp-1]|[new-iui] 
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-100]|I|CR|Null|
+
+T~[timestamp-3]|[temporal-interval]|d4af5c9a-47ba-4bf4-9bae-f13a8ed6455e
+# tr-100 is interval over which entire record exists
+tr-100 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
+
+# tr-101 is interval over which providerid exists
+tr-101 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
+IUIt-150 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[during]|[RO]|tref=[timestamp-3],tref=[tr-101]|[tmax]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-150]|I|CR|Null|
+
+# assign IUI to the id of the provider
+@LV PROVIDERID
+IUIt-101 = [new-iui]
+IUIp-101 = A|[IUIt-101]~[IUIp-1]|[timestamp-1]|[new-iui]
+# for now, not storing D tuples' IUIs for later use
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-101]|I|CR|Null|
+IUIt-151 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-101], iui=[IUIp-100]|[tr-100]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-151]|I|CR|Null|
+IUIt-171 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-101]|[pcornet-provider-id]|[PCOROWL]|[tr-101]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-171]|I|CR|Null|  
+# record the actual characters of the providerid in a PtoDE template
+IUIt-191 = [new-iui]
+E|[IUIt-191]~[IUIp-1]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-101]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%1
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-191]|I|CR|Null|	
+
+# assign IUI to the provider_sex field
+IUIt-102 = [new-iui]
+IUIp-102 = A|[IUIt-102]~[IUIp-1]|[timestamp-1]|[new-iui]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-102]|I|CR|Null|
+IUIt-152 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-102], iui=[IUIp-100]|[tr-100]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-152]|I|CR|Null|
+# declare it to be an instance of iao:data item at tr-101
+IUIt-172 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-102]|[data-item]|[IAO]|[tr-100]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-172]|I|CR|Null|  
+if (%2 != "") 
+	IUIt-192 = [new-iui]
+	E|[IUIt-192]~[IUIp-1]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-102]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%2
+	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-192]|I|CR|Null|
+endif
+
+# assign IUI to the provider_specialty_primary field
+IUIt-103 = [new-iui]
+IUIp-103 = A|[IUIt-103]~[IUIp-1]|[timestamp-1]|[new-iui]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-103]|I|CR|Null|
+IUIt-153 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-103], iui=[IUIp-100]|[tr-100]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-153]|I|CR|Null|
+# declare it to be an instance of iao:data item at tr-100
+IUIt-173 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-102]|[data-item]|[IAO]|[tr-100]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-173]|I|CR|Null|  
+if (%3 != "") 
+	IUIt-193 = [new-iui]
+	E|[IUIt-193]~[IUIp-1]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-103]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%3
+	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-193]|I|CR|Null|
+endif
+
+# assign IUI to the provider_npi field
+IUIt-104 = [new-iui]
+IUIp-104 = A|[IUIt-104]~[IUIp-1]|[timestamp-1]|[new-iui]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-104]|I|CR|Null|
+IUIt-154 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-104], iui=[IUIp-100]|[tr-100]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-154]|I|CR|Null|
+# declare it to be an instance of iao:data item at tr-100
+IUIt-174 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-104]|[identifier]|[PNO]|[tr-100]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-174]|I|CR|Null|  
+if (%4 != "") 
+	IUIt-194 = [new-iui]
+	E|[IUIt-194]~[IUIp-1]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-104]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%4
+	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-194]|I|CR|Null|
+endif
+
+# assign IUI to the provider_npi_flag field
+IUIt-105 = [new-iui]
+IUIp-105 = A|[IUIt-105]~[IUIp-1]|[timestamp-1]|[new-iui]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-105]|I|CR|Null|
+IUIt-155 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-105], iui=[IUIp-100]|[tr-100]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-155]|I|CR|Null|
+# declare it to be an instance of iao:data item at tr-100
+IUIt-175 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-105]|[data-item]|[IAO]|[tr-100]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-175]|I|CR|Null|  
+if (%5 != "") 
+	IUIt-195 = [new-iui]
+	E|[IUIt-195]~[IUIp-1]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-105]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%5
+	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-195]|I|CR|Null|
+endif
+
+# assign IUI to the raw_provider_specialty_primary field
+IUIt-106 = [new-iui]
+IUIp-106 = A|[IUIt-106]~[IUIp-1]|[timestamp-1]|[new-iui]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-106]|I|CR|Null|
+IUIt-156 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[bfo-part-of]|[BFO]|iui=[IUIp-106], iui=[IUIp-100]|[tr-100]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-156]|I|CR|Null|
+# declare it to be an instance of iao:data item at tr-100
+IUIt-176 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-106]|[data-item]|[IAO]|[tr-100]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-176]|I|CR|Null|  
+if (%6 != "") 
+	IUIt-196 = [new-iui]
+	E|[IUIt-196]~[IUIp-1]|[timestamp-2]|[concretized-by]|[BFO]|iui=[IUIp-106]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%6
+	D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-196]|I|CR|Null|
+endif
+
+# the record is about the person (denoted by IUIp-2, here)
+IUIt-500 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[is-about]|[IAO]|iui=[IUIp-100], iui=[IUIp-2]|[tr-100]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-500]|I|CR|Null|
+
+# the providerid denotes the person (denoted by IUIp-2, here)
+IUIt-501 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[denotes]|[IAO]|iui=[IUIp-101], iui=[IUIp-2]|[tr-101]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-501]|I|CR|Null|
+
+# the provider_sex field is about the person's sex quality (denoted by IUIp-4, here)
+IUIt-502 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[is-about]|[IAO]|iui=[IUIp-102], iui=[IUIp-4]|[tr-100]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-502]|I|CR|Null|
+
+# the provider_specialty_primary field is about the person's provider role (denoted by IUIp-3, here)
+IUIt-503 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[is-about]|[IAO]|iui=[IUIp-103], iui=[IUIp-3]|[tr-100]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-503]|I|CR|Null|
+
+# the provider_npi denotes the person (denoted by IUIp-2, here)
+IUIt-504 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[denotes]|[IAO]|iui=[IUIp-104], iui=[IUIp-2]|[tr-100]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-504]|I|CR|Null|

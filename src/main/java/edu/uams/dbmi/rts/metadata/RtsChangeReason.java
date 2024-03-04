@@ -16,20 +16,23 @@ package edu.uams.dbmi.rts.metadata;
 
 /**
  * An enumerated list of change reasons used to populate the C parameter of
- * 	metadata templates.
+ * 	metadata tuples.
  * 
  * @author williamhogan
  *
  */
 public enum RtsChangeReason {
+	
 	/**
 	 * Change in belief/understanding
 	 */
 	CB("Change in belief/understanding"),
+	
 	/**
 	 * Change in reality
 	 */
 	CE("Change in reality"),
+	
 	/**
 	 * Change in relevance
 	 */

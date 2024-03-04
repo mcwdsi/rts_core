@@ -1,0 +1,49 @@
+
+# Get timestamp for ta, tap parameters.  Using time at which process runs in realtime.
+tr-1 = [sys-time]
+
+# specify the details of this temporal region
+T~[tr-1]|[temporal-instant]|d4af5c9a-47ba-4bf4-9bae-f13a8ed6455e
+
+# assign IUI to you, the person running this process
+IUIt-1 = [new-iui]
+IUIp-1 = [new-iui]
+# you are assigning an IUI to yourself at the current time
+A|[IUIt-1]~[IUIp-1]|[tr-1]|[IUIp-1]
+
+# time over which you have been an instance of human being. This is a most basic person init.  We can extend it to 
+#  more involved versions that include demographics like DOB, sex, race, etc.
+tr-2 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
+
+# ISO name for tr-1
+IUIt-11 = E|[new-iui]~[IUIp-1]|[tr-1]|[concretized-by]|[BFO]|tref=[tr-1]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|[tr-1]
+
+# time over which your name has denoted you.  Not assuming it's your entire life.  Again, we can handle name changes
+#   in a more involved/extended person initialization instruction set.
+tr-3 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
+
+# you are an instance of human being over t2
+IUIt-2 = U|[new-iui]~[IUIp-1]|[tr-1]|[instance-of]|[BFO]|[IUIp-1]|[human]|[NCBI]|[tr-2]
+
+# assign IUI to the name you input
+IUIt-3 = [new-iui]
+IUIp-2 = A|[IUIt-3]~[IUIp-1]|[tr-1]|[new-iui]
+
+# your name is an instance of personal name
+IUIt-4 = U|[new-iui]~[IUIp-1]|[tr-1]|[instance-of]|[BFO]|[IUIp-2]|[personal-name]|[PNO]|[tr-3]
+
+# PtoDE tuple for the written form of your name.  Full name is only input into this version.
+IUIt-5 = [new-iui]
+E|[IUIt-5]~[IUIp-1]|[tr-1]|[concretized-by]|[BFO]|iui=[IUIp-2]|<https://www.ietf.org/rfc/rfc3629.txt>|[CHARACTER-ENCODINGS-O]|[PNO]|%1
+
+# your full name denotes you
+IUIt-6 = P|[new-iui]~[IUIp-1]|[tr-1]|[denotes]|[IAO]|iui=[IUIp-2],iui=[IUIp-1]|[tr-3]
+
+# metadata tuples
+D|[new-iui]~[IUIp-1]|[tr-1]|[IUIt-1]|I|CR|Null|
+D|[new-iui]~[IUIp-1]|[tr-1]|[IUIt-2]|I|CR|Null|
+D|[new-iui]~[IUIp-1]|[tr-1]|[IUIt-3]|I|CR|Null|
+D|[new-iui]~[IUIp-1]|[tr-1]|[IUIt-4]|I|CR|Null|
+D|[new-iui]~[IUIp-1]|[tr-1]|[IUIt-5]|I|CR|Null|
+D|[new-iui]~[IUIp-1]|[tr-1]|[IUIt-6]|I|CR|Null|
+D|[new-iui]~[IUIp-1]|[tr-1]|[IUIt-11]|I|CR|Null|

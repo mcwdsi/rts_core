@@ -17,9 +17,10 @@ package edu.uams.dbmi.rts.iui;
 import java.io.Serializable;
 import java.util.UUID;
 
+import edu.uams.dbmi.rts.ParticularReference;
 import edu.uams.dbmi.util.UuidUtil;
 
-public class Iui implements Serializable {
+public class Iui extends ParticularReference implements Serializable {
 
 	/**
 	 * 

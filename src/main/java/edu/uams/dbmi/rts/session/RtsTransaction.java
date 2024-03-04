@@ -3,36 +3,36 @@ package edu.uams.dbmi.rts.session;
 import java.util.HashSet;
 import java.util.Set;
 
-import edu.uams.dbmi.rts.template.MetadataTemplate;
-import edu.uams.dbmi.rts.template.RtsTemplate;
+import edu.uams.dbmi.rts.tuple.MetadataTuple;
+import edu.uams.dbmi.rts.tuple.RtsTuple;
 
 public class RtsTransaction {
 
 	private RtsSession session;
 	
-	private Set<RtsTemplate> cache = new HashSet<RtsTemplate>();
+	private Set<RtsTuple> cache = new HashSet<RtsTuple>();
 
 	public RtsTransaction(RtsSession session) {
 		this.session = session;
 	}
 
 	/**
-	 * Add a template to the transaction
+	 * Add a tuple to the transaction
 	 * 
-	 * @param template
+	 * @param tuple
 	 */
-	public void addTemplate(RtsTemplate template) {
-		cache.add(template);
+	public void addTuple(RtsTuple tuple) {
+		cache.add(tuple);
 	}
 	
 	/**
-	 * updates a template that already exists within the RTS with given metadata
+	 * updates a tuple that already exists within the RTS with given metadata
 	 * 
-	 * @param template
+	 * @param tuple
 	 * @param metadata
 	 */
-	public void updateTemplate(RtsTemplate template, MetadataTemplate metadata){
-		cache.add(template);
+	public void updateTuple(RtsTuple tuple, MetadataTuple metadata){
+		cache.add(tuple);
 		cache.add(metadata);
 		
 	}
@@ -43,7 +43,7 @@ public class RtsTransaction {
 	 * @return true if the commit was successful, false otherwise
 	 */
 	public boolean commit() {
-		boolean status = session.saveTemplates(cache);
+		boolean status = session.saveTuples(cache);
 		cache.clear();
 		
 		return status;

@@ -16,9 +16,9 @@ package edu.uams.dbmi.rts.metadata;
 
 /**
  * An enumerated list of values used in the CT parameter of metadata 
- * 	templates.  Note that it records the type of change made to the 
- *  Referent Tracking System with respect to a single template, and 
- *  the metadata template records the IUI of this template in its 
+ * 	tuples.  Note that it records the type of change made to the 
+ *  Referent Tracking System with respect to a single tuple, and 
+ *  the metadata tuple records the IUI of this tuple in its 
  *  iuit parameter.
  * 
  * @author rogerahall
@@ -26,17 +26,17 @@ package edu.uams.dbmi.rts.metadata;
  */
 public enum RtsChangeType {
 	/**
-	 * Insertion - this metadata template records the addition of one of 
-	 *   the other types of templates to the Referent Tracking System.
+	 * Insertion - this metadata tuple records the addition of one of 
+	 *   the other types of tuples to the Referent Tracking System.
 	 */
 	I("inserting"),
 	
 	/**
-	 * Invalidation - this metadata template records the invalidation of 
-	 *   an existing template in the RTS because it is no longer an 
+	 * Invalidation - this metadata tuple records the invalidation of 
+	 *   an existing tuple in the RTS because it is no longer an 
 	 *   accurate and relevant statement about reality believed by its author.
 	 *  
-	 * The assertion made by the template either (1) was never correct, 
+	 * The assertion made by the tuple either (1) was never correct, 
 	 *   (2) is now incorrect due to a change in reality, (3) no longer
 	 *   reflects the belief of the agent who made it, or (4) is not (or 
 	 *   is no longer) relevant to the purpose for which it was recorded.  
@@ -44,8 +44,8 @@ public enum RtsChangeType {
 	X("invalidating"),
 	
 	/**
-	 * Revalidation - this metadata template records the revalidation of
-	 *   an existing, until-now-invalidated template in the RTS because
+	 * Revalidation - this metadata tuple records the revalidation of
+	 *   an existing, until-now-invalidated tuple in the RTS because
 	 *   (1) of a change in reality, belief, relevance or (2) of recognition
 	 *   that the invalidation was done in error.
 	 */

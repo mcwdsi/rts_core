@@ -1,0 +1,15 @@
+@CDM
+name=usps zip5
+description=The PCORnet Common Data Model (CDM) is a specification that defines a standard organization and representation of data for the PCORnet Distributed Research Network.
+version=2020
+versionReleaseDate=09/17/2020
+creator=anonymous
+
+@TABLE
+TABLE_NAME	TABLE_DESCRIPTION	TABLE_ORDER
+zipcode	An aggregate of postal delivery routes.	1
+
+@FIELD
+TABLE_NAME	FIELD_NAME	RDBMS_DATA_TYPE	SAS_DATA_TYPE	DATA_FORMAT	REPLICATED_FIELD	UNIT_OF_MEASURE	VALUESET	VALUESET_DESCRIPTOR	FIELD_DEFINITION	FIELD_ORDER	
+zipcode	zip	RDBMS Text(x)	SAS Char(x)		NO				A five character identifier made up entirely of numerals.  Represents an aggregate of postal delivery routes.	1	
+ 

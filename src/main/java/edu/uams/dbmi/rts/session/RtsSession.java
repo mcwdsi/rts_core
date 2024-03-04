@@ -18,8 +18,8 @@ import java.util.Set;
 
 import edu.uams.dbmi.rts.iui.Iui;
 import edu.uams.dbmi.rts.persist.RtsStore;
-import edu.uams.dbmi.rts.query.TemplateQuery;
-import edu.uams.dbmi.rts.template.RtsTemplate;
+import edu.uams.dbmi.rts.query.TupleQuery;
+import edu.uams.dbmi.rts.tuple.RtsTuple;
 
 
 public abstract class RtsSession {
@@ -34,24 +34,24 @@ public abstract class RtsSession {
 		return new RtsTransaction(this);
 	}
 	
-	public TemplateQuery createTemplateQuery(){
-		return new TemplateQuery(store);
+	public TupleQuery createTupleQuery(){
+		return new TupleQuery();
 	}
 	
 	public Iui getAvailableIui(){
 		return store.getAvailableIui();
 	}
 	
-	protected boolean saveTemplate(RtsTemplate template){
-		if(template.getTemplateIui() == null){
-			template.setTemplateIui(this.getAvailableIui());
+	protected boolean saveTuple(RtsTuple Tuple){
+		if(Tuple.getTupleIui() == null){
+			Tuple.setTupleIui(this.getAvailableIui());
 		}
-		return store.saveTemplate(template);
+		return store.saveTuple(Tuple);
 	}
 	
-	protected boolean saveTemplates(Set<RtsTemplate> cache){
-		for(RtsTemplate template : cache){
-			this.saveTemplate(template);
+	protected boolean saveTuples(Set<RtsTuple> cache){
+		for(RtsTuple Tuple : cache){
+			this.saveTuple(Tuple);
 		}
 		return true;
 	}
@@ -59,30 +59,30 @@ public abstract class RtsSession {
 	protected abstract RtsStore createRtsStore();
 	
 	/**
-	 * Get a template by its IUI
+	 * Get a Tuple by its IUI
 	 * @param iui
-	 * @return An RtsTemplate whose IUI is that specified.
+	 * @return An RtsTuple whose IUI is that specified.
 	 */
-	public RtsTemplate getTemplate(Iui iui){
-		return this.store.getTemplate(iui);
+	public RtsTuple getTuple(Iui iui){
+		return this.store.getTuple(iui);
 	}
 	
 	/**
-	 * Get all the templates where the IUI is the iuip parameter or in the 
-	 * 	list of IUIs P of the PtoP template.
+	 * Get all the Tuples where the IUI is the iuip parameter or in the 
+	 * 	list of IUIs P of the PtoP Tuple.
 	 * @param iui
-	 * @return The set of unique templates where the given IUI is iuip or P
+	 * @return The set of unique Tuples where the given IUI is iuip or P
 	 */
-	public Set<RtsTemplate> getByReferentIui(Iui iui){
+	public Set<RtsTuple> getByReferentIui(Iui iui){
 		return this.store.getByReferentIui(iui);
 	}
 	
 	/**
-	 * Get all the templates where the IUI is the iuia parameter 
+	 * Get all the Tuples where the IUI is the iuia parameter 
 	 * @param iui
-	 * @return The set of unique templates where the given IUI is iuia
+	 * @return The set of unique Tuples where the given IUI is iuia
 	 */
-	public Set<RtsTemplate> getByAuthorIui(Iui iui){
+	public Set<RtsTuple> getByAuthorIui(Iui iui){
 		return this.store.getByAuthorIui(iui);
 	}		
 	

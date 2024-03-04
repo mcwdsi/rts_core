@@ -1,0 +1,68 @@
+#PCORnet Common Data Model version 5
+#ENCOUNTER table
+
+#configuration / arguments input into the process
+#IUI of the database from which the source data derives
+IUIp-1 = $1             
+
+#ISO8601 timestamp to associate with time of IUI assignment               
+timestamp-1 = $2	     
+
+#IUI of the user running this process
+IUIp-16 = $3		   
+
+#ISO8601 timestamp to associate with time of template insertion  
+timestamp-2 = $4
+
+
+# SECTION FOR INITIALIZATION OF FREQUENTLY USED TEMPORAL REFERENCES
+#interval over which encounter occurs
+tr-1 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
+#interval over which encounterid has existed
+tr-2 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
+#region during which provider participates in encounter
+tr-3 = T~[new-iui]|[one-d-temporal-region]|db2282a4-631f-4d2c-940f-a220c496f6be
+
+# SECTION FOR ENCOUNTERID
+
+# Assignment templates, which begin by assigning template IUIs.
+# new-iui is instruction to create a new IUI
+IUIt-1 = [new-iui]
+IUIt-2 = [new-iui]
+# assign IUI to the encounter that this encounter table row is about
+@IM ENCOUNTERID
+IUIp-2 = A|[IUIt-1]~[IUIp-1]|[timestamp-1]|[new-iui]  
+# assign IUI to the id of the encounter
+@LV ENCOUNTERID
+IUIp-3 = A|[IUIt-2]~[IUIp-1]|[timestamp-1]|[new-iui]
+# for now, not storing D tuples' IUIs for later use
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-1]|I|CR|Null|   
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-2]|I|CR|Null|	
+
+#the encounter is an instance of healthcare encounter
+IUIt-3 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[healthcare-encounter]|[OGMS]|[tr-1]
+#the encounterid is an instance of pcornet encounter id
+IUIt-4 = U|[new-iui]~[IUIp-1]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-3]|[pcornet-encounter-id]|[PCOROWL]|[tr-2]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-3]|I|CR|Null|	
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-4]|I|CR|Null|	
+
+# lookup IUI for PATID that was assigned from demographic table.
+# If it's not there, then create it and register a UP error (i.e., PATID is unjustifiably present here in ENCOUNTER table if it is not also present in DEMOGRAPHIC table)
+IUIp-4 = [lookup-iui, PATID, pcornet-patient-id, denotes, human]
+IUIt-5 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[actively-participates-in]|[RO]|iui=[IUIp-4], iui=[IUIp-2]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-5]|I|CR|Null|
+
+# based on SOURCE field, lookup IUI of patient role for the encounter.  If there is no source field, then we assume patient just has one patient role total.
+# If it's not there then create it, and save it based on SOURCE.  If SOURCE not present, then we assume just one patient role per person
+IUIp-5 = [lookup-iui, PATID, pcornet-patient-id, denotes, human, bearer-of, healthcare-patient-role]
+
+# lookup IUI for PROVIDERID that was assigned from demographic table.
+# If it's not there, then create it and register a UP error (i.e., PATID is unjustifiably present here in ENCOUNTER table if it is not also present in DEMOGRAPHIC table)
+IUIp-6 = [lookup-iui, PROVIDERID, pcornet-provider-id, denotes, human]
+IUIt-7 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[participates-in]|[RO]|iui=[IUIp-6], iui=[IUIp-2]|[tr-3]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-7]|I|CR|Null|
+
+# lookup IUI for FACILITYID that was assigned from facility pseudotable
+IUIp-7 = [lookup-iui, FACILITYID, pcornet-facility-id, denotes, healthcare-facility]
+
+

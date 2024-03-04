@@ -1,0 +1,322 @@
+#PCORnet Common Data Model version 5
+#PROCEDURES table
+
+#configuration / arguments input into the process
+#IUI of the database from which the source data derives
+IUIp-1 = $1             
+
+#ISO8601 timestamp to associate with time of IUI assignment               
+timestamp-1 = $2	     
+
+#IUI of the user running this process
+IUIp-16 = $3		   
+
+#ISO8601 timestamp to associate with time of template insertion  
+timestamp-2 = $4	 
+
+#ISO8601 timestamp to associate with time by which PROCEDURES table existed in its entirety
+timestamp-3 = $5
+
+# -
+# SECTION FOR INITIALIZATION OF FREQUENTLY USED TEMPORAL REFERENCES
+# -
+
+#interval over which the procedure occurred
+tr-1 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
+#interval over which the procedure ID exists
+tr-2 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
+#interval over which the patient exists
+tr-3 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
+#interval over which the patid exists
+tr-4 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
+#interval over which the person has been a patient for a given provider
+tr-5 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
+#interval over which the encounter occurs
+tr-6 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
+#interval over which the encounter ID exists
+tr-7 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
+#interval over which the provider has existed
+tr-8 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
+#interval over which the providerid exists
+tr-9 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
+#interval over which the person has been a provider for a given healthcare organization
+tr-10 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
+#interval over which the date exists
+tr-11 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
+#instant in which the procedure is assigned a code
+tr-12 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
+#instant in which the source is recorded
+tr-13 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
+#instant in which the principal/secondary flags were recorded
+tr-14 = T~[new-iui]|[temporal-interval]|db2282a4-631f-4d2c-940f-a220c496f6be
+
+# -
+# SECTION FOR PROCEDURESID
+# -
+
+# Assignment templates, which begin by assigning template IUIs.
+# new-iui is instruction to create a new IUI
+IUIt-1 = [new-iui]
+IUIt-2 = [new-iui]
+# assign IUI to the health care procedure
+@IM PROCEDURESID
+IUIp-2 = A|[IUIt-1]~[IUIp-16]|[timestamp-1]|[new-iui]
+# assign IUI to the id of the procedure
+@LV PROCEDURESID
+IUIp-3 = A|[IUIt-2]~[IUIp-16]|[timestamp-1]|[new-iui]
+# for now, not storing D tuples' IUIs for later use
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-1]|I|CR|Null|   
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-2]|I|CR|Null|
+
+# Instantiations for PROCEDURESID
+
+IUIt-3 = U|[new-iui]~[IUIp-16]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-2]|[medical-procedure]|[OAE]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-3]|I|CR|Null|
+IUIt-4 = U|[new-iui]~[IUIp-16]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-3]|[identifier]|[PNO][tr-2]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-4]|I|CR|Null|
+
+# PtoP relations for PROCEDURESID
+
+IUIt-5 = P|[new-iui]~[IUIp-16]|[timestamp-2]|[denotes]|[IAO]|iui=[IUIp-3], iui=[IUIp-2]|[tr-2]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-5]|I|CR|Null|
+
+# -
+# SECTION FOR PATID
+# -
+
+# lookup IUI for person denoted by the PATID that was assigned from demographic table.
+# If it's not there, then create it and register a UP error (i.e., PATID is unjustifiably present here in PROCEDURES table if it is not also present in DEMOGRAPHIC table)
+@IM PATID
+IUIp-4 = [lookup-iui, DEMOGRAPHIC.PATID, pcornet-patient-id, denotes, human]
+
+# Assignment templates, which begin by assigning template IUIs.
+# new-iui is instruction to create a new IUI
+IUIt-6 = [new-iui]
+IUIt-7 = [new-iui]
+
+# assign IUI to the patient's history
+@IM PATID
+IUIp-5 = A|[IUIt-6]~[IUIp-16]|[timestamp-1]|[new-iui]
+# assign IUI to the identifier that denotes the patient in their patient role
+@LV PATID
+IUIp-6 = A|[IUIt-7]~[IUIp-16]|[timestamp-1]|[new-iui]
+# for now, not storing D tuples' IUIs for later use
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-6]|I|CR|Null|
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-7]|I|CR|Null|  
+
+@IM PATID
+# lookup IUI for patient role that inheres in the person denoted by the PATID that was assigned from demographic table.
+# If it's not there, then create it and register a UP error (i.e., PATID is unjustifiably present here in PROCEDURES table if it is not also present in DEMOGRAPHIC table)
+IUIp-7 = [lookup-iui, DEMOGRAPHIC.PATID, pcornet-patient-id, denotes, human, bearer-of, healthcare-patient-role] 
+
+# Instantiations for PATID
+
+IUIt-8 = U|[new-iui]~[IUIp-16]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-5]|[history]|[BFO]|[tr-3]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-8]|I|CR|Null|
+IUIt-9 = U|[new-iui]~[IUIp-16]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-6]|[identifier]|[PNO][tr-4]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-9]|I|CR|Null|
+
+# PtoP relations for PATID
+
+IUIt-10 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[participates-in]|[RO]|iui=[IUIp-4], iui=[IUIp-2]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-10]|I|CR|Null|
+IUIt-11 = P|[new-iui]~[IUIp-16]|[timestamp-2]|[denotes]|[IAO]|iui=[IUIp-6], iui=[IUIp-4]|[tr-4]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-11]|I|CR|Null|
+IUIt-12 = P|[new-iui]~[IUIp-16]|[timestamp-2]|[inheres-in]|[IAO]|iui=[IUIp-7], iui=[IUIp-4]|[tr-5]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-12]|I|CR|Null|
+IUIt-13 = P|[new-iui]~[IUIp-16]|[timestamp-2]|[has-history]|[BFO]|iui=[IUIp-4], iui=[IUIp-5]|[tr-3]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-13]|I|CR|Null|
+
+# -
+# SECTION FOR ENCOUNTERID
+# -
+
+
+# lookup IUI for the healthcare encounter denoted by the ENCOUNTERID that was assigned from encounter table.
+# If it's not there, then create it and register a UP error (i.e., ENCOUNTERID is unjustifiably present here in PROCEDURES table if it is not also present in ENCOUNTER table)
+@IM ENCOUNTERID
+IUIp-8 = [lookup-iui, ENCOUNTER.ENCOUNTERID, pcornet-encounter-id, denotes, healthcare-encounter]
+
+# Assignment templates, which begin by assigning template IUIs.
+# new-iui is instruction to create a new IUI
+IUIt-14 = [new-iui]
+
+# assign IUI to the identifier that denotes the healthcare encounter
+@LV ENCOUNTERID
+IUIp-9 = A|[IUIt-14]~[IUIp-16]|[timestamp-1]|[new-iui]
+# for now, not storing D tuples' IUIs for later use
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-14]|I|CR|Null|
+
+# Instantiations for ENCOUNTERID
+
+IUIt-15 = U|[new-iui]~[IUIp-16]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-9]|[identifier]|[PNO][tr-7]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-15]|I|CR|Null|
+
+# PtoP relations for ENCOUNTERID
+
+IUIt-16 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[participates-in]|[RO]|iui=[IUIp-4], iui=[IUIp-8]|[tr-6]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-16]|I|CR|Null|
+IUIt-17 = P|[new-iui]~[IUIp-16]|[timestamp-2]|[occurrent-part-of]|[BFO]|iui=[IUIp-2], iui=[IUIp-8]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-17]|I|CR|Null|
+IUIt-18 = P|[new-iui]~[IUIp-16]|[timestamp-2]|[realized-in]|[BFO]|iui=[IUIp-7], iui=[IUIp-8]|[tr-6]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-18]|I|CR|Null|
+IUIt-19 = P|[new-iui]~[IUIp-16]|[timestamp-2]|[denotes]|[IAO]|iui=[IUIp-9], iui=[IUIp-8]|[tr-7]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-19]|I|CR|Null|
+
+# -
+# SECTION FOR PROVIDERID
+# -
+
+# lookup IUI for person denoted by the PROVIDERID that was assigned from provider table.
+# If it's not there, then create it and register a UP error (i.e., PROVIDERID is unjustifiably present here in PROCEDURES table if it is not also present in PROVIDER table)
+@IM PROVIDERID
+IUIp-10 = [lookup-iui, PROVIDER.PROVIDERID, pcornet-provider-id, denotes, human]
+
+# Assignment templates, which begin by assigning template IUIs.
+# new-iui is instruction to create a new IUI
+IUIt-20 = [new-iui]
+IUIt-21 = [new-iui]
+
+# assign IUI to the provider's history
+@IM PROVIDERID
+IUIp-11 = A|[IUIt-20]~[IUIp-16]|[timestamp-1]|[new-iui]
+# assign IUI to the identifier that denotes the provider in their provider role
+@LV PROVIDERID
+IUIp-12 = A|[IUIt-21]~[IUIp-16]|[timestamp-1]|[new-iui]
+# for now, not storing D tuples' IUIs for later use
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-20]|I|CR|Null|
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-21]|I|CR|Null|  
+
+# lookup IUI for provider role that inheres in the person denoted by the PROVIDERID that was assigned from provider table.
+# If it's not there, then create it and register a UP error (i.e., PROVIDERID is unjustifiably present here in PROCEDURES table if it is not also present in PROVIDER table)
+@IM PROVIDERID
+IUIp-13 = [lookup-iui, PROVIDER.PROVIDERID, pcornet-provider-id, denotes, human, bearer-of, healthcare-provider-role-person] 
+
+# Instantiations for PROVIDERID
+
+IUIt-22 = U|[new-iui]~[IUIp-16]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-11]|[history]|[BFO]|[tr-8]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-22]|I|CR|Null|
+IUIt-23 = U|[new-iui]~[IUIp-16]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-12]|[identifier]|[PNO][tr-9]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-23]|I|CR|Null|
+
+# PtoP relations for PROVIDERID
+
+IUIt-24 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[participates-in]|[RO]|iui=[IUIp-10], iui=[IUIp-2]|[tr-1]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-24]|I|CR|Null|
+IUIt-25 = P|[new-iui]~[IUIp-16]|[timestamp-2]|[participates-in]|[RO]|iui=[IUIp-10], iui=[IUIp-8]|[tr-6]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-25]|I|CR|Null|
+IUIt-26 = P|[new-iui]~[IUIp-16]|[timestamp-2]|[denotes]|[IAO]|iui=[IUIp-12], iui=[IUIp-10]|[tr-9]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-26]|I|CR|Null|
+IUIt-27 = P|[new-iui]~[IUIp-16]|[timestamp-2]|[has-history]|[BFO]|iui=[IUIp-10], iui=[IUIp-11]|[tr-8]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-27]|I|CR|Null|
+IUIt-28 = P|[new-iui]~[IUIp-16]|[timestamp-2]|[realized-in]|[BFO]|iui=[IUIp-13], iui=[IUIp-8]|[tr-10]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-28]|I|CR|Null|
+
+# -
+# SECTION FOR PX_DATE
+# -
+
+# Assignment templates, which begin by assigning template IUIs.
+# new-iui is instruction to create a new IUI
+IUIt-28 = [new-iui]
+
+# assign IUI to the identifier that denotes the date on which the procedure was performed
+@LV PX_DATE
+IUIp-14 = A|[IUIt-28]~[IUIp-16]|[timestamp-1]|[new-iui]
+# for now, not storing D tuples' IUIs for later use
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-28]|I|CR|Null|
+
+# Instantiations for PX_DATE
+
+IUIt-29 = U|[new-iui]~[IUIp-16]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-14]|[date]|[APOLLO_SV]|[tr-11]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-29]|I|CR|Null|
+
+# -
+# SECTION FOR PX
+# -
+
+# Assignment templates, which begin by assigning template IUIs.
+# new-iui is instruction to create a new IUI
+IUIt-30 = [new-iui]
+
+# assign IUI to the procedure code
+@LV PX
+IUIp-15 = A|[IUIt-30]~[IUIp-16]|[timestamp-1]|[new-iui]
+# for now, not storing D tuples' IUIs for later use
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-30]|I|CR|Null|
+
+# Instantiations for PX
+
+IUIt-31 = U|[new-iui]~[IUIp-16]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-15]|[identifier]|[PNO]|[tr-12]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-31]|I|CR|Null|
+
+# PtoP relations for PX
+
+IUIt-32 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[is-about]|[IAO]|iui=[IUIp-15], iui=[IUIp-2]|[tr-12]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-32]|I|CR|Null|
+
+# -
+# SECTION FOR PX_TYPE
+# -
+
+# Assignment templates, which begin by assigning template IUIs.
+# new-iui is instruction to create a new IUI
+IUIt-33 = [new-iui]
+
+# assign IUI to the procedure code set
+@LV PX_TYPE
+IUIp-17 = A|[IUIt-33]~[IUIp-16]|[timestamp-1]|[new-iui]
+# for now, not storing D tuples' IUIs for later use
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-33]|I|CR|Null|
+
+# -
+# SECTION FOR PX_SOURCE
+# -
+
+# Assignment templates, which begin by assigning template IUIs.
+# new-iui is instruction to create a new IUI
+IUIt-34 = [new-iui]
+
+# assign IUI to the source of the procedure information
+@LV PX_SOURCE
+IUIp-18 = A|[IUIt-34]~[IUIp-16]|[timestamp-1]|[new-iui]
+# for now, not storing D tuples' IUIs for later use
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-34]|I|CR|Null|
+
+# Instantiations for PX_SOURCE
+
+IUIt-35 = U|[new-iui]~[IUIp-16]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-18]|[data-item]|[IAO]|[tr-13]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-35]|I|CR|Null|
+
+# PtoP relations for PX_SOURCE
+
+IUIt-36 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[is-about]|[IAO]|iui=[IUIp-18], iui=[IUIp-2]|[tr-13]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-36]|I|CR|Null|
+
+# -
+# SECTION FOR PPX
+# -
+
+# Assignment templates, which begin by assigning template IUIs.
+# new-iui is instruction to create a new IUI
+IUIt-37 = [new-iui]
+
+# assign IUI to the data item that flags the procedure as primary or secondary
+@LV PPX
+IUIp-19 = A|[IUIt-37]~[IUIp-16]|[timestamp-1]|[new-iui]
+# for now, not storing D tuples' IUIs for later use
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-37]|I|CR|Null|
+
+# Instantiations for PPX
+
+IUIt-38 = U|[new-iui]~[IUIp-16]|[timestamp-2]|[instance-of]|[BFO]|[IUIp-19]|[data-item]|[IAO]|[tr-14]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-38]|I|CR|Null|
+
+# PtoP relations for PPX
+
+IUIt-39 = P|[new-iui]~[IUIp-1]|[timestamp-2]|[is-about]|[IAO]|iui=[IUIp-19], iui=[IUIp-2]|[tr-14]
+D|[new-iui]~[IUIp-16]|[timestamp-2]|[IUIt-39]|I|CR|Null|
+
+
+
+
