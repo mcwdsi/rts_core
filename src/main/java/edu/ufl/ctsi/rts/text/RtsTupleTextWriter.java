@@ -128,7 +128,7 @@ public class RtsTupleTextWriter {
 		w.write(FIELD_DELIM);
 		w.write(rttc.getConceptCui().toString());
 		w.write(FIELD_DELIM);
-		w.write(rttc.getTemporalReference().toString());
+		w.write(rttc.toString());
 
 	}
 
@@ -161,7 +161,7 @@ public class RtsTupleTextWriter {
 		w.write(FIELD_DELIM);
 		w.write(rttl.getUniversalOntologyIui().toString());
 		w.write(FIELD_DELIM);
-		w.write(rttl.getTemporalReference().toString());
+		w.write(rttl.toString());
 	}
 
 	private void writePtoPTuple(RtsTuple rtt) throws IOException {
@@ -196,7 +196,7 @@ public class RtsTupleTextWriter {
 			if (iuis.hasNext()) w.write(SUBFIELD_DELIM);
 		}
 		w.write(FIELD_DELIM);
-		w.write(rttp.getTemporalReference().toString());
+		w.write(rttp.toString());
 	}
 
 	private void writePtoUTuple(RtsTuple rtt) throws IOException {
@@ -224,7 +224,7 @@ public class RtsTupleTextWriter {
 		w.write(FIELD_DELIM);
 		w.write(rttu.getUniversalOntologyIui().toString());
 		w.write(FIELD_DELIM);
-		w.write(rttu.getTemporalReference().toString());
+		w.write(rttu.toString());
 	}
 
 	private void writePtoDETuple(RtsTuple rtt) throws IOException {
@@ -284,15 +284,15 @@ public class RtsTupleTextWriter {
 	
 	public void writeTemporalRegion(TemporalRegion tr) throws IOException {
 		if (tr.getCalendarSystemIui() == null) {
-			System.err.println(tr.getTemporalReference().toString() + "\t" +
-					tr.getTemporalReference().isIso());
+			System.err.println(tr.toString() + "\t" +
+					tr.isIso());
 		}
 		w.write("T");
 		w.write(BLOCK_DELIM);
-		w.write(tr.getTemporalReference().toString());
+		w.write(tr.toString());
 		w.write(FIELD_DELIM);
 		w.write('<');
-		w.write(tr.getTemporalType().toString());
+		w.write(tr.toString());
 		w.write('>');
 		w.write(FIELD_DELIM);
 		w.write(tr.getCalendarSystemIui().toString());

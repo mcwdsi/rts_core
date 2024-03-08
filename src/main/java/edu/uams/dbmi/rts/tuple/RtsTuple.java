@@ -14,7 +14,7 @@ import edu.uams.dbmi.rts.tuple.component.IuiComponent;
  * @author Josh Hanna
  *
  */
-public abstract class RtsTuple extends RtsDeclaration {
+public abstract class RtsTuple implements RtsDeclaration {
 	
 	/*
 	 * IuiComponent contains IUI of Tuple itself
