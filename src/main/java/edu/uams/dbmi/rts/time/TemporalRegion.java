@@ -47,46 +47,31 @@ import edu.uams.dbmi.util.iso8601.TimeUnit;
  * 
  * 
  */
-public class TemporalRegion extends RtsDeclaration {
+public class TemporalRegion extends TemporalReference {
 
 
-	Iui calendarSystemIui;
 	Uui type;
-	TemporalReference tr;
 	
 	public static Uui ZERO_D_REGION_TYPE = new Uui("http://purl.obolibrary.org/obo/BFO_0000148");
 	public static Uui ONE_D_REGION_TYPE = new Uui("http://purl.obolibrary.org/obo/BFO_0000038");
 	
 	public static final TemporalRegion MAX_TEMPORAL_REGION;
-	
-	public static final Iui ISO_IUI;
-	public static final Iui RTS_TR_IUI;
-	
+
 	static {
-		ISO_IUI = Iui.createFromString("D4AF5C9A-47BA-4BF4-9BAE-F13A8ED6455E");
-		RTS_TR_IUI =  Iui.createFromString("DB2282A4-631F-4D2C-940F-A220C496F6BE");
-		MAX_TEMPORAL_REGION = new TemporalRegion(
-					UUID.fromString("26F1052B-311D-43B1-9ABC-B4E2EDD1B283"), 
-						TemporalRegion.ONE_D_REGION_TYPE);
+				MAX_TEMPORAL_REGION = new TemporalRegion(
+					"26F1052B-311D-43B1-9ABC-B4E2EDD1B283", 
+						RTS_TR_IUI, TemporalRegion.ONE_D_REGION_TYPE);
 	}
-	
-	
-	public TemporalRegion(TemporalReference tr, Uui type, Iui namingSystemIui) {
-		this.tr = tr;
-		if (tr.isIso && !namingSystemIui.equals(ISO_IUI))
-			throw new IllegalArgumentException("If temporal reference isIso, then calendar system iui must be" +
-					"the Iui for Gregorian calendar: " + ISO_IUI.toString());
-		if (!tr.isIso && namingSystemIui.equals(ISO_IUI))
-			throw new IllegalArgumentException("If temporal reference not isIso, then calendar system iui cannot be" +
-					"the Iui for Gregorian calendar: " + ISO_IUI.toString());
-		if (namingSystemIui == null) {
-			throw new IllegalArgumentException("calendar system IUI cannot be null: " + namingSystemIui);
-		}
-		this.calendarSystemIui = namingSystemIui;
+
+	public TemporalRegion(String identifier, Iui calendarSystemIui, Uui type) {
+		super(identifier, calendarSystemIui);
 		this.type = type;
 	}
 	
 	public TemporalRegion(Iso8601DateTime dateTime) {
+		super(dateTime);
+		this.type = ONE_D_REGION_TYPE;
+		/*
 		//regardless of whether time zone is specified, when we ask
 		//  the date/time object for a Calendar object, it comes 
 		//  with one (if not specified, it's the local one).
@@ -99,8 +84,9 @@ public class TemporalRegion extends RtsDeclaration {
 		
 		tr = new TemporalReference(dtf.format(dtZ), true);
 		calendarSystemIui = ISO_IUI;
+		*/
 		Iso8601Time t = dateTime.getTime();
-		type = ONE_D_REGION_TYPE;
+		this.type = ONE_D_REGION_TYPE;
 		if (t instanceof Iso8601UnitTime) {
 			Iso8601UnitTime ut = (Iso8601UnitTime)t;
 			if (ut.getUnit().equals(TimeUnit.MILLISECOND) || 
@@ -111,6 +97,9 @@ public class TemporalRegion extends RtsDeclaration {
 	}
 	
 	public TemporalRegion(Iso8601DateTime dateTime, TimeZone tz) {
+		super(dateTime, tz);
+		this.type = ONE_D_REGION_TYPE;
+		/*
 		//if the time zone is already specified, then illegal argument exception
 		if (dateTime.getTime().isTimeZoneSpecified()) {
 			throw new IllegalArgumentException("the DateTime object already has a time zone specified.");
@@ -134,7 +123,7 @@ public class TemporalRegion extends RtsDeclaration {
 		 *  	from the calendar, and format it!
 		 *  
 		 */
-		
+		/*
 		//gets a copy so we can change it without affecting the date/time object
 		GregorianCalendar c = (GregorianCalendar) dateTime.getCalendar(); 
 		//opposite of offset because we're converting from local to UTC, not 
@@ -147,7 +136,8 @@ public class TemporalRegion extends RtsDeclaration {
 				
 		calendarSystemIui = ISO_IUI;
 		//System.out.println(calendarSystemIui);
-		type = ONE_D_REGION_TYPE;
+		*/
+		this.type = ONE_D_REGION_TYPE;
 		Iso8601Time t = dateTime.getTime();
 		if (t instanceof Iso8601UnitTime) {
 			Iso8601UnitTime ut = (Iso8601UnitTime)t;
@@ -172,36 +162,19 @@ public class TemporalRegion extends RtsDeclaration {
 		// So leaning towards #2, where IUI has the status of something higher than just a 
 		// mere UUID.
 		
-		tr = new TemporalReference(UUID.randomUUID().toString(), false);
+		super(UUID.randomUUID().toString(), RTS_TR_IUI);
 		//DB2282A4-631F-4D2C-940F-A220C496F6BE refers to general RTS temporal reference
-		calendarSystemIui = RTS_TR_IUI;
 		this.type = type;
 	}
 	
-
 	public TemporalRegion(UUID id, Uui type) {
-		tr = new TemporalReference(UUID.randomUUID().toString(), false);
+		super(UUID.randomUUID().toString(), RTS_TR_IUI);
 		this.type = type;
-		calendarSystemIui = RTS_TR_IUI;
 	}
 
-	
 	public TemporalRegion(Iso8601Date db, TimeZone tz) {
-		tr = new TemporalReference(db, tz);
+		super(db, tz);
 		this.type = ONE_D_REGION_TYPE;
-		this.calendarSystemIui = ISO_IUI;
-	}
-
-	public TemporalReference getTemporalReference() {
-		return tr;
-	}
-	
-	public boolean isISO() {
-		return tr.isIso();
-	}
-	
-	public Iui getCalendarSystemIui() {
-		return calendarSystemIui;
 	}
 	
 	public Uui getTemporalType() {

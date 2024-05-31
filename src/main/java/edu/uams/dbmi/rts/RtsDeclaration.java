@@ -1,5 +1,5 @@
 package edu.uams.dbmi.rts;
 
-public abstract class RtsDeclaration {
+public interface RtsDeclaration {
 
 }

@@ -295,8 +295,10 @@ public class RtsTupleFactory {
 	private void populatePtoUTuple(PtoUTuple t, List<String> contentFields) {
 		
 		//contentFields.get(1) is ta
-		TemporalReference tr = new TemporalReference(contentFields.get(1), contentFields.get(1).contains("Z"));
-		t.setAuthoringTimeReference(tr);
+		String taId = contentFields.get(1);
+		TemporalReference ta = (taId.endsWith("Z")) ? new TemporalReference(taId, TemporalReference.ISO_IUI) :
+				new TemporalReference(taId, TemporalReference.RTS_TR_IUI);
+		t.setAuthoringTimeReference(ta);
 		
 		//contentFields.get(2) is r
 		if (contentFields.get(2).startsWith("-!-")) {
@@ -320,15 +322,20 @@ public class RtsTupleFactory {
 		t.setUniversalOntologyIui(Iui.createFromString(contentFields.get(6)));
 		
 		//contentFields.get(7) is tr
-		t.setTemporalReference(new TemporalReference(contentFields.get(7), contentFields.get(7).contains("Z")));
+		String trId = contentFields.get(7);
+		TemporalReference tr = (trId.endsWith("Z")) ? new TemporalReference(trId, TemporalReference.ISO_IUI) :
+				new TemporalReference(trId, TemporalReference.RTS_TR_IUI);
+		t.setTemporalReference(tr);
 
 	}
 
 	private void populatePtoPTuple(PtoPTuple t, List<String> contentFields) {
 		
 		//contentFields.get(1) is ta
-		TemporalReference tr = new TemporalReference(contentFields.get(1), contentFields.get(1).contains("Z"));
-		t.setAuthoringTimeReference(tr);
+		String taId = contentFields.get(1);
+		TemporalReference ta = (taId.endsWith("Z")) ? new TemporalReference(taId, TemporalReference.ISO_IUI) :
+				new TemporalReference(taId, TemporalReference.RTS_TR_IUI);
+		t.setAuthoringTimeReference(ta);
 		
 		//contentFields.get(2) is r
 		if (contentFields.get(2).startsWith("-!-")) {
@@ -350,7 +357,8 @@ public class RtsTupleFactory {
 				Iui iui = Iui.createFromString(refInfo[1]);
 				t.addParticular(iui);
 			} else if (refInfo[0].equals("tref")) {
-				TemporalReference tref = new TemporalReference(refInfo[1], refInfo[1].contains("Z"));
+				TemporalReference tref = (refInfo[1].endsWith("Z")) ? new TemporalReference(refInfo[1], TemporalReference.ISO_IUI) : 
+					new TemporalReference(refInfo[1], TemporalReference.RTS_TR_IUI);
 				t.addParticular(tref);
 			} else {
 				throw new IllegalArgumentException("particular reference type must be 'iui' or 'tref'");
@@ -358,15 +366,20 @@ public class RtsTupleFactory {
 		}
 					
 		//contentFields.get(5) is tr
-		t.setTemporalReference(new TemporalReference(contentFields.get(5), contentFields.get(5).contains("Z")));
+		String trId = contentFields.get(5);
+		TemporalReference tr = (trId.endsWith("Z")) ? new TemporalReference(trId, TemporalReference.ISO_IUI) :
+				new TemporalReference(trId, TemporalReference.RTS_TR_IUI);
+		t.setTemporalReference(tr);
 
 	}
 
 	private void populatePtoLackUTuple(PtoLackUTuple t, List<String> contentFields) {
 		
 		//contentFields.get(1) is ta
-		TemporalReference tr = new TemporalReference(contentFields.get(1), contentFields.get(1).contains("Z"));
-		t.setAuthoringTimeReference(tr);
+		String taId = contentFields.get(1);
+		TemporalReference ta = (taId.endsWith("Z")) ? new TemporalReference(taId, TemporalReference.ISO_IUI) :
+				new TemporalReference(taId, TemporalReference.RTS_TR_IUI);
+		t.setAuthoringTimeReference(ta);
 		
 		//contentFields.get(2) is r
 		t.setRelationshipURI(URI.create(contentFields.get(2)));
@@ -384,15 +397,20 @@ public class RtsTupleFactory {
 		t.setUniversalOntologyIui(Iui.createFromString(contentFields.get(6)));
 		
 		//contentFields.get(7) is tr
-		t.setTemporalReference(new TemporalReference(contentFields.get(7), contentFields.get(7).contains("Z")));
+		String trId = contentFields.get(7);
+		TemporalReference tr = (trId.endsWith("Z")) ? new TemporalReference(trId, TemporalReference.ISO_IUI) :
+				new TemporalReference(trId, TemporalReference.RTS_TR_IUI);
+		t.setTemporalReference(tr);
 		
 	}
 
 	private void populatePtoCTuple(PtoCTuple t, List<String> contentFields) {
 		
 		//contentFields.get(1) is ta
-		TemporalReference tr = new TemporalReference(contentFields.get(1), contentFields.get(1).contains("Z"));
-		t.setAuthoringTimeReference(tr);
+		String taId = contentFields.get(1);
+		TemporalReference ta = (taId.endsWith("Z")) ? new TemporalReference(taId, TemporalReference.ISO_IUI) :
+				new TemporalReference(taId, TemporalReference.RTS_TR_IUI);
+		t.setAuthoringTimeReference(ta);
 		
 		//contentFields.get(2) is IUIc
 		t.setConceptSystemIui(Iui.createFromString(contentFields.get(2)));
@@ -404,14 +422,19 @@ public class RtsTupleFactory {
 		t.setConceptCui(new Cui(contentFields.get(4)));
 		
 		//contentFields.get(5) is tr
-		t.setTemporalReference(new TemporalReference(contentFields.get(5), contentFields.get(5).contains("Z")));
+		String trId = contentFields.get(5);
+		TemporalReference tr = (trId.endsWith("Z")) ? new TemporalReference(trId, TemporalReference.ISO_IUI) :
+				new TemporalReference(trId, TemporalReference.RTS_TR_IUI);
+		t.setTemporalReference(tr);
 	}
 
 	private void populatePtoDETuple(PtoDETuple t, List<String> contentFields) {
 		
 		//contentFields.get(1) is ta
-		TemporalReference tr = new TemporalReference(contentFields.get(1), contentFields.get(1).contains("Z"));
-		t.setAuthoringTimeReference(tr);
+		String taId = contentFields.get(1);
+		TemporalReference ta = (taId.endsWith("Z")) ? new TemporalReference(taId, TemporalReference.ISO_IUI) :
+				new TemporalReference(taId, TemporalReference.RTS_TR_IUI);
+		t.setAuthoringTimeReference(ta);
 		
 		//contentFields.get(2) is r
 		t.setRelationshipURI(URI.create(contentFields.get(2)));
@@ -425,7 +448,8 @@ public class RtsTupleFactory {
 			Iui iui = Iui.createFromString(refInfo[1]);
 			t.setReferent(iui);
 		} else if (refInfo[0].equals("tref")) {
-			TemporalReference tref = new TemporalReference(refInfo[1], refInfo[1].contains("Z"));
+				TemporalReference tref = (refInfo[1].endsWith("Z")) ? new TemporalReference(refInfo[1], TemporalReference.ISO_IUI) : 
+					new TemporalReference(refInfo[1], TemporalReference.RTS_TR_IUI);
 			t.setReferent(tref);
 		} else {
 			throw new IllegalArgumentException("particular reference type must be 'iui' or 'tref'");
@@ -505,13 +529,12 @@ public class RtsTupleFactory {
 		
 		// 0 - first thing in content fields is the temporal reference for the region
 		String tRefTxt = contentFields.get(0);
-		TemporalReference tref = new TemporalReference(tRefTxt, nsIui.equals(TemporalRegion.ISO_IUI));
 		
 		// 1 - next thing in content fields is UUI -- almost always will BFO IRI -- for type of region
 		String typeTxt = contentFields.get(1);
 		Uui typeUui = new Uui(typeTxt);
 				
-		return new TemporalRegion(tref, typeUui, nsIui);
+		return new TemporalRegion(tRefTxt, nsIui, typeUui);
 	}
 
 }
