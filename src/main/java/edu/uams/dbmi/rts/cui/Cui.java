@@ -18,7 +18,7 @@ public class Cui {
 	public boolean equals(Object o){
 		if(o instanceof Cui){
 			Cui cui = (Cui) o;
-			return this.cui.equals(cui);
+			return this.cui.equals(cui.toString());
 		} else {
 			return false;
 		}
